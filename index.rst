@@ -9,11 +9,11 @@ Welcome to HSC Data's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   links
-   faq
-   glossary
+   camera/camera 
+
+   
               
 
 Indices and tables
