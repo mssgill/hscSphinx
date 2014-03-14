@@ -11,7 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
-   camera/camera 
+   camera
+   pipeline
+   
 
    
               
