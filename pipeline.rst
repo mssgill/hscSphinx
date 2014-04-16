@@ -9,7 +9,7 @@ Pipeline
               
    pipeline/detrend
    pipeline/process
-    
+   pipeline/error 
 
 
 
