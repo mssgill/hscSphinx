@@ -86,6 +86,8 @@ PSFEx
 
 raft
 
+rerun
+
 schema (w.r.t. database)
 
 sensor

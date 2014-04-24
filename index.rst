@@ -13,6 +13,7 @@ Contents:
 
    camera
    pipeline
+   pipeline_tools
    database
    glossary
 
