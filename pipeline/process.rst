@@ -9,8 +9,14 @@ depending on what you're trying to do: ``reduceFrames.py``, and
 ``hscProcessCcd.py``.  ``hscProcessCcd.py`` will bias subtract, flat
 field, and then perform object detection and measurement on specified
 visits and CCDs.  ``reduceFrames.py`` will perform these steps only
-full visits.  As always, full usage statements can be found with
-``--help`` or ``-h``.
+full visits.  All scripts will an input identifier of the form ``--id
+<identifiers>``, where the identifiers are such things as ``visit``,
+``ccd``, ``field``, ``dateObs``, ``filter``, etc.  In the examples
+here, a variety of specific values are shown, but you're pretty much
+free to use whatever you deem appropriate for the data that you're
+running.
+
+As always, full usage statements can be found with ``--help`` or ``-h``
 
 
 
@@ -32,7 +38,7 @@ reduceFrames.py
 * ``--rerun cosmos_test``   The rerun where all outputs will be written.
 * ``--id``                  The details of the inputs to run.  In this case, COSMOS data, in the NB0921 narrow band filter, taken on Feb 2, 2014.
 * ``--queue default``       Name of the PBS torque queue
-* ``--job s82``             Name the PBS job will have while running (``qstat`` will show this name)
+* ``--job cosmos``          Name the PBS job will have while running (``qstat`` will show this name)
 * ``--nodes 2``             Run on two nodes of the cluster
 * ``--procs 12``            Run 12 processes on each node
 
@@ -51,7 +57,7 @@ parameter on the command line to disable fringe correction.
 ::
 
    # specify my own measurement algorithms to run in a temporary config file (omitting cmodel, in this case)
-   $ cat tmp.config 
+   $ cat tmp.config
    root.measurement.algorithms.names=['flux.psf', 'flags.pixel', 'focalplane', 'flux.aperture',
    'flux.naive', 'flux.gaussian', 'centroid.naive', 'flux.sinc', 'shape.sdss', 'jacobian',
    'flux.kron', 'correctfluxes', 'classification.extendedness', 'skycoord']
@@ -61,50 +67,100 @@ parameter on the command line to disable fringe correction.
       --clobber-config -C tmp.config --config isr.doFringe=False
 
 
+mosaic.py
+^^^^^^^^^
 
-Making Coadds
--------------
-      
-makeSkyMap.py
-^^^^^^^^^^^^^
+Once the single-frame processing is completed, you can perform an 'ubercal' with mosaic.py.  This will solve for an improved astrometric and photometric solution for a collection of visits.
 
 **Example 1**
 
 ::
    
-   $ makeSkyMap.py suprimecam /data1a/Subaru/SUPA/rerun/price-actj0022m0036 \
-       --output=/data1a/work/price/actj0022m0036/ -C skymap-actj0022m0036.py
+    $ mosaic.py /data/Subaru/HSC/rerun/mydata --mosaicid field=MYDATA filter=HSC-I
 
+      
+
+Building Coadds
+---------------
+
+Coadd construction is the process of warping exposures to put them on
+a common WCS, and then combining them to produce a final exposure
+having an improved signat-to-noise ratio.  The process is performed in
+a sequence of steps, and each is described below.  At this point, it
+is assumed that you've run reduceFrames.py to complete the
+single-frame photometry.
+
+
+SkyMap
+^^^^^^
+
+A SkyMap is a tiling or 'tesselation' of the celestial sphere, and is
+used as coordinate system for the final coadded image.  The largest
+region in the system is called a 'Tract', and it contains smaller
+'Patch' regions. Your input images will be warped from their observed
+WCS to the common WCS of the SkyMap.  To create a SkyMap, do the following:
+
+**Example 1**
+
+::
+   
+    $ makeSkyMap.py /data/Subaru/HSC/
+
+
+Warping
+^^^^^^^
        
-run_mosaicTask.py
-^^^^^^^^^^^^^^^^^
+The next step is to warp your images to the SkyMap coordinate system
+(Tracts and Patches).  This is done with makeCoaddTempExp.py::
 
 **Example 1**
 
 ::
+
+    $ makeCoaddTempExp.py /data/Subaru/HSC --rerun mydata \
+        --id tract=9000 patch=1,1 filter=HSC-Y \
+        --selectId visit=1000^1002 ccd=0..103
+
+Here, there are now two ``id`` settings required.  ``--id`` refers to
+the Tract and Patch that you wish to create, while ``--selectId``
+refers to the *input* visits, CCDs, etc. that you wish warp to the
+specified tract and patch.
+
+
+Coadding
+^^^^^^^^
+
+Once your images have been warped on to the SkyMap patches, running
+``assembleCoadd.py`` will create the stacked image.  Again, there are
+two sets of ``id`` settings: ``--id`` (the destination Tract,Patch),
+and ``--selectId`` (the input visits,CCDs).  These should probably be
+set to be the same as the settings you used for
+``makeCoaddTempExp.py``::
+
+    $ assembleCoadd.py /data/Subaru/HSC --rerun mydata \
+        --id tract=9000 patch=1,1 filter=HSC-Y \
+        --selectId visit=1000^1002 ccd=0..103
+
+        
+Coadd Processing (i.e. detection, measurement)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Running the pipeline on coadded images cannot be done with
+``hscProcessCcd.py`` or ``reduceFrames.py``.  Instead, a separate
+process ``hscProcessCoadd.py`` is used.  This example will process the
+same Tract,Patch which has been constructed above with
+``assembleCoadd.py``::
+    
+    $ hscProcessCoadd.py /data/Subaru/HSC --rerun mydata \
+        --id tract=9000 patch=1,1 filter=HSC-Y
+
+
+    
+.. todo::
+    
+   Is hscOverlaps.py still used?
    
-   $ run_mosaicTask.py suprimecam /data1a/work/price/actj0022m0036 \
-      --mosaicid field=ACTJ0022M0036 filter=W-S-I+
-
-      
-hscOverlaps.py
-^^^^^^^^^^^^^^
-
-**Example 1**
-
-::
+.. todo::
    
-   $ hscOverlaps.py suprimecam /data1a/work/price/actj0022m0036 --coadd deep \
-       --id field=ACTJ0022M0036 filter=W-S-I+
+   Is hscStack.py still used?
 
-
-hscStack.py
-^^^^^^^^^^^
-
-**Example 1**
-
-::
-
-   $ hscStack.py suprimecam /data1a/Subaru/SUPA/rerun/price-actj0022m0036 \
-       --output /data1a/work/price/actj0022m0036 \
-       --id field=ACTJ0022M0036 filter=W-S-I+ --filter W-S-I+ --tract 0 --patch 4,4
