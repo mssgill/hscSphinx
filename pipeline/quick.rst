@@ -17,8 +17,37 @@ Assuming you've read the other sections, these commands will all make perfect si
      $ cd /path/to/rawdata/
      $ hscIngestImages.py /path/to/HSC/ --create --mode=link HSCA*.fits
 
+#. Construct calibration frames::
+
+     $ reduceBias.py /path/to/HSC/ --rerun all_bias --queue small --detrendId calibVersion=all --job bias --nodes=3 --procs=12 --id field=BIAS
+     $ genCalibRegistry.py --create --root /data/Subaru/HSC/CALIB --camera HSC --validity 12
+
+     $ reduceDark.py /path/to/HSC/ --rerun all_dark --queue small --detrendId calibVersion=all --job dark --nodes=3 --procs=12 --id field=DARK
+     $ genCalibRegistry.py --root /data/Subaru/HSC/CALIB --camera HSC --validity 12
+     
+     $ reduceFlat.py /path/to/HSC --rerun dome_flats --queue small --detrendId calibVersion=domeflat --job dflat --nodes=3 --procs=12 --id field=DOMEFLAT
+     $ genCalibRegistry.py --root /data/Subaru/HSC/CALIB --camera HSC --validity 12
+     
+     $ reduceFringe.py /path/to/HSC/ --rerun all_fringe --queue small --detrendId calibVersion=all --job fringe --nodes=3 --procs=12 --id field=MYTARGET
+     $ genCalibRegistry.py --root /data/Subaru/HSC/CALIB --camera HSC --validity 12
+     
+#. (optional) Test running one CCD::
+
+     $ hscProcessCcd.py /path/to/HSC/ --rerun my_data
+     
 #. Run the single frame processing::
 
-     $ reduceFrames.py /path/to/HSC/ --rerun
+     $ reduceFrames.py /path/to/HSC/ --rerun my_data
 
-    
+
+..     
+   #. (optional) Run single-frame QA on some select visits (e.g. visit number 1000)::
+
+   $ mkdir -p /home/you/public_html/qa
+   $ export WWW_ROOT=/home/you/public_html/qa
+   $ export WWW_RERUN=my_qa
+   $ export TESTBED_PATH=/path/to/HSC/rerun
+   $ newQa.py -p hsc my_qa
+   $ pipeQa.py -d butler -C hsc -v 1000 my_data
+
+

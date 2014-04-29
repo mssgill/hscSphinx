@@ -1,3 +1,4 @@
+
 .. HSC Data documentation master file, created by
    sphinx-quickstart on Mon Mar 10 16:47:05 2014.
    You can adapt this file completely to your liking, but it should at least
@@ -17,8 +18,17 @@ Contents:
    database
    glossary
 
+
+.. These ones aren't currently shown
    
-              
+.. toctree::
+   :hidden:
+      
+   afw
+   faq
+   links
+   maillists
+   
 
 Indices and tables
 ==================

@@ -13,11 +13,14 @@ full visits.  As always, full usage statements can be found with
 ``--help`` or ``-h``.
 
 
-reduceFrames.py
----------------
 
-Example 1
-^^^^^^^^^
+Single Frame Processing
+-----------------------
+
+reduceFrames.py
+^^^^^^^^^^^^^^^
+
+**Example 1**
 
 ::
    
@@ -35,10 +38,10 @@ Example 1
 
   
 hscProcessCcd.py
--------------
+^^^^^^^^^^^^^^^^
   
-Example 1
-^^^^^^^^^
+**Example 1**
+
 
 Here, I'll put some specific measurement algorithms to run in a
 temporary config file (``tmp.config``), and then run the command with
@@ -59,22 +62,24 @@ parameter on the command line to disable fringe correction.
 
 
 
-makeSkyMap.py
+Making Coadds
 -------------
+      
+makeSkyMap.py
+^^^^^^^^^^^^^
 
-Example 1
-^^^^^^^^^
+**Example 1**
 
 ::
    
    $ makeSkyMap.py suprimecam /data1a/Subaru/SUPA/rerun/price-actj0022m0036 \
        --output=/data1a/work/price/actj0022m0036/ -C skymap-actj0022m0036.py
 
+       
 run_mosaicTask.py
------------------
+^^^^^^^^^^^^^^^^^
 
-Example 1
-^^^^^^^^^
+**Example 1**
 
 ::
    
@@ -83,10 +88,9 @@ Example 1
 
       
 hscOverlaps.py
---------------
+^^^^^^^^^^^^^^
 
-Example 1
-^^^^^^^^^
+**Example 1**
 
 ::
    
@@ -95,10 +99,9 @@ Example 1
 
 
 hscStack.py
------------
+^^^^^^^^^^^
 
-Example 1
-^^^^^^^^^
+**Example 1**
 
 ::
 

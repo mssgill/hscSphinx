@@ -5,9 +5,10 @@ Pipeline
 ========
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
     
    pipeline/preparation
+   pipeline/general
    pipeline/data_repo
    pipeline/detrend
    pipeline/process
@@ -15,6 +16,4 @@ Pipeline
 
    pipeline/quick
 
-
-* What is a 'rerun'?  
               
