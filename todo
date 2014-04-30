@@ -1,0 +1,47 @@
+
+
+-- one stacking example
+
+-- a.n.d. input format and example
+
+-- examples of using butler
+
+
+
+
+
+******* bugs
+
+-- minor
+   -- mail Paul about Fringe in reduceDark.py
+   - how to check the sqlite registry?
+     - is there a tool for this?
+
+   -- validate
+      - check all permissions
+        - registry.sqlite
+        - chmod g+rw -R HSC/
+        - rerun dir
+
+
+
+
+
+****** random notes ***********
+
+-- full run
+   - mkdir /path/Subaru/HSC
+   - cp _mapper
+   - cd rawdata/
+   - hscIngestImages.py /path/to/HSC/  --create --mode=link HSCA*.fits
+   - reduceBias/Flat/Dark/Fringe
+     - cp /data3b/Subaru/HSC/CALIB /path/to/HSC
+   - reduceFrames.py /path/to/HSC --id visit=9100
+   - pipeQA
+     - must have db account!
+       - which privileges?  create/drop db?
+     - need .pqa/dbauth.py
+     - set PGPASSWORD
+     - 
+   -     
+   
