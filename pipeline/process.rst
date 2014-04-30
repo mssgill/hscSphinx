@@ -97,21 +97,48 @@ SkyMap
 A SkyMap is a tiling or 'tesselation' of the celestial sphere, and is
 used as coordinate system for the final coadded image.  The largest
 region in the system is called a 'Tract', and it contains smaller
-'Patch' regions. Your input images will be warped from their observed
-WCS to the common WCS of the SkyMap.  To create a SkyMap, do the following:
+'Patch' regions. In a later step, your input images will be warped
+from their observed WCSs to the common WCS of the SkyMap.
+
+There are two ways to create SkyMaps: (1) for the whole sky [probably
+**not** what you want for individual observations], and (2) for a
+selected region containing a set of exposures.
+
+
+To create a full SkyMap (again, not likely what you want), do the following:
 
 **Example 1**
 
 ::
    
-    $ makeSkyMap.py /data/Subaru/HSC/
+    $ makeSkyMap.py /data/Subaru/HSC/ --rerun=myrerun
 
+
+To create a local SkyMap for the region containing your data, use the
+``makeDiscreteSkyMap.py``.  Here, you can select specified visits to
+be used to define the region of the SkyMap.  In this case the example
+shows visits 1000 to 1020 with increment 2 (i.e. every other one, as
+is the standard for HSC visit naming).  Because you chose a local
+SkyMap, all your data will be within a single Tract, and that Tract
+will be defined to have ID 0 (zero).  If you're using a full SkyMap,
+the Tracts are a fixed system and you'll have to look-up which tracts
+your data live in.
+
+.. todo:: Describe how to lookup tract IDs.
+
+**Example 2 (probably what you want)**
+
+::
+
+    $ makeDiscreteSkyMap.py /data/Subaru/HSC/ --rerun=myrerun --id visit=1000..1020:2
+
+    
 
 Warping
 ^^^^^^^
        
 The next step is to warp your images to the SkyMap coordinate system
-(Tracts and Patches).  This is done with makeCoaddTempExp.py::
+(Tracts and Patches).  This is done with makeCoaddTempExp.py.
 
 **Example 1**
 

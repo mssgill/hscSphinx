@@ -13,7 +13,8 @@
 ******* bugs
 
 -- minor
-   -- mail Paul about Fringe in reduceDark.py
+   - Fringe in reduceDark.py
+   - hscIngestImages.py could create _mapper
    - how to check the sqlite registry?
      - is there a tool for this?
 
