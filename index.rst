@@ -7,18 +7,26 @@
 Welcome to HSC Data's documentation!
 ====================================
 
+This site hosts information relevant to running the HSC pipeline and
+handling the data products in their various forms.  We've tried (are
+trying) to include any and all types of information that the science
+collaborators may find useful or helpful in working with the data.  If
+you can't find what you're looking for, please contact the software
+group and let us know!  We can be found at
+<hsc_software@astro.princeton.edu>.
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-   camera
    pipeline
    pipeline_tools
    database
    scripts
    glossary
-
+   camera
+   
 
 .. These ones aren't currently shown
    
