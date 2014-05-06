@@ -102,8 +102,13 @@ section)::
 
 
     
-PBS/torque
+.. _prep_torque:
+
+PBS/TORQUE
 ----------
+
+See also information about relevant :ref:`command line arguments
+<torque_args>` for TORQUE.
 
 Our batch processing is handled with a system called TORQUE, which is
 a popular variant of PBS (Portable Batch System).  The system handles

@@ -53,14 +53,67 @@ tracts and patches, though!  A tract,patch refers to a location on the
 sky and can have multiple filters or dateObs values.
     
 
+.. _torque_args:
+
 Torque-related batch processing arguments
 -----------------------------------------
 
-::
+Some of the pipeline tasks (e.g. ``reduceFrames.py``, and
+``stack.py``) use PBS TORQUE to manage batch processing.  If you
+haven't yet familiarized yourself with TORQUE, please take a look at
+our brief :ref:`TORQUE Summary <prep_torque>`, as it will help to
+understand what these command line arguements actually do.
 
-   --nodes
-   --procs
-   
+The arguments you need to concern yourself with are:
+
+``--job``
+
+    This is the name of the job, as you want it to appear in ``qstat``
+    commands.  It will also be used in the name of the log files that
+    TORQUE writes containing the ``stdout`` from your job.
+
+``--queue``
+
+    The name of the queue you're submitting your job to.  There may be
+    multiple queues on the system you're using.  You can see which
+    ones there are with::
+
+    $ qmgr -c 'print server'
+
+``--nodes``
+
+    Specify the number of nodes you want your process to use.  Note
+    that if you ask for too many, you'll get an error message telling
+    you so.  The maximum number of nodes you're allowed to request
+    from a given queue is listed in the output of ``qmgr -c 'print
+    server'`` with label ``resources_max.nodes``.
+
+``--procs``
+
+    Specify the number of processes on each node you want your process
+    to use.  Again, you'll have to be careful not to exceed the
+    specifications for the queue you've requested.  Check ``qmgr -c
+    'print server'`` to find ``resources_max.ncpus``, and make sure
+    that ``procs`` times ``nodes`` (i.e. the total number or CPUs
+    you're asking for) isn't larger than ``resources_max.ncpus``.
+
+``--time``
+
+    Use this to adjust the expected execution time for each element.
+    TORQUE may time-out your job if it takes longer than expected, so
+    this allows you to increase the limit.
+
+    
+``--do-exec``
+
+    This will cause the system to run the code in the current shell,
+    rather than submitting to TORQUE system.  It can be very useful
+    for debugging specific problems, but shouldn't ever be used for a
+    large job (it would just take too long!).
+    
+``--pbs-output``
+
+.. todo::    I haven't played with this.  Paul? What does it do?
 
 
 Configuration Parameters
