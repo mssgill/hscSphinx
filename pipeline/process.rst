@@ -70,7 +70,9 @@ parameter on the command line to disable fringe correction.
 mosaic.py
 ^^^^^^^^^
 
-Once the single-frame processing is completed, you can perform an 'ubercal' with mosaic.py.  This will solve for an improved astrometric and photometric solution for a collection of visits.
+Once the single-frame processing is completed, you can perform an
+'ubercal' with mosaic.py.  This will solve for an improved astrometric
+and photometric solution for a collection of visits.
 
 **Example 1**
 
@@ -86,19 +88,20 @@ Building Coadds
 Coadd construction is the process of warping exposures to put them on
 a common WCS, and then combining them to produce a final exposure
 having an improved signat-to-noise ratio.  The process is performed in
-a sequence of steps, and each is described below.  At this point, it
-is assumed that you've run reduceFrames.py to complete the
-single-frame photometry.
+a sequence of steps, and each is described below.  However, most of
+the steps can be run in a single process called ``stack.py`` (also
+described below).  At this point, it is assumed that you've run
+reduceFrames.py to complete the single-frame photometry.
 
+Making a SkyMap
+^^^^^^^^^^^^^^^
 
-SkyMap
-^^^^^^
-
-A SkyMap is a tiling or 'tesselation' of the celestial sphere, and is
-used as coordinate system for the final coadded image.  The largest
-region in the system is called a 'Tract', and it contains smaller
-'Patch' regions. In a later step, your input images will be warped
-from their observed WCSs to the common WCS of the SkyMap.
+Before stacking, you need to make a SkyMap.  A SkyMap is a tiling
+or 'tesselation' of the celestial sphere, and is used as coordinate
+system for the final coadded image.  The largest region in the system
+is called a 'Tract', and it contains smaller 'Patch' regions. In a
+later step, your input images will be warped from their observed WCSs
+to the common WCS of the SkyMap.
 
 There are two ways to create SkyMaps: (1) for the whole sky [probably
 **not** what you want for individual observations], and (2) for a
@@ -132,13 +135,29 @@ your data live in.
 
     $ makeDiscreteSkyMap.py /data/Subaru/HSC/ --rerun=myrerun --id visit=1000..1020:2
 
+
+
+
+Running ``stack.py`` to build and process a coadd
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+::
+
+    $ stack.py /data/Subaru/HSC/ --rerun=myrerun --id tract=0 filter=HSC-I \
+          --selectId visit=1000..1020:2 --queue = small --nodes 4 --procs 6 --job stack
+    
     
 
+
+          
 Warping
 ^^^^^^^
        
-The next step is to warp your images to the SkyMap coordinate system
-(Tracts and Patches).  This is done with makeCoaddTempExp.py.
+If you're not using ``stack.py``, the next step is to warp your images
+to the SkyMap coordinate system (Tracts and Patches).  This is done
+with makeCoaddTempExp.py.
 
 **Example 1**
 

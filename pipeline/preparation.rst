@@ -4,6 +4,7 @@
 Preparation
 ============
 
+.. _prep_eups:
 
 EUPS
 ----

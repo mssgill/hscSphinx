@@ -13,12 +13,19 @@ effectively.
 Reruns
 ------
 
-The term ``rerun`` dates back to SDSS.  It simply refers to a single
-processing run of a set of data performed with a specified version of
-the reduction code, and a specific set of configuration parameters.
-The assumption is that within a given 'rerun', the data have been
-handled in a homogeneous way.
+The term ``rerun`` originated in SDSS.  It simply refers to a single
+processing run, performed with a specified version of the reduction
+code, and with a specific set of configuration parameters.  The
+assumption is that within a given 'rerun', the data have been handled
+in a homogeneous way.
 
+.. todo::
+
+    This is repeated in the glossary.  Are both places needed?  It's
+    short, and won't change.
+
+    
+.. _general_dataId:
 
 The dataId
 ----------
@@ -27,7 +34,8 @@ A 'dataId' is a unique identifier for a specific data input.  The two
 forms you most likely need to familiarize yourself with are the
 'visit','ccd' identifiers used to refer to a specific CCD in a
 specific exposure (called a 'visit'); and 'tract','patch' identifiers
-which refer to the coordinate system used in coadded images.  Other important keys in a dataId might include:
+which refer to the coordinate system used in coadded images.  Other
+important keys in a dataId might include:
 
 * field (name you gave your target in the FITS header 'OBJECT' entry)
 * dateObs (the date of observation from the FITS header 'DATE-OBS' entry)
@@ -119,4 +127,6 @@ The arguments you need to concern yourself with are:
 Configuration Parameters
 ------------------------
 
+
+.. todo:: Write this section.
 
