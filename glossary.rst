@@ -23,7 +23,7 @@ amplifier, amp
 aperture flux, aperture photometry
 
     The HSC pipeline measures source flux with various algorithms
-    (aperture, PSF, cmodel).  The aperture flux has traditionally
+    (aperture, PSF, cmodel).  The 'aperture flux' has traditionally
     referred to a straight sum of the counts in all pixels within an
     'aperture' or specified (usually circular) region around the
     source.  What the HSC pipeline uses is conceptually exactly the
@@ -52,42 +52,40 @@ background matching
 brighter-fatter effect
 
     To gain sensitivity to red photos, the CCDs used in the HSC camera
-    (and many modern astronomical camera) are thicker (200 um) than
-    the previous generation of devices (~15-25 um).  The pixels have
-    physical dimensions of 15x15 um, and so each can be thought of as
-    having the aspect ratio of a sky-scraper.  Photo-electrons are
-    released in the higher floors of the sky scraper and are pulled by
-    an electric field down to the basement where they're stored until
-    read-out.  However, as more photo-electrons accumulate in the
-    basement, their presence tends to deflect some newly arriving
-    photo-electrons into a neighbouring pixel.  The concequence of
-    this is that brighter stars have a systematically wider
-    (i.e. 'fatter') point spread function (PSF).
+    (and many modern astronomical camera) are thicker than the
+    previous generation of devices (200 um versus ~15-25 um).  The
+    pixels have physical dimensions of 15x15 um, and so each can be
+    thought of as having the aspect ratio of a sky-scraper.
+    Photo-electrons are released in the higher floors of the silicon
+    sky scraper and are pulled by an electric field down to the
+    PN-junction in the basement where they're stored until read-out.
+    However, as more photo-electrons accumulate in the basement, their
+    presence tends to deflect some of the newly arriving
+    photo-electrons into the neighbouring pixels.  The concequence of
+    this is that **brighter** stars have a systematically wider
+    (i.e. **'fatter'**) point spread function (PSF).
 
 Butler
 
     Rather than having different modules of the pipeline keep track of
-    where they read/write their inputs/outputs, and single code object
-    called the 'butler' does this.  If you go to an expensive
-    restaurant, then 'valet' will park your car for you.  You don't
-    need to know where the garage when you arrive, and you don't need
-    to remeber where you parked when you leave.  This is what the
+    where and how they read/write their inputs/outputs, a software
+    tool called the 'butler' does this.  If you go to an expensive
+    restaurant, the 'valet' will park your car for you.  You don't
+    need to know where the garage is when you arrive, and you don't
+    need to remeber where you parked when you leave.  This is what the
     butler does for the input/output operations of the pipeline.
     Rather than hard-coding the paths, filenames, and loading/writing
     syntax for various data inputs and outputs throughout the pipeline
     code; you simply make a call to the butler to 'get' the thing you
     want for a specific dataId (frame, CCD, etc).  For example,
-    loading a bias image:
+    loading a bias image looks like this:
 
-    biasImg = butler.get('bias', dataId)
+    ``biasImg = butler.get('bias', dataId)``
 
-    See the example: :ref:`the butler <print_mags_from_butler>`.
+    See this example: :ref:`script <print_mags_from_butler>`.
     
 
-camera
-
-    The thing that takes the pictures.
-
+    
 .. _gloss_cas:
     
 CAS
@@ -107,7 +105,7 @@ Catalog Archive Server
 
 ccd
 
-    A charge-couple device, of course, but also used to refer data
+    A charge-couple device, of course, but also used to refer to data
     from a CCD in a raw data image or in single-frame data products.
     See also :ref:`DataId <gloss_dataid>`.
     
@@ -130,7 +128,7 @@ Data Archive Server
 
     This term is inherited from the SDSS and refers to the online data
     repository where data products such as images can be obtained.
-    The pipeline outputs (RA, Dec, magnitudes, etc) were provide by
+    The pipeline outputs (RA, Dec, magnitudes, etc) are provided by
     the :ref:`CAS <gloss_cas>`.
 
 
@@ -139,16 +137,18 @@ Data Archive Server
 dataId
 
     Individual exposures are refered to either as 'visits' or
-    'frames', and their sub-components are the CCDs in the detector
+    'frames', and their sub-components are the CCDs in the camera
     (note that LSST refers to these as 'sensors').  However, when
     making a coadd, the celestial sphere is broken into a set of fixed
     regions called 'tracts', which are similar in size to the field of
     view of the HSC camera.  The tracts are composed of sub-regions
     called 'patches'.  Each patch is about the size of a CCD.  Thus,
     'visit' and 'CCD' are used to refer to raw data or single-frame
-    data products, while 'tract' and 'patch' refer to coadd data.
+    data products, while 'tract' and 'patch' refer to coadd data.  A
+    dataId also includes such things as field name (field), date of
+    observation (dateObs), and filter.
 
-    See also :ref:`DataId <general_dataId>`
+    See also :ref:`DataId <back_dataId>`
 
 .. _gloss_deblend:
     
@@ -166,12 +166,14 @@ deep survey
 
 double-Gaussian
 
-    The point spread function of a star is quick similar to a
+    The point spread function of a star is quite similar to a 2D
     Gaussian, but has too much flux present in the extended 'wings'.
     However, while one Gaussian is a poor model, two Gaussians does
     quite a good job.  One Gaussian models the center of the PSF,
     while the second Gaussian (typically 2x the width and 0.1x
-    amplitude) models the wings.
+    amplitude) models the wings.  A double-Gaussian PSF is available
+    in the pipeline software, but is not used as a PSF for production
+    reruns.
 
 differencing
 
@@ -187,7 +189,9 @@ doxygen
 EUPS
 
     EUPS is the package management system used by the software group.
-    For specific details, see the :ref:`EUPS page <prep_eups>`
+    It's used to install and generally keep track of different
+    versions of the software pipeline modules.  For specific details,
+    see the :ref:`EUPS page <back_eups>`
     
 extendedness (classification.extendedness)
 
@@ -212,7 +216,7 @@ footprint
 
     Within the software group, the region of pixels occupied by a
     source (which we want to measure) is called the source's
-    'footprint'.  Pixels within the footprint are used for the
+    'footprint'.  The pixels within the footprint are used for the
     measurement, the ones outside are not.
 
 forced measurement (e.g. photometry)
@@ -220,9 +224,9 @@ forced measurement (e.g. photometry)
     In our stacked images, we're able to detect faint sources which
     would be below our 5-sigma thresholds in any of the input images,
     or in the coadds from different filters.  However, once we know
-    that a source is there in a deep i-band stack, we can then measure
-    it at the location we expect it to be in another image where it
-    wasn't detected.  This is called a 'forced measurement'.
+    that a source is detected in e.g. a deep i-band stack, we can then
+    measure it at the location we expect it to be in another image
+    where it wasn't detected.  This is called a 'forced measurement'.
 
 frame
 
@@ -236,31 +240,33 @@ healpix
     discrete regions (called tesselation).  HealPix is a popular one
     in the astronomy community.
 
-    ..todo:: We support this, but don't actually use it right?
+    ..todo:: We support this, but I don't know of anywhere where we're currently using it.
 
     
 Hirata-Seljac-Mandelbaum (HSM)
 
     This refers to a collection of shape measurement algorithms
-    coded-up and bundled together, and made public by Chris Hirata,
+    coded-up, bundled together, and made public by Chris Hirata,
     Eros Seljac, and Rachel Mandelbaum.  The package includes 'KSB'
     (HSM_KSB), 'regaussianization' (HSM_REGAUSS), 'Bernstein-Jarvis'
     (HSM_BJ), 'linear' (HSM_LINEAR), and a shapelet-based algorithm
-    (HSC_SHAPELET).
+    (HSC_SHAPELET).  It is enabled by default in the HSC pipeline.
 
 Kron flux
 
-
+.. todo:: write this.
 
 KSB
 
+.. todo:: Do we need this?  Out of scope for this glossary?
 
 
 mosaic
 
-    Mosaic is the name of the HSC software module which performs
-    photometric uber-calibration, tying the photometry measured in
-    different visits in to the same self-consistent system.
+    Mosaic is the name of the HSC software module which performs a
+    photometric uber-calibration, in which the photometry measured in
+    different visits is tied together into the same self-consistent
+    photometric system.
 
 multifit
 
@@ -272,10 +278,12 @@ multishapelet
 
 object
 
-    A celestial object whose properties we'd like to measure.  It
-    should not be confused with a 'source', which is a specific
-    exposure instance of an object.  For example, a star is an
-    'object', but two exposures of it will yield two 'sources'.
+    This is a common word, but has a somewhat specific meaning in the
+    software group.  It refers to a celestial object whose properties
+    we'd like to measure.  It should not be confused with a 'source',
+    which is a specific exposure instance of an object.  For example,
+    a star is an 'object', but two exposures of it will yield two
+    'sources'.
 
 patch
 
@@ -298,22 +306,27 @@ pipeline
 
     The collection of data processing steps which run autonomously to
     take the raw input data and produce the final catalog output
-    measurement.
+    measurements.
 
 point spread function (PSF)
 
     The response function of an imaging system to a 'point source', or
     delta function.  This includes the atmosphere plus the telescope
-    plus the camera.  If we assume that an input star is a delta
-    function, then the PSF is the functional form of the blurry blotch
-    which is measured in an image.  The PSF is variable across the
-    field of an image, and across a single CCD.
+    plus the camera.  The PSF is a function of position across the
+    field of an image, and is also varies over time.
 
+    
 PSF
     See Point Spread Function
     
-psf flux, psf photometry
+PSF flux, PSF photometry
 
+    While aperture photometry measures the sum of the integrated flux
+    within a synthetic aperture around a source; PSF photometry
+    measures the *weighted* sum of the flux, where the weight function
+    is the local PSF at the sources position in the image.  If the
+    source is itself a point source (i.e. a star), then the
+    measurement is optimal.
 
 PSF-Ex
 
@@ -322,8 +335,8 @@ PSF-Ex
 
 raft
 
-    The LSST camera (so ... *not* HSC) is subdivided into 21 square
-    platforms, with each on housing 9 CCDs arrange 3x3 (total 189
+    The LSST camera (*not* HSC) is subdivided into 21 square
+    platforms, with 9 CCDs mounted 3x3 on each one (total 189
     CCDs).  The 21 square platforms are called 'rafts'.  The HSC
     camera is not structured this way, but you may occassionally hear
     the term as the pipeline code is shared with the LSST project.
@@ -333,7 +346,7 @@ rerun
     The term ``rerun`` originated in SDSS.  It simply refers to a
     single processing run, performed with a specified version of the
     reduction code, and with a specific set of configuration
-    parameters.  The assumption is that within a given 'rerun', the
+    parameters.  The implication is that within a given 'rerun', the
     data have been handled in a homogeneous way.
 
 
@@ -342,12 +355,13 @@ schema (w.r.t. database)
     The schema of a database is its structure.  It refers to the coded
     blueprint which describes how the data are to be stored with
     respected to one another.  Which fields will appear in which
-    tables, and what types of data they will contain are described the
-    database schema.
+    tables, and what types of data they will contain are described in a
+    database's schema.
 
-    However ... the HSC database system uses PostgreSQL, and the term
-    schema has been been recycled by the postgreSQL world to refer to
-    separate databases within a single database system.
+    Note also, that the HSC database system uses PostgreSQL, and the
+    term 'schema' has a specific meaning in the context of postgreSQL.
+    Separate logical databases within a single PostgreSQL database are
+    called 'schema'.
 
     
 sensor
@@ -377,7 +391,7 @@ stack (w.r.t. the data reduction pipeline)
     
 stack (w.r.t. image coaddition)
 
-
+    A synonym for coadd.
 
 Strategic Survey Proposal (SSP)
 
@@ -399,7 +413,7 @@ uber-calibration
     method relies on repeated observations of the same objects in
     multiple exposures.  The calibration terms can then be adjusted to
     allow measurements in the different exposures to be compared
-    meaningfully.
+    meaningfully.  The HSC uber-calibration process is called 'mosaic'.
 
 .. todo:: put a ref to Nikhil's paper.
     

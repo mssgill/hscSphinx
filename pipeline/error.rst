@@ -65,9 +65,18 @@ Here's a full stack trace showing this kind of error for an hscProcessCcd.py run
 
 
     
-Ambiguous Calibration inputs
+Ambiguous calibration inputs
 ----------------------------
 
+When you created calibration inputs, you specified ``--detrendId
+calibVersion=XXX``.  If you made multiple detrends (e.g. biases) with
+different ``calibVersions``, the pipeline code will find them and will
+not know which one to use.  This is currently not configurable, but
+should be soon.  The solution to remove the conflicting detrend.  For
+e.g. a flat, it will be located in the data repo in
+``CALIB/FLAT/<YYYY-MM-DD>/<FILTER>/<unwanted-calib>``.  Scan the final
+line of the error traceback to determine which detrend caused the
+trouble.  They're all in ``CALIB/`` in your data repo.
 
 ::
 

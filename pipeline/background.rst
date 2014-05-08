@@ -34,10 +34,12 @@ users (or the same user) can all use different versions
 simultaneously.
 
 In order to enable EUPS in your current shell, you must source a
-script appropriate for the shell you're using.  Note that you must
-source the file, not execute it::
+script appropriate for the shell you're using.  If you're not sure
+which shell you use, type ``echo $SHELL`` and it will say either
+``/bin/bash`` or ``/bin/tcsh``.  Note that you must source the file,
+not execute it::
 
-    # in a bash shell
+    # If you use a bash shell
     $ source /data1a/ana/products2014/eups/default/bin/setups.sh
 
     # in a csh shell (or tcsh)
@@ -52,7 +54,7 @@ source the setups.sh file directly there::
      # from .bashrc
      alias setupHsc='source /data1a/ana/products2014/eups/default/bin/setups.sh'
 
-Then you can enable EUPS with::
+Then you can enable EUPS on subsequent logins with::
 
      $ setupHsc
 
@@ -86,7 +88,33 @@ Here are the most common eups commands.
      
      # setup the HSC pipeline using the versions tagged 'HSC' (the developer recommended version)
      $ setup -v hscPipe -t HSC
-    
+
+     
+Setting up development code in a directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you're working with your own code (or a some checked-out from git)
+which is not installed in the eups system, you can run ``setup -r
+dir/`` to set it up.  Often, ``dir/`` is just the current working
+directory ``.``, e.g.::
+
+     $ setup -v -r .
+
+When you do this, you'll often need to ensure that any dependencies
+are also setup correctly.  If you specify nothing, you'll get the
+packages that are tagged 'current' (see ``eups list``).  That may not
+be the collection of versions you want.  If you know your code needs
+to build against, e.g. pipeline version 2.12.2a_hsc, then you should
+first set that up, and then setup your code with ``-k`` to 'keep' the
+already-setup versions enabled (rather than defaulting to the ones
+tagged 'current'), or ``-j`` to setup 'just' your working directory.
+E.g.::
+
+     # keep the existing versions setup.  Any dependencies which aren't setup will default to 'current'.
+     $ setup -v -k -r .
+
+     # Don't even try to setup dependencies, just setup this directory
+     $ setup -v -j -r .
 
      
     
