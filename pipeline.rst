@@ -10,7 +10,8 @@ Pipeline
    pipeline/background
    pipeline/data_repo
    pipeline/detrend
-   pipeline/process
+   pipeline/singleframe_proc
+   pipeline/coadd_proc
    pipeline/error 
 
    pipeline/quick

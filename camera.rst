@@ -5,7 +5,8 @@ HSC Camera
 
 .. toctree::
    :maxdepth: 1
-   
+
+   camera/specs
    camera/layout
    camera/flat
    camera/nonlinear

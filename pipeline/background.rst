@@ -12,7 +12,7 @@ effectively.
 
 
 
-.. _prep_eups:
+.. _back_eups:
 
 EUPS
 ----
@@ -111,7 +111,7 @@ section)::
 
     
 
-.. _prep_torque:
+.. _back_torque:
 
 
 PBS/TORQUE
@@ -287,7 +287,7 @@ in a homogeneous way.
     short, and won't change.
 
     
-.. _general_dataId:
+.. _back_dataId:
 
 The dataId
 ----------
@@ -323,6 +323,30 @@ specify the visit, the other values are almost all redundant.  This isn't
 true for tracts and patches, though!  A tract,patch refers to a
 location on the sky and can have multiple filters or dateObs values.
 
+
+Ranges and Multiple ``--id`` values
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A dataId will also let you specify a range of values, or a set of
+separate discrete values.  Pay careful attention to the ``:`` (step
+size) notation as HSC visit numbers are incremented by 2 (always
+even).
+
+* ``..`` denotes are range of values.  E.g. visit 1000 with all CCDs
+  between 40 and 60, inclusive::
+
+    --id visit=1000 ccd=40..60
+
+* ``^`` separates discrete values.  E.g. visit 1000 and 1004::
+
+    --id visit=1000^1004
+
+* ``:`` specifies a step to use for a range, and thus is only ever
+  used with ``..``.  E.g. even-numbered visits 1000 to 1010::
+
+    --id visit=1000..1010:2
+
+    
 
 Configuration Parameters
 ------------------------

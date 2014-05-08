@@ -50,4 +50,13 @@ Assuming you've read the other sections, these commands will all make perfect si
    $ newQa.py -p hsc my_qa
    $ pipeQa.py -d butler -C hsc -v 1000 my_data
 
+   
+#. Make a SkyMap (assuming you want a partial SkyMap)::
 
+    $ makeDiscreteSkyMap.py /path/to/HSC/ --rerun=myrerun --id visit=1000..1020:2
+
+    
+#. Coadd Processing::
+
+    $ stack.py /path/to/HSC/ --rerun=myrerun --id tract=0 \
+          --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
