@@ -7,8 +7,7 @@ Pipeline
 .. toctree::
    :maxdepth: 2
     
-   pipeline/preparation
-   pipeline/general
+   pipeline/background
    pipeline/data_repo
    pipeline/detrend
    pipeline/process
