@@ -5,7 +5,7 @@ Quick Summary
 
 Assuming you've read the other sections, these commands will all make
 perfect since. This should be a complete listing of the commands you
-need in order to process a set of PI observations.
+need in order to process a set of PI observations from beginning to end.
 
 #. Setup::
 

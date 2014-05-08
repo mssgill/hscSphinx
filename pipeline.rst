@@ -6,7 +6,8 @@ Pipeline
 
 .. toctree::
    :maxdepth: 2
-    
+
+   pipeline/installation
    pipeline/background
    pipeline/data_repo
    pipeline/detrend
