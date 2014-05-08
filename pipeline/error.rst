@@ -6,9 +6,11 @@ Common Pipeline Errors
 
 When a pipeline process fails, it will dump a full stack trace,
 showing you what it was doing when the failure occurred.  If you know
-what you're looking for, there's a lot of useful information here.  If
-you don't, it's just an overwhelming mess.  Below are a few of the
-most common blow-ups that you'll run into.
+what you're looking for, there's a lot of useful information there.
+If you don't, it's just a confusing mess.  Below are a few of the most
+common blow-ups that you'll run into.  If you've run into an error
+that isn't shown here, please let us know so that we can post info
+about it here.
 
 
 Missing astrometry_net_data.

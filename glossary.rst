@@ -4,7 +4,7 @@ Glossary
 ========
 
 The idea here is to give you a two or three sentence explanation of a
-concept, and (hopefully) a link to where you can find more
+concept, and (possibly) a link to where you can find more
 information.
 
 
