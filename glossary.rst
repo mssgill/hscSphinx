@@ -7,17 +7,18 @@ The idea here is to give you a two or three sentence explanation of a
 concept, and (possibly) a link to where you can find more
 information.
 
+.. glossary::
 
-amplifier, amp
 
-    Each CCD in the HSC camera is read-out through 4 separate
-    amplifiers (amps).  The pixel regions read through a given
-    amplifier are along the columns; thus each 2048 x 4096 CCD has
-    four 512 x 4096 amps.  Each amp behaves slightly differently
-    electronically, so each of the four CCD regions corresponding to
-    the amps has a slightly different gain, and non-linearity.  The
-    :ref:`HSC camera layout <hsc_layout>` shows the locations of amp1 for
-    each CCD in the camera.
+    amplifier
+        Each CCD in the HSC camera is read-out through 4 separate
+        amplifiers (amps).  The pixel regions read through a given
+        amplifier are along the columns; thus each 2048 x 4096 CCD has
+        four 512 x 4096 amps.  Each amp behaves slightly differently
+        electronically, so each of the four CCD regions corresponding
+        to the amps has a slightly different gain, and non-linearity.
+        The :ref:`HSC camera layout <hsc_layout>` shows the locations
+        of amp1 for each CCD in the camera.
 
 
 aperture flux, aperture photometry
