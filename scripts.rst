@@ -4,10 +4,10 @@ Example Scripts
 ===============
 
 
-print_mags_from_butler.py
--------------------------
+.. toctree::
+   :maxdepth: 2
 
-.. _print_mags_from_butler:
+   scripts/ccdplot
+   scripts/print_mags_from_butler
+   
 
-.. literalinclude:: scripts/print_mags_from_butler.py
-   :language: python

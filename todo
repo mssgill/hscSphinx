@@ -1,13 +1,13 @@
 
-
--- one stacking example
+questions:
+  - differences between postISRCCD and calexp
+  - do users need a 'wcs', ... 'fcr' ?
+  - what are calibrated_src, _exp
+  - src vs icSrc
+  - srcMatch vs srcMatchFull
+  - deepCoadd_ vs stack_
 
 -- a.n.d. input format and example
-
--- examples of using butler
-
-
-
 
 
 ******* bugs
@@ -45,4 +45,20 @@
      - set PGPASSWORD
      - 
    -     
+   
+
+
+
+
+ccdplot.py
+----------
+
+The following demonstrates how to load a calexp exposure, extract the
+image and convert it to a numpy ndarray, and then create a png figure.
+
+.. _ccdplot:
+
+.. literalinclude:: scripts/ccdplot.py
+   :language: python
+
    

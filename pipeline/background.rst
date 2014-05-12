@@ -138,9 +138,59 @@ section)::
     $ setup -v astrometry_net_data sdss-dr8
 
     
+.. _back_eupsworks:    
+    
+How EUPS works
+^^^^^^^^^^^^^^
 
+The details of EUPS's implementation probably won't be of interest to
+you as a user.  However, you may notice certain things about your
+shell environment have changed when EUPS is enabled.  Some of your
+most important environment variables will have been changed, and many
+new ones will appear.
+
+When you run a command, your shell (probably ``/bin/bash``), will
+check your ``$PATH`` variable to look for executable commands.  EUPS
+allows you to have multiple versions of a program installed by
+specifying the path for the desired version in your ``PATH`` variable.
+When you tell EUPS to ``setup foo 2.1.0``, EUPS will look-up where the
+``foo`` package version 2.1.0 is installed, and add the corresponding
+``foo/2.1.0/bin/`` directory to your ``PATH``.  It will also make sure
+that any other versions of ``foo`` aren't simultaneously present in
+your ``PATH``.  So, you should be able to work on two different code
+versions in two different shells, and everything will be fine.
+
+However, because there are several different modules in the pipeline
+(about 90), EUPS will be adding a lot to your ``PATH`` variable.
+Similarly, you can expect both ``LD_LIBRARY_PATH``, and ``PYTHONPATH``
+to be much more extensive than you're likely to have seen before.
+
+.. warning::
+
+    If you suspect that one of your PATH variables has been corrupted,
+    don't attempt to fix it by editing manually and re-exporting the
+    variable.  Such efforts aren't likely to be successful, and you're
+    almost certainly better off to open a new shell and re-``setup``
+    the EUPS package your interested in.
+
+In addition to manipulating your existing environment variables, EUPS
+will also create new variables for each module it manages.  The only
+one you're likely to encounter has the form ``$PACKAGE_DIR``, where
+PACKAGE is the name of an EUPS-managed package.  These ``*_DIR``
+variables refer to the directories where the corresponding code is
+installed.  You'll rarely, if ever, need to use them, but
+occassionally you may need to know where a specific package lives.
+Examples include ``AFW_DIR`` (where the application framework code
+lives), and ``OBS_SUBARU_DIR`` (where the Subaru-specific software
+lives).
+
+.. warning::
+
+    You must never (never never) try to edit any of the files you find
+    in a ``*_DIR`` directory.  These files are installed code.
+
+    
 .. _back_torque:
-
 
 PBS/TORQUE
 ----------
@@ -408,3 +458,33 @@ both).
   in a text file, one per line, and use ``--configfile filename`` (or
   just ``-C filename``) to load the parameters.
 
+
+.. _back_policy:  
+  
+Policy (.paf) Files
+^^^^^^^^^^^^^^^^^^^
+
+You won't likely encounter policy files, but there mentioned here just
+in case you happen to find one.  'Policy' was the predecessor of
+'Config', and they were used to store configuration parameters.  The
+files have suffix ``.paf``, and are plain ascii text.  They are quite
+easy to read, and contain heirarchical structures of data.  For
+example, an excerpt from the camera characterization shows information
+about the first amplifier in CCD 0 (the other amps aren't shown)::
+
+    Ccd: {
+        name: "1_53"
+        ptype: "default"
+        serial: 0
+        Amp: {
+            index: 0 0
+            gain: 3.5118
+            readNoise: 1.56
+            saturationLevel: 52000.0
+        }
+        <snip>
+    }
+
+However, the policy files are being phased out for the most part, and
+eventually they'll disappear completely.  But, for now, they still
+exist in a few places.
