@@ -85,22 +85,20 @@ information.
     
         
     CAS
-        See Catalog Archive Server
-    
     Catalog Archive Server
-        This term is inherited from SDSS and refers to the online database
-        system which is used by the community as one of the main ways to
-        obtain SDSS data.  The data available through this system are the
-        output measurements of the sources (right ascension, declination,
-        ugriz magnitudes, etc), but not the images (see :ref:`DAS
-        <gloss_das>` for that).
+        This term is inherited from SDSS and refers to the online
+        database system which is used by the community as one of the
+        main ways to obtain SDSS data.  The data available through
+        this system are the output measurements of the sources (right
+        ascension, declination, ugriz magnitudes, etc), but not the
+        images (see :term:`DAS` for that).
     
         .. todo:: perhaps a link here?
     
     ccd
         A charge-couple device, of course, but also used to refer to data
         from a CCD in a raw data image or in single-frame data products.
-        See also :ref:`DataId <gloss_dataid>`.
+        See also :term:`DataId`.
         
     cmodel
         todo
@@ -115,13 +113,11 @@ information.
     
         
     DAS
-        See Data Archive Server
-    
     Data Archive Server
         This term is inherited from the SDSS and refers to the online data
         repository where data products such as images can be obtained.
         The pipeline outputs (RA, Dec, magnitudes, etc) are provided by
-        the :ref:`CAS <gloss_cas>`.
+        the :term:`CAS`.
     
     
     dataId
@@ -201,7 +197,7 @@ information.
         'footprint'.  The pixels within the footprint are used for the
         measurement, the ones outside are not.
     
-    forced measurement (e.g. photometry)
+    forced measurement
         In our stacked images, we're able to detect faint sources which
         would be below our 5-sigma thresholds in any of the input images,
         or in the coadds from different filters.  However, once we know
@@ -221,8 +217,8 @@ information.
     
         ..todo:: We support this, but I don't know of anywhere where we're currently using it.
     
-        
-    Hirata-Seljac-Mandelbaum (HSM)
+    HSM
+    Hirata-Seljac-Mandelbaum
         This refers to a collection of shape measurement algorithms
         coded-up, bundled together, and made public by Chris Hirata,
         Eros Seljac, and Rachel Mandelbaum.  The package includes 'KSB'
@@ -231,7 +227,8 @@ information.
         (HSC_SHAPELET).  It is enabled by default in the HSC pipeline.
     
     Kron flux
-    
+        todo
+              
     .. todo:: write this.
     
     KSB
@@ -265,14 +262,13 @@ information.
         'sources'.
     
     patch
-        See :ref:`DataId <gloss_dataid>`.
+        See :term:`DataId`.
     
     
     peak
-        During :ref:`deblending <gloss_deblend>`, individual components
-        are identified in the parent source's :ref:`footprint
-        <gloss_footprint>`.  The highest pixel in each candidate child is
-        it's peak.
+        During :term:`deblending <deblend>`, individual components are
+        identified in the parent source's :term:`footprint`.  The
+        highest pixel in each candidate child is it's peak.
         
     
     Petrosian flux
@@ -284,18 +280,16 @@ information.
         The collection of data processing steps which run autonomously to
         take the raw input data and produce the final catalog output
         measurements.
-    
-    point spread function (PSF)
+        
+    PSF
+    point spread function
         The response function of an imaging system to a 'point source', or
         delta function.  This includes the atmosphere plus the telescope
         plus the camera.  The PSF is a function of position across the
         field of an image, and is also varies over time.
     
-        
-    PSF
-        See Point Spread Function
-        
-    PSF flux, PSF photometry
+    PSF flux
+    PSF photometry
         While aperture photometry measures the sum of the integrated flux
         within a synthetic aperture around a source; PSF photometry
         measures the *weighted* sum of the flux, where the weight function
@@ -322,12 +316,12 @@ information.
         data have been handled in a homogeneous way.
     
     
-    schema (w.r.t. database)
-        The schema of a database is its structure.  It refers to the coded
-        blueprint which describes how the data are to be stored with
-        respected to one another.  Which fields will appear in which
-        tables, and what types of data they will contain are described in a
-        database's schema.
+    schema
+        (w.r.t. database) The schema of a database is its structure.
+        It refers to the coded blueprint which describes how the data
+        are to be stored with respected to one another.  Which fields
+        will appear in which tables, and what types of data they will
+        contain are described in a database's schema.
     
         Note also, that the HSC database system uses PostgreSQL, and the
         term 'schema' has a specific meaning in the context of postgreSQL.
@@ -336,7 +330,7 @@ information.
     
         
     sensor
-        See :ref:`DataId <gloss_dataid>`.
+        See :term:`DataId`.
     
     
     sinc flux
@@ -355,12 +349,13 @@ information.
     SSP
         See Strategic Survey Proposal
     
-    stack (w.r.t. the data reduction pipeline)
-        A slang term for the complete set of software packages which make
-        up the pipeline code.
+    stack
+        (w.r.t. the data reduction pipeline) A slang term for the
+        complete set of software packages which make up the pipeline
+        code.
         
-    stack (w.r.t. image coaddition)
-        A synonym for coadd.
+    stack
+        (w.r.t. image coaddition) A synonym for coadd.
     
     Strategic Survey Proposal (SSP)
         todo
@@ -373,7 +368,7 @@ information.
         software class called a 'Task'.
     
     tract    
-        See :ref:`DataId <gloss_dataid>`.
+        See :term:`DataId`.
     
     uber-calibration
         Uber-calibration was originally developed in SDSS to tie all
@@ -390,7 +385,7 @@ information.
     
     
     visit
-        See :ref:`DataId <gloss_dataid>`.
+        See :term:`DataId`.
     
     warp
         In order to produce a stack, the input images must all be
@@ -398,9 +393,7 @@ information.
         warping.
     
     WCS
-        See World Coordinate System
-    
-    World Coordinate System (WCS)
+    World Coordinate System
         todo
     
     wide survey
