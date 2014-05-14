@@ -247,11 +247,54 @@ information, and writing a PNG with matplotlib.
 Working with ds9
 ^^^^^^^^^^^^^^^^
 
+The HSC pipeline code is also able to use ds9 to display images.  Ds9
+is not included as a part of the pipeline software, so you'll have to
+install it separately.  Once that's done, you can display any of the
+image-based objects with the ``mtv()`` function::
 
+    exposure = butler.get("calexp", dataId)
+    ds9.mtv(exposure)
+
+The more information you give ``mtv``, the more will be displayed.  If
+display an Image, then only the image pixels will be shown.  However,
+if you use a MaskedImage or Exposure, then the mask planes will be
+show semi-transparently with different colors used to indicate
+different mask bits being set.  The mask colors are currently the
+following:
+
+=================  =============
+Mask Flag          Color
+=================  =============
+BAD                RED
+CR                 MAGENTA
+EDGE               YELLOW
+INTERPOLATED       GREEN
+SATURATED          GREEN
+DETECTED           BLUE
+DETECTED_NEGATIVE  CYAN
+SUSPECT            YELLOW
+=================  =============
+
+    
+The ``mtv()`` function supports additional parameters to configure
+which frame the exposure is displayed on, its title, the ds9 'scale'
+setting (grayscale), the zoom, and the mask transparency::
+
+    settings = {'scale':'zscale', 'zoom': 'to fit', 'mask' : 'transparency 60'}
+    ds9.mtv(exposure, frame=1, title="My Data", settings=settings)
+
+A full example demonstrating loading an image with the butler, and
+displaying to ds9 is included with the example scripts.  See
+:ref:`showInDs9 <showInDs9>`.
 
 
 Tables
 ------
+
+The current set of fields defined in a SourceCatalog are:
+
+.. include:: srccat_table.rst
+
 
 Special data types in Tables
 ----------------------------

@@ -4,6 +4,8 @@
 print_mags_from_butler.py
 -------------------------
 
+Download script :download:`print_mags_from_butler.py`.
+
 The following demonstrates how to load a
 
 .. _print_mags_from_butler:
