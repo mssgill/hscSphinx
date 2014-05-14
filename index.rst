@@ -28,11 +28,20 @@ Contents:
    camera
    
 
-.. These ones aren't currently shown
+Quick Links:
+   
+.. These are linked to, but aren't in any table of contents directly
+
+.. toctree::
+
+   prettySchema-sf
+   prettySchema-coadd
+   
+.. These ones aren't currently shown at all
    
 .. toctree::
    :hidden:
-      
+
    afw
    faq
    links

@@ -1,0 +1,159 @@
+====================================   ================================================================================
+Name                                   Doc                                                                             
+====================================   ================================================================================
+id                                     unique ID                                                                       
+coord                                  position in ra/dec                                                              
+parent                                 unique ID of parent source                                                      
+calib.detected                         Source was detected as an icSrc                                                 
+flags.negative                         set if source was detected as significantly negative                            
+deblend.nchild                         Number of children this object has (defaults to 0)                              
+deblend.deblended-as-psf               Deblender thought this source looked like a PSF                                 
+deblend.psf-center                     If deblended-as-psf, the PSF centroid                                           
+deblend.psf-flux                       If deblended-as-psf, the PSF flux                                               
+deblend.too-many-peaks                 Source had too many peaks; only the brightest were included                     
+deblend.parent-too-big                 Parent footprint covered too many pixels                                        
+deblend.failed                         Deblending failed on source                                                     
+deblend.skipped                        Deblender skipped this source                                                   
+deblend.ramped.template                This source was near an image edge and the deblender used                       
+deblend.patched.template               This source was near an image edge and the deblender used                       
+deblend.has.stray.flux                 This source was assigned some stray flux                                        
+flags.badcentroid                      the centroid algorithm used to feed centers to other algorithms failed          
+centroid.sdss                          SDSS-algorithm centroid measurement                                             
+centroid.sdss.err                      covariance matrix for centroid.sdss                                             
+centroid.sdss.flags                    set if the centroid.sdss measurement did not fully succeed                      
+centroid.naive                         unweighted 3x3 first moment centroid                                            
+centroid.naive.err                     covariance matrix for centroid.naive                                            
+centroid.naive.flags                   set if the centroid.naive measurement did not fully succeed                     
+flags.pixel.edge                       source is in region labeled EDGE                                                
+flags.pixel.interpolated.any           source''s footprint includes interpolated pixels                                
+flags.pixel.interpolated.center        source''s center is close to interpolated pixels                                
+flags.pixel.saturated.any              source''s footprint includes saturated pixels                                   
+flags.pixel.saturated.center           source''s center is close to saturated pixels                                   
+flags.pixel.cr.any                     source''s footprint includes suspected CR pixels                                
+flags.pixel.cr.center                  source''s center is close to suspected CR pixels                                
+flags.pixel.bad                        source is in region labeled BAD                                                 
+flags.pixel.suspect.any                source''s footprint includes suspect pixels                                     
+flags.pixel.suspect.center             source''s center is close to suspect pixels                                     
+shape.hsm.regauss.centroid             PSF-corrected shear using Hirata & Seljak (2003) ''regaussianization            
+shape.hsm.regauss.moments              PSF-corrected shear using Hirata & Seljak (2003) ''regaussianization            
+shape.hsm.regauss.psf                  PSF-corrected shear using Hirata & Seljak (2003) ''regaussianization            
+shape.hsm.regauss.e1                   PSF-corrected shear using Hirata & Seljak (2003) ''regaussianization            
+shape.hsm.regauss.e2                   PSF-corrected shear using Hirata & Seljak (2003) ''regaussianization            
+shape.hsm.regauss.err                  Uncertainty on e1 and e2 (assumed to be the same)                               
+shape.hsm.regauss.sigma                PSF-corrected shear using Hirata & Seljak (2003) ''regaussianization            
+shape.hsm.regauss.resolution           resolution factor (0=unresolved, 1=resolved)                                    
+shape.hsm.regauss.flags                set if measurement failed in any way                                            
+shape.sdss                             shape measured with SDSS adaptive moment algorithm                              
+shape.sdss.err                         covariance matrix for shape.sdss                                                
+shape.sdss.flags                       set if the shape.sdss measurement failed                                        
+shape.sdss.centroid                    centroid measured with SDSS adaptive moment shape algorithm                     
+shape.sdss.centroid.err                covariance matrix for shape.sdss.centroid                                       
+shape.sdss.centroid.flags              set if the shape.sdss.centroid measurement did not fully succeed                
+shape.sdss.flags.unweightedbad         even the unweighted moments were bad                                            
+shape.sdss.flags.unweighted            adaptive moments failed; fall back to unweighted moments                        
+shape.sdss.flags.shift                 centroid shifted while estimating adaptive moments                              
+shape.sdss.flags.maxiter               too many iterations for adaptive moments                                        
+shape.sdss.psf                         adaptive moments of the PSF model at the position of this object                
+shape.sdss.flags.psf                   failure in measuring PSF model shape                                            
+flux.aperture                          sum of pixels in apertures                                                      
+flux.aperture.err                      uncertainty for flux.aperture                                                   
+flux.aperture.nProfile                 pixels                                                                          
+flux.aperture.flags                    success flag for flux.aperture                                                  
+flux.gaussian                          linear fit to an elliptical Gaussian with shape parameters set by adaptive m ...
+flux.gaussian.err                      uncertainty for flux.gaussian                                                   
+flux.gaussian.flags                    set if the flux.gaussian measurement failed                                     
+flux.gaussian.psffactor                ''flux'' from applying the algorithm to the PSF model                           
+flux.gaussian.flags.psffactor          set if the algorithm could not be applied to the PSF model                      
+flux.kron                              Kron photometry: photometry with aperture set to some multiple of <radius>de ...
+flux.kron.err                          uncertainty for flux.kron                                                       
+flux.kron.flags                        set if the flux.kron measurement failed                                         
+flux.kron.psffactor                    ''flux'' from applying the algorithm to the PSF model                           
+flux.kron.flags.psffactor              set if the algorithm could not be applied to the PSF model                      
+flux.kron.radius                       Kron radius (sqrt(a*b))                                                         
+flux.kron.radiusForRadius              Radius used to estimate <radius> (sqrt(a*b))                                    
+flux.kron.flags.radius                 Bad Kron radius                                                                 
+flux.kron.flags.smallRadius            Measured Kron radius was smaller than that of the PSF                           
+flux.naive                             simple sum over pixels in a circular aperture                                   
+flux.naive.err                         uncertainty for flux.naive                                                      
+flux.naive.flags                       set if the flux.naive measurement failed                                        
+flux.psf                               flux measured by a fit to the PSF model                                         
+flux.psf.err                           uncertainty for flux.psf                                                        
+flux.psf.flags                         set if the flux.psf measurement failed                                          
+flux.psf.psffactor                     ''flux'' from applying the algorithm to the PSF model                           
+flux.psf.flags.psffactor               set if the algorithm could not be applied to the PSF model                      
+flux.sinc                              elliptical aperture photometry using sinc interpolation                         
+flux.sinc.err                          uncertainty for flux.sinc                                                       
+flux.sinc.flags                        set if the flux.sinc measurement failed                                         
+multishapelet.psf.inner                Gauss-Hermite coefficients of the inner expansion (see lsst.shapelet package ...
+multishapelet.psf.outer                Gauss-Hermite coefficients of the outer expansion (see lsst.shapelet package ...
+multishapelet.psf.ellipse              Ellipse corresponding to the inner expansion                                    
+multishapelet.psf.chisq                Reduced chi^2 of the final shapelet fit                                         
+multishapelet.psf.integral             Integral of the shapelet PSF model to infinite radius                           
+multishapelet.psf.flags                set if the multi-shapelet PSF fit was unsuccessful in any way                   
+multishapelet.psf.flags.maxiter        set if the optimizer ran into the maximum number of iterations limit            
+multishapelet.psf.flags.tinystep       set if the optimizer step or trust region got so small no progress could be  ...
+multishapelet.psf.flags.constraint.r   set if the best-fit radius was the minimum allowed by the constraint            
+multishapelet.psf.flags.constraint.q   set if the best-fit axis ratio (b/a) was the minimum allowed by the constrai ...
+cmodel.initial.flux                    flux from the initial fit                                                       
+cmodel.initial.flux.err                uncertainty for cmodel.initial.flux                                             
+cmodel.initial.flux.flags              set if the cmodel.initial.flux measurement failed                               
+cmodel.initial.psffactor               ''flux'' from applying the algorithm to the PSF model                           
+cmodel.initial.flags.psffactor         set if the algorithm could not be applied to the PSF model                      
+cmodel.initial.ellipse                 effective radius ellipse from the initial fit                                   
+cmodel.initial.objective               -ln(likelihood*prior) at best-fit point for the initial fit                     
+cmodel.initial.nonlinear               nonlinear parameters for the initial fit                                        
+cmodel.initial.fixed                   fixed parameters for the initial fit                                            
+cmodel.initial.flags.trSmall           the optimizer converged because the trust radius became too small; this is a ...
+cmodel.initial.flags.maxIter           the optimizer hit the maximum number of iterations and did not converge         
+cmodel.initial.flags.numericError      numerical underflow or overflow in model evaluation; usually this means the  ...
+cmodel.initial.nIter                   Number of total iterations in stage                                             
+cmodel.initial.time                    Time spent in stage                                                             
+cmodel.exp.flux                        flux from the exponential fit                                                   
+cmodel.exp.flux.err                    uncertainty for cmodel.exp.flux                                                 
+cmodel.exp.flux.flags                  set if the cmodel.exp.flux measurement failed                                   
+cmodel.exp.psffactor                   ''flux'' from applying the algorithm to the PSF model                           
+cmodel.exp.flags.psffactor             set if the algorithm could not be applied to the PSF model                      
+cmodel.exp.ellipse                     effective radius ellipse from the exponential fit                               
+cmodel.exp.objective                   -ln(likelihood*prior) at best-fit point for the exponential fit                 
+cmodel.exp.nonlinear                   nonlinear parameters for the exponential fit                                    
+cmodel.exp.fixed                       fixed parameters for the exponential fit                                        
+cmodel.exp.flags.trSmall               the optimizer converged because the trust radius became too small; this is a ...
+cmodel.exp.flags.maxIter               the optimizer hit the maximum number of iterations and did not converge         
+cmodel.exp.flags.numericError          numerical underflow or overflow in model evaluation; usually this means the  ...
+cmodel.exp.nIter                       Number of total iterations in stage                                             
+cmodel.exp.time                        Time spent in stage                                                             
+cmodel.dev.flux                        flux from the de Vaucouleur fit                                                 
+cmodel.dev.flux.err                    uncertainty for cmodel.dev.flux                                                 
+cmodel.dev.flux.flags                  set if the cmodel.dev.flux measurement failed                                   
+cmodel.dev.psffactor                   ''flux'' from applying the algorithm to the PSF model                           
+cmodel.dev.flags.psffactor             set if the algorithm could not be applied to the PSF model                      
+cmodel.dev.ellipse                     effective radius ellipse from the de Vaucouleur fit                             
+cmodel.dev.objective                   -ln(likelihood*prior) at best-fit point for the de Vaucouleur fit               
+cmodel.dev.nonlinear                   nonlinear parameters for the de Vaucouleur fit                                  
+cmodel.dev.fixed                       fixed parameters for the de Vaucouleur fit                                      
+cmodel.dev.flags.trSmall               the optimizer converged because the trust radius became too small; this is a ...
+cmodel.dev.flags.maxIter               the optimizer hit the maximum number of iterations and did not converge         
+cmodel.dev.flags.numericError          numerical underflow or overflow in model evaluation; usually this means the  ...
+cmodel.dev.nIter                       Number of total iterations in stage                                             
+cmodel.dev.time                        Time spent in stage                                                             
+cmodel.center                          center position used in CModel fit                                              
+cmodel.flux                            flux from the final cmodel fit                                                  
+cmodel.flux.err                        uncertainty for cmodel.flux                                                     
+cmodel.flux.flags                      set if the cmodel.flux measurement failed                                       
+cmodel.psffactor                       ''flux'' from applying the algorithm to the PSF model                           
+cmodel.flags.psffactor                 set if the algorithm could not be applied to the PSF model                      
+cmodel.fracDev                         fraction of flux in de Vaucouleur component                                     
+cmodel.objective                       -ln(likelihood) (chi^2) in cmodel fit                                           
+cmodel.flags.maxArea                   number of pixels in fit region exceeded the region.maxArea value (usually du ...
+cmodel.flags.maxBadPixelFraction       the fraction of bad/clipped pixels in the fit region exceeded region.maxBadP ...
+cmodel.flags.noShape                   the shape slot needed to initialize the parameters failed or was not defined    
+cmodel.flags.noPsf                     the multishapelet fit to the PSF model did not succeed                          
+cmodel.flags.noWcs                     input exposure has no world coordinate system information                       
+cmodel.flags.noCalib                   input exposure has no photometric calibration information                       
+correctfluxes.apcorr                   correction applied to model fluxes to match to 7.000000-pixel aperture          
+correctfluxes.apcorr.flags             flag set if aperture correction failed                                          
+classification.extendedness            probability of being extended                                                   
+detect.is-patch-inner                  true if source is in the inner region of a coadd patch                          
+detect.is-tract-inner                  true if source is in the inner region of a coadd tract                          
+detect.is-primary                      true if source has no children and is in the inner region of a coadd patch a ...
+====================================   ================================================================================

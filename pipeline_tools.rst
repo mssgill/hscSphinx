@@ -237,15 +237,93 @@ comfortable with that format.  In addition to the image data, the
 associated metadata is also present in an object called a
 ``PropertySet``.  The following example demonstrates loading a
 'calexp' with the butler and extracting both the image and metadata
-information, and writing a PNG with matplotlib.
+information, and writing a PNG with matplotlib.  This would be used on
+single-frame data (i.e. visit,ccd), while the 'deepCoadd_calexp'
+butler target would be used for coadd data.
 
 
 .. literalinclude:: scripts/ccdplot.py
    :language: python
 
     
+SourceCatalogs
+--------------
+
+The output catalogs produced by the pipeline are stored in the form of
+``SourceCatalogs``.  The ``SourceCatalog`` is an in-house data type
+designed specifically for pipeline catalogs.  SourceCatalogs can be
+thought of as tables with each rows containing an entry for a source,
+and each column containing the values of a measurement for all
+sources.  They can be obtained from the butler by requesting the 'src'
+target (single-frame outputs) or 'deepCoadd_src' (coadd outputs)::
+
+    sources = butler.get("src", dataId)
+    
+Values can be extracted by row and sometimes by column, depending on the type of the value.
+
+* For values which are simple types (float, int, etc), you can obtain
+   a ``numpy.ndarray`` containing **all** values of a measurement by
+   calling ``sources.get('thing')`` , where 'thing' is a text label
+   for the type of data you want, e.g. 'flux.aperture',
+   'flux.aperture.err'.  These can be thought of as the columns of the
+   SourceCatalog.  You can then use these in vector operations just as
+   you would any ``numpy.ndarray``.  However, for more complicated
+   types (e.g. 'coord'), ``SourceCatalog`` cannot be sliced along
+   columns in this way.
+
+* You can access individual sources by index (e.g. ``s = source[i]``),
+   or by iterating in a loop (e.g. ``for src in sources``).  This will
+   return a ``SourceRecord``, which is the entry containing all
+   measurements made on a single source in the catalog.
+
+This short example demonstrates both of these.  It get the number of
+sources in the catalog for a dataId, and also the PSF flux as an
+``ndarray``.  It then iterates through the sources, printing the PSF
+flux and also extracting and printing 'classification.extendedness'
+which is used for star-galaxy separation::
+
+
+    # get a SourceCatalog from the butler
+    sources = butler.get("src", dataId)
+
+    # get the number of sources and an ndarray of PSF fluxes
+    n = len(sources)
+    psfFlux    = sources.get("flux.psf")
+
+    # iterate over the sources, and also get 'extendedness' from each SourceRecord
+    for i, src in enumerate(sources):
+        print i, psfFlux[i], src.get("classification.extendedness")
+
+        
+Full listings for the current set of ``SourceCatalog`` fields are
+shown for :ref:`Single-frame Schema <prettyschema_sf>`, and
+:ref:`Coadd Schema <prettyschema_coadd>`.  Once you have a
+SourceCatalog object, you can display a similar listing by directly
+printing the ``schema`` member attribute::
+
+    sources = butler.get("src", dataId)
+    print sources.schema
+
+
+
+Special data types in Tables
+----------------------------
+
+Moment
+^^^^^^
+
+Coord
+^^^^^
+
+Angle
+^^^^^
+
+
 Working with ds9
-^^^^^^^^^^^^^^^^
+----------------
+
+Displaying Images
+^^^^^^^^^^^^^^^^^
 
 The HSC pipeline code is also able to use ds9 to display images.  Ds9
 is not included as a part of the pipeline software, so you'll have to
@@ -286,24 +364,3 @@ setting (grayscale), the zoom, and the mask transparency::
 A full example demonstrating loading an image with the butler, and
 displaying to ds9 is included with the example scripts.  See
 :ref:`showInDs9 <showInDs9>`.
-
-
-Tables
-------
-
-The current set of fields defined in a SourceCatalog are:
-
-.. include:: srccat_table.rst
-
-
-Special data types in Tables
-----------------------------
-
-Moment
-^^^^^^
-
-Coord
-^^^^^
-
-Angle
-^^^^^
