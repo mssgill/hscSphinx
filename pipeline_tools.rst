@@ -306,8 +306,11 @@ printing the ``schema`` member attribute::
 
 
 
-Special data types in Tables
-----------------------------
+Special data types in SourceRecords
+-----------------------------------
+
+
+
 
 Moment
 ^^^^^^

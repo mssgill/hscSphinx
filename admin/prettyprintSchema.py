@@ -20,25 +20,34 @@ def main(rootDir, visit, ccd, coadd):
     lines =  str(src.schema).split("\n")
 
     nCharName = 36
-    nCharDoc  = 80
+    nCharType = 11
+    nCharDoc  = 69
 
-    fmt   = "%-"+str(nCharName) + "s   %-"+str(nCharDoc)+"s\n"
-    hline = fmt % ("="*nCharName, "="*nCharDoc)
+    fmt   = "%-"+str(nCharName) + "s  %-"+str(nCharType) + "s  %-"+str(nCharDoc)+"s\n"
+    hline = fmt % ("="*nCharName, "="*nCharType, "="*nCharDoc)
 
+    lookup = {
+        "D": "Double",
+        "L": "Long",
+        "F": "Float",
+        "I": "Int",
+        }
     out = ""
     out += hline
-    out += fmt % ("Name", "Doc")
+    out += fmt % ("Name", "Type", "Doc")
     out += hline
     for line in lines:
-        m = re.match(r'.*name\=\"(.+?)\", doc\=\"(.+?)\"', line)
+        m = re.match(r'.*Field\[\'(.+?)\'\].*name\=\"(.+?)\", doc\=\"(.+?)\"', line)
         if not m:
             continue
-        name, doc = m.groups()
+        typ, name, doc = m.groups()
         if len(doc) > nCharDoc - 4:
             doc = doc[0:nCharDoc-4] + " ..."
-        out += fmt % (name, doc)
+        typ = lookup.get(typ, typ)
+        out += fmt % (name, typ, doc)
     out += hline
 
+    print out
     with open("prettySchema-"+label+".txt", 'w') as fp:
         fp.write(out)
     

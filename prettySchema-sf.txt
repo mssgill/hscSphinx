@@ -1,87 +1,87 @@
-====================================   ================================================================================
-Name                                   Doc                                                                             
-====================================   ================================================================================
-id                                     unique ID                                                                       
-coord                                  position in ra/dec                                                              
-parent                                 unique ID of parent source                                                      
-calib.detected                         Source was detected as an icSrc                                                 
-calib.psf.candidate                    Flag set if the source was a candidate for PSF determination, as determined  ...
-calib.psf.used                         Flag set if the source was actually used for PSF determination, as determine ...
-flags.negative                         set if source was detected as significantly negative                            
-deblend.nchild                         Number of children this object has (defaults to 0)                              
-deblend.deblended-as-psf               Deblender thought this source looked like a PSF                                 
-deblend.psf-center                     If deblended-as-psf, the PSF centroid                                           
-deblend.psf-flux                       If deblended-as-psf, the PSF flux                                               
-deblend.too-many-peaks                 Source had too many peaks; only the brightest were included                     
-deblend.parent-too-big                 Parent footprint covered too many pixels                                        
-deblend.failed                         Deblending failed on source                                                     
-deblend.skipped                        Deblender skipped this source                                                   
-deblend.ramped.template                This source was near an image edge and the deblender used                       
-deblend.patched.template               This source was near an image edge and the deblender used                       
-deblend.has.stray.flux                 This source was assigned some stray flux                                        
-flags.badcentroid                      the centroid algorithm used to feed centers to other algorithms failed          
-centroid.sdss                          SDSS-algorithm centroid measurement                                             
-centroid.sdss.err                      covariance matrix for centroid.sdss                                             
-centroid.sdss.flags                    set if the centroid.sdss measurement did not fully succeed                      
-centroid.naive                         unweighted 3x3 first moment centroid                                            
-centroid.naive.err                     covariance matrix for centroid.naive                                            
-centroid.naive.flags                   set if the centroid.naive measurement did not fully succeed                     
-flags.pixel.edge                       source is in region labeled EDGE                                                
-flags.pixel.interpolated.any           source''s footprint includes interpolated pixels                                
-flags.pixel.interpolated.center        source''s center is close to interpolated pixels                                
-flags.pixel.saturated.any              source''s footprint includes saturated pixels                                   
-flags.pixel.saturated.center           source''s center is close to saturated pixels                                   
-flags.pixel.cr.any                     source''s footprint includes suspected CR pixels                                
-flags.pixel.cr.center                  source''s center is close to suspected CR pixels                                
-flags.pixel.bad                        source is in region labeled BAD                                                 
-flags.pixel.suspect.any                source''s footprint includes suspect pixels                                     
-flags.pixel.suspect.center             source''s center is close to suspect pixels                                     
-shape.sdss                             shape measured with SDSS adaptive moment algorithm                              
-shape.sdss.err                         covariance matrix for shape.sdss                                                
-shape.sdss.flags                       set if the shape.sdss measurement failed                                        
-shape.sdss.centroid                    centroid measured with SDSS adaptive moment shape algorithm                     
-shape.sdss.centroid.err                covariance matrix for shape.sdss.centroid                                       
-shape.sdss.centroid.flags              set if the shape.sdss.centroid measurement did not fully succeed                
-shape.sdss.flags.unweightedbad         even the unweighted moments were bad                                            
-shape.sdss.flags.unweighted            adaptive moments failed; fall back to unweighted moments                        
-shape.sdss.flags.shift                 centroid shifted while estimating adaptive moments                              
-shape.sdss.flags.maxiter               too many iterations for adaptive moments                                        
-shape.sdss.psf                         adaptive moments of the PSF model at the position of this object                
-shape.sdss.flags.psf                   failure in measuring PSF model shape                                            
-flux.aperture                          sum of pixels in apertures                                                      
-flux.aperture.err                      uncertainty for flux.aperture                                                   
-flux.aperture.nProfile                 pixels                                                                          
-flux.aperture.flags                    success flag for flux.aperture                                                  
-flux.gaussian                          linear fit to an elliptical Gaussian with shape parameters set by adaptive m ...
-flux.gaussian.err                      uncertainty for flux.gaussian                                                   
-flux.gaussian.flags                    set if the flux.gaussian measurement failed                                     
-flux.gaussian.psffactor                ''flux'' from applying the algorithm to the PSF model                           
-flux.gaussian.flags.psffactor          set if the algorithm could not be applied to the PSF model                      
-flux.kron                              Kron photometry: photometry with aperture set to some multiple of <radius>de ...
-flux.kron.err                          uncertainty for flux.kron                                                       
-flux.kron.flags                        set if the flux.kron measurement failed                                         
-flux.kron.psffactor                    ''flux'' from applying the algorithm to the PSF model                           
-flux.kron.flags.psffactor              set if the algorithm could not be applied to the PSF model                      
-flux.kron.radius                       Kron radius (sqrt(a*b))                                                         
-flux.kron.radiusForRadius              Radius used to estimate <radius> (sqrt(a*b))                                    
-flux.kron.flags.radius                 Bad Kron radius                                                                 
-flux.kron.flags.smallRadius            Measured Kron radius was smaller than that of the PSF                           
-flux.naive                             simple sum over pixels in a circular aperture                                   
-flux.naive.err                         uncertainty for flux.naive                                                      
-flux.naive.flags                       set if the flux.naive measurement failed                                        
-flux.psf                               flux measured by a fit to the PSF model                                         
-flux.psf.err                           uncertainty for flux.psf                                                        
-flux.psf.flags                         set if the flux.psf measurement failed                                          
-flux.psf.psffactor                     ''flux'' from applying the algorithm to the PSF model                           
-flux.psf.flags.psffactor               set if the algorithm could not be applied to the PSF model                      
-flux.sinc                              elliptical aperture photometry using sinc interpolation                         
-flux.sinc.err                          uncertainty for flux.sinc                                                       
-flux.sinc.flags                        set if the flux.sinc measurement failed                                         
-correctfluxes.apcorr                   correction applied to model fluxes to match to 7.000000-pixel aperture          
-correctfluxes.apcorr.flags             flag set if aperture correction failed                                          
-focalplane                             Focal plane position                                                            
-jacobian                               Jacobian correction                                                             
-classification.extendedness            probability of being extended                                                   
-classification.exposure.photometric    set if source was used in photometric calibration                               
-classification.photometric             set if source was used in photometric calibration                               
-====================================   ================================================================================
+====================================  ===========  =====================================================================
+Name                                  Type         Doc                                                                  
+====================================  ===========  =====================================================================
+id                                    Long         unique ID                                                            
+coord                                 Coord        position in ra/dec                                                   
+parent                                Long         unique ID of parent source                                           
+calib.detected                        Flag         Source was detected as an icSrc                                      
+calib.psf.candidate                   Flag         Flag set if the source was a candidate for PSF determination, as  ...
+calib.psf.used                        Flag         Flag set if the source was actually used for PSF determination, a ...
+flags.negative                        Flag         set if source was detected as significantly negative                 
+deblend.nchild                        Int          Number of children this object has (defaults to 0)                   
+deblend.deblended-as-psf              Flag         Deblender thought this source looked like a PSF                      
+deblend.psf-center                    PointD       If deblended-as-psf, the PSF centroid                                
+deblend.psf-flux                      Double       If deblended-as-psf, the PSF flux                                    
+deblend.too-many-peaks                Flag         Source had too many peaks; only the brightest were included          
+deblend.parent-too-big                Flag         Parent footprint covered too many pixels                             
+deblend.failed                        Flag         Deblending failed on source                                          
+deblend.skipped                       Flag         Deblender skipped this source                                        
+deblend.ramped.template               Flag         This source was near an image edge and the deblender used            
+deblend.patched.template              Flag         This source was near an image edge and the deblender used            
+deblend.has.stray.flux                Flag         This source was assigned some stray flux                             
+flags.badcentroid                     Flag         the centroid algorithm used to feed centers to other algorithms f ...
+centroid.sdss                         PointD       SDSS-algorithm centroid measurement                                  
+centroid.sdss.err                     CovPointF    covariance matrix for centroid.sdss                                  
+centroid.sdss.flags                   Flag         set if the centroid.sdss measurement did not fully succeed           
+centroid.naive                        PointD       unweighted 3x3 first moment centroid                                 
+centroid.naive.err                    CovPointF    covariance matrix for centroid.naive                                 
+centroid.naive.flags                  Flag         set if the centroid.naive measurement did not fully succeed          
+flags.pixel.edge                      Flag         source is in region labeled EDGE                                     
+flags.pixel.interpolated.any          Flag         source''s footprint includes interpolated pixels                     
+flags.pixel.interpolated.center       Flag         source''s center is close to interpolated pixels                     
+flags.pixel.saturated.any             Flag         source''s footprint includes saturated pixels                        
+flags.pixel.saturated.center          Flag         source''s center is close to saturated pixels                        
+flags.pixel.cr.any                    Flag         source''s footprint includes suspected CR pixels                     
+flags.pixel.cr.center                 Flag         source''s center is close to suspected CR pixels                     
+flags.pixel.bad                       Flag         source is in region labeled BAD                                      
+flags.pixel.suspect.any               Flag         source''s footprint includes suspect pixels                          
+flags.pixel.suspect.center            Flag         source''s center is close to suspect pixels                          
+shape.sdss                            MomentsD     shape measured with SDSS adaptive moment algorithm                   
+shape.sdss.err                        CovMomentsF  covariance matrix for shape.sdss                                     
+shape.sdss.flags                      Flag         set if the shape.sdss measurement failed                             
+shape.sdss.centroid                   PointD       centroid measured with SDSS adaptive moment shape algorithm          
+shape.sdss.centroid.err               CovPointF    covariance matrix for shape.sdss.centroid                            
+shape.sdss.centroid.flags             Flag         set if the shape.sdss.centroid measurement did not fully succeed     
+shape.sdss.flags.unweightedbad        Flag         even the unweighted moments were bad                                 
+shape.sdss.flags.unweighted           Flag         adaptive moments failed; fall back to unweighted moments             
+shape.sdss.flags.shift                Flag         centroid shifted while estimating adaptive moments                   
+shape.sdss.flags.maxiter              Flag         too many iterations for adaptive moments                             
+shape.sdss.psf                        MomentsD     adaptive moments of the PSF model at the position of this object     
+shape.sdss.flags.psf                  Flag         failure in measuring PSF model shape                                 
+flux.aperture                         ArrayD       sum of pixels in apertures                                           
+flux.aperture.err                     ArrayD       uncertainty for flux.aperture                                        
+flux.aperture.nProfile                Int          pixels                                                               
+flux.aperture.flags                   Flag         success flag for flux.aperture                                       
+flux.gaussian                         Double       linear fit to an elliptical Gaussian with shape parameters set by ...
+flux.gaussian.err                     Double       uncertainty for flux.gaussian                                        
+flux.gaussian.flags                   Flag         set if the flux.gaussian measurement failed                          
+flux.gaussian.psffactor               Float        ''flux'' from applying the algorithm to the PSF model                
+flux.gaussian.flags.psffactor         Flag         set if the algorithm could not be applied to the PSF model           
+flux.kron                             Double       Kron photometry: photometry with aperture set to some multiple of ...
+flux.kron.err                         Double       uncertainty for flux.kron                                            
+flux.kron.flags                       Flag         set if the flux.kron measurement failed                              
+flux.kron.psffactor                   Float        ''flux'' from applying the algorithm to the PSF model                
+flux.kron.flags.psffactor             Flag         set if the algorithm could not be applied to the PSF model           
+flux.kron.radius                      Float        Kron radius (sqrt(a*b))                                              
+flux.kron.radiusForRadius             Float        Radius used to estimate <radius> (sqrt(a*b))                         
+flux.kron.flags.radius                Flag         Bad Kron radius                                                      
+flux.kron.flags.smallRadius           Flag         Measured Kron radius was smaller than that of the PSF                
+flux.naive                            Double       simple sum over pixels in a circular aperture                        
+flux.naive.err                        Double       uncertainty for flux.naive                                           
+flux.naive.flags                      Flag         set if the flux.naive measurement failed                             
+flux.psf                              Double       flux measured by a fit to the PSF model                              
+flux.psf.err                          Double       uncertainty for flux.psf                                             
+flux.psf.flags                        Flag         set if the flux.psf measurement failed                               
+flux.psf.psffactor                    Float        ''flux'' from applying the algorithm to the PSF model                
+flux.psf.flags.psffactor              Flag         set if the algorithm could not be applied to the PSF model           
+flux.sinc                             Double       elliptical aperture photometry using sinc interpolation              
+flux.sinc.err                         Double       uncertainty for flux.sinc                                            
+flux.sinc.flags                       Flag         set if the flux.sinc measurement failed                              
+correctfluxes.apcorr                  Float        correction applied to model fluxes to match to 7.000000-pixel ape ...
+correctfluxes.apcorr.flags            Flag         flag set if aperture correction failed                               
+focalplane                            PointF       Focal plane position                                                 
+jacobian                              Double       Jacobian correction                                                  
+classification.extendedness           Double       probability of being extended                                        
+classification.exposure.photometric   Flag         set if source was used in photometric calibration                    
+classification.photometric            Flag         set if source was used in photometric calibration                    
+====================================  ===========  =====================================================================
