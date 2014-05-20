@@ -309,14 +309,26 @@ printing the ``schema`` member attribute::
 Special data types in SourceRecords
 -----------------------------------
 
+SourceCatalogs contain a number of non-standard data types.
 
+Coord and Angle
+^^^^^^^^^^^^^^^
+
+``Coord`` is used to store any type of celestial coordinate.  The
+things it contains (R.A. and Dec, and transformed versions of them)
+are angles and are themselves contained in a special data type
+``Angle``.  Coord types include ICRS, FK5, Galactic, and Ecliptic.
+Currently, ICRS and FK5 are actually the same thing.  Angles can be
+accessed in any common angular format: degrees, radians, arcminutes,
+and arcseconds.  The following demonstrates the basic usage
+
+.. literalinclude:: scripts/print_coord.py
+   :language: python
 
 
 Moment
 ^^^^^^
 
-Coord
-^^^^^
 
 Angle
 ^^^^^
