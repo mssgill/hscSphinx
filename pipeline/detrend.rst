@@ -3,7 +3,9 @@
          
    <style> .red {color:red} </style>
 
-   
+
+.. _detrend:
+      
 ===================================================
 Making Detrends (biases, flats, darks, and fringes)
 ===================================================

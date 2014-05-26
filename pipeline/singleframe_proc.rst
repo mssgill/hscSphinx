@@ -16,6 +16,7 @@ the identifiers are such things as ``visit``, ``ccd``, ``field``,
 
 As always, full usage statements can be found with ``--help`` or ``-h``
 
+.. _reduceframes:
 
 reduceFrames.py
 ---------------
@@ -28,19 +29,18 @@ For full details see :ref:`TORQUE <back_torque>`
 
 ::
    
-   $ reduceFrames.py /data/Subaru/HSC --rerun cosmos_test --queue small \
-      --job cosmos --nodes 2 --procs 12 \
-      --id field=COSMOS filter=HSC-I dateObs=2016-02-02
+   $ reduceFrames.py /data/Subaru/HSC --rerun cosmos --queue small --job cosmos --nodes 2 --procs 12 --id field=COSMOS filter=HSC-I dateObs=2016-02-02
 
 * ``/data/Subaru/HSC``      Location of the data
-* ``--rerun cosmos_test``   The rerun where all outputs will be written.
+* ``--rerun cosmos``        The rerun where all outputs will be written.
 * ``--id``                  Your dataId.  In this case, COSMOS data, in the HSC-I filter, taken Feb 2, 2016.
 * ``--queue default``       Name of the PBS torque queue
 * ``--job cosmos``          Name the PBS job will have while running (``qstat`` will show this name)
 * ``--nodes 2``             Run on 2 nodes of the cluster
 * ``--procs 12``            Run 12 processes on each node
 
-  
+.. _hscprocessccd:
+
 hscProcessCcd.py
 ----------------
   
@@ -65,21 +65,20 @@ that you should override these parameters in your run.
    root.measurement.slots.modelFlux='flux.gaussian'
 
    # specify the config file with -C, and pass in another override on the command line with --config
-   $ hscProcessCcd.py /data/Subaru/HSC --rerun test --id visit=1252 ccd=50 \
-      --clobber-config -C tmp.config --config isr.doFringe=False
+   $ hscProcessCcd.py /data/Subaru/HSC --rerun cosmos --id visit=1000 ccd=50 --clobber-config -C tmp.config --config isr.doFringe=False
 
-
-mosaic.py
-^^^^^^^^^
-
-Once the single-frame processing is completed, you can perform an
-'ubercal' with mosaic.py.  This will solve for an improved astrometric
-and photometric solution for a collection of visits.
-
-**Example 1**
-
-::
    
-    $ mosaic.py /data/Subaru/HSC/rerun/mydata --mosaicid field=MYDATA filter=HSC-I
+* ``/data/Subaru/HSC``            Location of the data
+* ``--rerun cosmos``              The rerun where all inputs are read, and outputs will be written.
+* ``--id``                        Your dataId.  In this case, visit 1000, ccd 50.
+* ``-C tmp.config``               Specify a file containing config parameters to override (shown above as tmp.config)
+* ``--config isr.doFringe=False`` Pass in a config parameter on the command line. Here, this disables fringe correction, which is only necessary in HSC-Y.
+* ``--clobber-config``            Needed if you've changed a config parameter since the last processing in this rerun.
 
-      
+.. warning::
+
+    --clobber-config is only needed if you change a config parameter
+      or an eups package which is setup while processing within a
+      given rerun.  Once used, the data should be assumed to be
+      inhomogeneous.
+

@@ -13,6 +13,8 @@ performed in a sequence of steps:
 
 #. Make a **SkyMap** (the coordinate system used for coadd images)
 
+#. **mosaic**: Performs an Uber-calibration
+
 #. **Warp**: Resample the images from the observed WCS to the SkyMap coordinates.
 
 #. **Assemble the coadd**: Statistically combine the warped images.
@@ -20,10 +22,12 @@ performed in a sequence of steps:
 #. **Process** the coadd images (detect, measure, etc) to produce a catalog.
 
 
-Each step is described below.  However, most of the steps
-(except SkyMap) can be run in a single process called ``stack.py``
-(also described below).  
+Each step is described below.  However, ``warp``, ``assemble``, and
+``process`` can be run in a single script called ``stack.py`` (also
+described below).
 
+
+.. _skymap:
 
 Making a SkyMap
 ---------------
@@ -45,7 +49,7 @@ Full SkyMap
 
 To create a full SkyMap (again, not likely what you want), do the following::
    
-    $ makeSkyMap.py /data/Subaru/HSC/ --rerun=myrerun
+    $ makeSkyMap.py /data/Subaru/HSC/ --rerun=cosmos
 
     
 Partial SkyMap
@@ -67,18 +71,38 @@ your data live in.
 
 ::
 
-    $ makeDiscreteSkyMap.py /data/Subaru/HSC/ --rerun=myrerun --id visit=1000..1020:2
+    $ makeDiscreteSkyMap.py /data/Subaru/HSC/ --rerun=cosmos --id visit=1000..1020:2
 
 
-    
+.. _mosaic:    
+
+mosaic.py
+^^^^^^^^^
+
+Once the single-frame processing is completed and you have a SkyMap,
+you can perform an 'ubercal' with mosaic.py.  This will solve for an
+improved astrometric and photometric solution for a collection of
+visits.  In the ``--id``, you must specify the tract in addition to
+the identifiers for your data (i.e. visit, field, filter, etc.).  If
+you constructed a partial SkyMap, the tract will be 0.  It's also
+useful to specify ccd=0..103.  CCDs 104 to 111 exist but are not used
+for science data (4 auto-guide plus 8 auto-focus), and should not be
+included.
+
+::
+   
+    $ mosaic.py /data/Subaru/HSC/ --rerun=cosmos --id tract=0 visit=1000..1020:2 ccd=0..103
+
+
+.. _stack:    
+
 Coadd Processing with One Command
 ---------------------------------
 
 If you just want to produce a coadd and run the pipeline on the
 coadded image, then ``stack.py`` is the command you should use::
 
-    $ stack.py /data/Subaru/HSC/ --rerun=myrerun --id tract=0 \
-          --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
+    $ stack.py /data/Subaru/HSC/ --rerun=cosmos --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
     
 
 In the example, the input visits are specified with ``--selectId``
@@ -111,6 +135,7 @@ with ``assembleCoadd.py`` to produce the 'coadd' or 'stack'.
 The final part of coadd processing is to run detection and measurement
 with ``hscProcessCoadd.py``.
 
+.. _warp:
           
 Warping
 ^^^^^^^
@@ -118,15 +143,14 @@ Warping
 The first step is to warp your images to the SkyMap coordinate system
 (Tracts and Patches).  This is done with makeCoaddTempExp.py::
 
-    $ makeCoaddTempExp.py /data/Subaru/HSC --rerun mydata \
-        --id tract=9000 patch=1,1 filter=HSC-Y \
-        --selectId visit=1000^1002 ccd=0..103
+    $ makeCoaddTempExp.py /data/Subaru/HSC --rerun cosmos --id tract=9000 patch=1,1 filter=HSC-Y --selectId visit=1000^1002 ccd=0..103
 
 There are now two ``id`` settings required.  ``--id`` refers to the
 Tract and Patch that you wish to create, while ``--selectId`` refers
 to the *input* visits, CCDs, etc. that you wish warp to the specified
 tract and patch.
 
+.. _assemblecoadd:
 
 Coadding
 ^^^^^^^^
@@ -138,15 +162,15 @@ and ``--selectId`` (the input visits,CCDs).  These should probably be
 set to be the same as the settings you used for
 ``makeCoaddTempExp.py``::
 
-    $ assembleCoadd.py /data/Subaru/HSC --rerun mydata \
-        --id tract=9000 patch=1,1 filter=HSC-Y \
-        --selectId visit=1000^1002 ccd=0..103
+    $ assembleCoadd.py /data/Subaru/HSC --rerun cosmos --id tract=9000 patch=1,1 filter=HSC-Y --selectId visit=1000^1002 ccd=0..103
 
 .. todo::
 
     Add examples for how to override useful parameters for different
     types of stacks.
-        
+
+    
+.. _processcoadd:
         
 Coadd Processing (i.e. detection, measurement)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -157,8 +181,7 @@ process ``hscProcessCoadd.py`` is used.  This example will process the
 same Tract,Patch which has been constructed above with
 ``assembleCoadd.py``::
     
-    $ hscProcessCoadd.py /data/Subaru/HSC --rerun mydata \
-        --id tract=9000 patch=1,1 filter=HSC-Y
+    $ hscProcessCoadd.py /data/Subaru/HSC --rerun cosmos --id tract=9000 patch=1,1 filter=HSC-Y
 
 
     

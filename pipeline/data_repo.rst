@@ -16,6 +16,8 @@ mind that the data repo is intended to be written-to and read-from
 only by the pipeline tools.
 
 
+.. _ingest:
+
 Creating a Data Repo and Ingesting Data
 ---------------------------------------
 
@@ -40,10 +42,11 @@ You'll now see a newly created data repository in /data/Subaru/HSC/.
 In addtion to the `_mapper` file you just created, it also contains a
 directory tree named according the OBJECT entry in the FITS header
 (M87 here), the DATE-OBS, the pointing, and the filter name.  The FITS
-symlink itself has a name slightly different from the original raw data
-file.  The format is HSC-VVVVVVV-CCC.fits, where V is a seven digit
-'visit' number, and 'C' is a 3 digit CCD number.  Lastly, there's a
-sqlite database called the 'registry'.
+symlink itself has a name slightly different from the original raw
+data file.  The format is HSC-VVVVVVV-CCC.fits, where V is a seven
+digit 'visit' number, and 'C' is a 3 digit CCD number.  Lastly,
+there's a sqlite database called the 'registry'.
+
 
 Here's what it looks like with a single files ingested::
 
@@ -57,8 +60,54 @@ Here's what it looks like with a single files ingested::
     |-- _mapper
     `-- registry.sqlite3
 
-    
 
+
+.. _registryinfo:
+
+Registry Information
+^^^^^^^^^^^^^^^^^^^^
+
+The registry file contains one entry for every file ingested, and it
+is possible to query it with the ``registryInfo.py`` command.  Many
+stages of pipeline processing require you to use visit numbers
+(i.e. frameID) to specify the input data, and ``registryInfo.py``
+makes it straightforward to find out various details about the
+ingested files::
+
+    # get a listing of all COSMOS data taken in filter HSC-I
+    $ registryInfo.py /data/Subaru/HSC/registry.sqlite3 --field COSMOS --filter HSC-I
+    
+    filter  field                   dataObs expTime pointing  visit nCCD
+    HSC-I   COSMOS               2015-01-20   240.0     0001   1234  112
+    ...
+    
+To avoid having to type the path to the registry file, you can specify
+the data repository directory in the SUPRIME_DATA_DIR environment
+variable::
+
+    $ export SUPRIME_DATA_DIR=/data/Subaru/HSC
+
+    # now registryInfo.py can find the registry.sqlite3 file on its own
+    $ registryInfo.py --field COSMOS --filter HSC-I
+    
+    filter  field                   dataObs expTime pointing  visit nCCD
+    HSC-I   COSMOS               2015-01-20   240.0     0001   1234  112
+    ...
+    
+On systems where the ``suprime_data`` EUPS package exists, the
+SUPRIME_DATA_DIR is best setup with ``setup suprime_data``.  The
+manager of the system should have configured that package to point to
+the most up-to-date data set.  If multiple versions of
+``suprime_data`` are present (check ``eups list suprime_data``), the
+version names should indicate which data they contain::
+
+    $ setup suprime_data
+    $ registryInfo.py --visit 1234
+    
+    filter  field                   dataObs expTime pointing  visit nCCD
+    HSC-I   COSMOS               2015-01-20   240.0     0001   1234  112
+
+    
 The Structure of a Rerun Directory
 ----------------------------------
 

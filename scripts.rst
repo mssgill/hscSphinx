@@ -3,6 +3,8 @@
 Example Scripts
 ===============
 
+日本語
+
 
 .. toctree::
    :maxdepth: 2
