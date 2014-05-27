@@ -203,22 +203,6 @@ pipeline, there are only a handful of commands you'll need to concern
 yourself with, mainly checking the status of your job, and possibly
 cancelling it.  An example of each is shown below.
 
-On your first attempt to connect to a cluster node, you won't have the
-compute node listed in your .ssh/known_hosts, and the connection
-attempt will query you (you've seen this when making any ssh
-connection for the first time).  However, this user-query will cause a
-submitted job to fail as the batch system can't answer 'yes' on your
-behalf.  The easiest way to deal with this is to override the host
-checking for the hosts on the cluster.  On this example cluster, the
-compute nodes are all called analysisXX, so adding the following lines
-to your ~/.ssh/config will disable host checking only for cluster
-nodes::
-
-    $ cat ~/.ssh/config
-    Host an*
-        StrictHostKeyChecking no
-
-
 There may be various 'queues' defined on a Torque system, with each
 having different levels of access to resources (i.e. the max number of
 nodes you can request that your job gets to run on).  The `qstat -Q`
@@ -271,6 +255,7 @@ Here are the most popular options used with `qstat`::
     $ qstat -f job_id   list full information about job_id
     $ qstat -Qf queue   list full information about queue
     $ qstat -B          list summary status of the job server
+    $ qstat -n          list the nodes that the job is running on
     
     
 qdel
