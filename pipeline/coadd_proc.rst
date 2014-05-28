@@ -74,7 +74,28 @@ your data live in.
     $ makeDiscreteSkyMap.py /data/Subaru/HSC/ --rerun=cosmos --id visit=1000..1020:2
 
 
-.. _mosaic:    
+Making a Custom SkyMap
+^^^^^^^^^^^^^^^^^^^^^^
+
+If you have a particular need for your coadds to have a specific WCS,
+you can also customize the SkyMap to have a given pixel scale and
+tangent point.  This is done by specifying config parameters to
+``makeSkyMap.py`` as follows::
+
+    $ cat overrides.config
+    root.skyMap = "discrete"
+    root.skyMap["discrete"].raList = [149.9]
+    root.skyMap["discrete"].decList = [2.3]
+    root.skyMap["discrete"].radiusList = [0.35]
+    root.skyMap["discrete"].pixelScale = 0.2
+    root.skyMap["discrete"].projection = "TAN"
+    root.skyMap["discrete"].tractOverlap = 0
+
+    $ makeSkyMap.py /data/Subaru/HSC --rerun=cosmos --configfile overrides.config
+
+.. warning:: untested.
+
+.. _mosaic:
 
 mosaic.py
 ^^^^^^^^^
