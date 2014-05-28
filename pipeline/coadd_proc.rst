@@ -74,6 +74,15 @@ your data live in.
     $ makeDiscreteSkyMap.py /data/Subaru/HSC/ --rerun=cosmos --id visit=1000..1020:2
 
 
+One of the example scripts (:ref:`showVisitSkyMap.py
+<showvisitskymap>`) can be used to display a set of visits on a
+SkyMap.  Here it was used to display two visits superimposed on a
+discrete (partial) SkyMap.  Only the patches overlapped by the visits
+are shown.  Each patch is labeled.
+
+.. image:: ../images/showVisitSkyMap.png
+
+
 Making a Custom SkyMap
 ^^^^^^^^^^^^^^^^^^^^^^
 
