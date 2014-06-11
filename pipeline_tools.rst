@@ -294,7 +294,28 @@ which is used for star-galaxy separation::
     for i, src in enumerate(sources):
         print i, psfFlux[i], src.get("classification.extendedness")
 
-        
+
+Most users will want magnitudes instead of fluxes, and will need a
+zeropoint.  An overall zeropoint for a CCD is available in the ``calexp_md``
+butler target::
+
+    metadata  = butler.get("calexp_md", dataId)
+    zeropoint = 2.5*numpy.log10(metadata.get("FLUXMAG0"))
+
+However, uber-calibrated (pixel coord specific) zeropoints are also
+available, provided ``mosaic.py`` has been run.  The mosaic correction
+can be applied as::
+
+    fcr_md     = butler.get("fcr_md", dataId)
+    ffp        = measMosaic.FluxFitParams(fcr_md)
+    x, y       = sources.getX(), sources.getY()
+    correction = numpy.array([ffp.eval(x[i],y[i]) for i in range(n)])
+    zeropoint  = 2.5*numpy.log10(fcr_md.get("FLUXMAG0")) + correction
+
+This example shows how to obtain and print calibrated photometry:
+
+.. literalinclude:: scripts/print_mags_from_butler.py
+    
 Full listings for the current set of ``SourceCatalog`` fields are
 shown for :ref:`Single-frame Schema <prettyschema_sf>`, and
 :ref:`Coadd Schema <prettyschema_coadd>`.  Once you have a
@@ -303,8 +324,7 @@ printing the ``schema`` member attribute::
 
     sources = butler.get("src", dataId)
     print sources.schema
-
-
+    
 
 Special data types in SourceRecords
 -----------------------------------
@@ -329,9 +349,11 @@ and arcseconds.  The following demonstrates the basic usage
 Moment
 ^^^^^^
 
+Adaptive moments are also handled in special data types,
+``Quadrulpole``, and ``Axes``.  The following example shows the basic
+usage
 
-Angle
-^^^^^
+.. literalinclude:: scripts/print_moment.py
 
 
 Working with ds9
@@ -376,6 +398,25 @@ setting (grayscale), the zoom, and the mask transparency::
     settings = {'scale':'zscale', 'zoom': 'to fit', 'mask' : 'transparency 60'}
     ds9.mtv(exposure, frame=1, title="My Data", settings=settings)
 
+    
+The ds9 module also supports plotting points on a figure with the ``dot()`` function::
+
+
+    sources = butler.get('src', dataId)
+    with ds9.Buffering():
+        for source in sources:
+            symbol = "o"
+            ds9.dot(symbol, source.getX(), source.getY(), ctype=ds9.RED, size=5, frame=1, silent=True)
+
+            
+Available symbols include '+', 'o', '*', and 'x'.  If you wish show an
+ellipse for each point, this is done by changing the symbol to
+"@:Ixx,Ixy,Iyy".  The ``symbol`` in the example would then be written
+as::
+
+    symbol = "@:{ixx},{ixy},{iyy}".format(ixx=source.getIxx(),ixy=source.getIxy(), iyy=source.getIyy())
+
+    
 A full example demonstrating loading an image with the butler, and
 displaying to ds9 is included with the example scripts.  See
 :ref:`showInDs9 <showInDs9>`.
