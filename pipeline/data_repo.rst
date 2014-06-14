@@ -61,6 +61,16 @@ Here's what it looks like with a single files ingested::
     `-- registry.sqlite3
 
 
+The ingest step does two things: (1) copy (or symlink) the files into
+the repo, and (2) make an entry in the registry database.  If you have
+files which are already in place, and you just want to make an entry
+into the registry database, use ``--mode=skip``.  Here's an example
+registering ``M31`` data which is already in place in the repo.  (a
+real example where the 2013-03-21/ directory was a symlink to use data
+stored in another data repo::
+
+    # register data which is already in place
+    $ hscIngestImages.py /data/Subaru/HSC/ --mode=skip /data/Subaru/HSC/M31/2013-03-21/00100/HSC-I/HSC-*fits
 
 .. _registryinfo:
 
