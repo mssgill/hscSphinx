@@ -418,7 +418,9 @@ A variety of things about the pipeline are configurable through either
 command-line arguements, or as settings in configuration parameter
 files.  At last count, there were approximately 1 bazillion
 configuration parameters.  The overwhelming majority of them are
-things that you'll never even need to be aware of, much less modify.
+things that you'll never even need to be aware of, much less
+modify.  E.g. :ref:`default config parameters for
+reduceFrames.py <reduceframes_config_defaults>`.
 
 Configuration parameters have a hierarchical form, with each parameter
 belonging to a specific pipeline module called a 'Task', and each
@@ -443,7 +445,7 @@ both).
   in a text file, one per line, and use ``--configfile filename`` (or
   just ``-C filename``) to load the parameters.
 
-
+  
 .. _back_policy:  
   
 Policy (.paf) Files

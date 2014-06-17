@@ -17,4 +17,3 @@ Pipeline
 
    pipeline/quick
 
-              

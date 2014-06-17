@@ -36,6 +36,7 @@ Quick Links:
 
    prettySchema-sf
    prettySchema-coadd
+   pipeline/reduceFrames.config
    
 .. These ones aren't currently shown at all
    
