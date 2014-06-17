@@ -419,8 +419,8 @@ command-line arguements, or as settings in configuration parameter
 files.  At last count, there were approximately 1 bazillion
 configuration parameters.  The overwhelming majority of them are
 things that you'll never even need to be aware of, much less
-modify.  E.g. :ref:`default config parameters for
-reduceFrames.py <reduceframes_config_defaults>`.
+modify.  E.g. default config parameters for
+:ref:`reduceFrames.py <reduceframes_config_defaults>` and :ref:`stack.py <stack_config_defaults>`.
 
 Configuration parameters have a hierarchical form, with each parameter
 belonging to a specific pipeline module called a 'Task', and each
