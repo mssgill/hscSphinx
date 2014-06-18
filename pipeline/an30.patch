@@ -1,0 +1,11 @@
+--- /Users/price/Software/astrometry.net-0.30/blind/Makefile	2010-06-28 13:42:51.000000000 -0400
++++ blind-Makefile	2012-06-21 11:08:20.000000000 -0400
+@@ -200,7 +200,7 @@
+ 	 cp $$x $(INSTALL_DIR)/bin; \
+ 	done
+ 	mkdir -p $(INSTALL_DIR)/etc
+-	sed "s+add_path /usr/local/astrometry/+add_path $(INSTALL_DIR)/+" < ../etc/backend.cfg-dist > $(INSTALL_DIR)/etc/backend.cfg
++	sed "s#add_path /usr/local/astrometry/#add_path $(INSTALL_DIR)/#" < ../etc/backend.cfg-dist > $(INSTALL_DIR)/etc/backend.cfg
+ 	@for x in $(INSTALL_H); do \
+ 	 echo cp $$x $(INSTALL_DIR)/include; \
+ 	 cp $$x $(INSTALL_DIR)/include; \
