@@ -26,6 +26,7 @@ Contents:
    scripts
    glossary
    camera
+   machine-specific
    
 
 Quick Links:
