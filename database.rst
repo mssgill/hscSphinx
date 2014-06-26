@@ -11,7 +11,7 @@ schema, etc) to get going is posted just below the table of contents.
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
 
    database/postgres
    database/queries
