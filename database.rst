@@ -15,7 +15,7 @@ schema, etc) to get going is posted just below the table of contents.
 
    database/postgres
    database/queries
-   
+   database/cloning
 
 DB connection info::
 

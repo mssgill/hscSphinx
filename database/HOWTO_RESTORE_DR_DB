@@ -1,0 +1,112 @@
+How to restore database dump to PostgreSQL on your site
+
+                                       2014.06.18  Tadafumi Takata (NAOJ)
+
+This is the document for the user who want to have HSC SSP early data release(EDR) 
+database contents on their own machine. 
+As metadata and catalogs of HSC SSP data release are stored and managed with PostgreSQL, 
+a free relational database server software, we've prepared the dump file of EDR. 
+
+
+0. Prerequisites
+
+   As we are using PostgreSQL as our DBMS for producing 
+
+  (1) Please install and run PostgreSQL server on your machine.
+      Version 9.3.4 or later one is strongly recommended. 
+
+     Please read carefully the installation docoments attached with source distribution. 
+     (It is not so difficult for installing from the source)
+
+     You can get the source from http://www.postgresql.org/ 
+     (http://www.postgresql.jp/ for Japanese)
+
+     It is also OK to use binary distribution. 
+
+  (2) You need about 505 GB for storing EDR S14A_0 database on your machine. 
+      Please prepare devices like HDD or so with sufficient capacity for the 
+      database table space. 
+
+1. Preparation for the database table restoration
+
+  (1) As we need several users for using the EDR database, you should do create users 
+      in your PostgreSQL server. 
+
+      By using 'psql' command on your terminal you can access to database. 
+      As database user 'postgres' is the superuser of the database, you should access as 
+      'postgres'. 
+
+      % psql -U postgres -d postgres -h your_hostname 
+         (If you are running PostgreSQL server in remote host, -h option is essential.)
+
+      You should create 3 users ('hscana', 'touroku', 'kensaku')on your database server.  
+   
+      User Name            Priviledge
+     -------------------+--------------------------------------------------------------------
+      hscana              owner of all tables in EDR database (can drop tables, schemas etc)
+      kensaku             only select is allowed 
+      touroku             select, insert and update are allowed 
+     -------------------+--------------------------------------------------------------------
+
+     On 'psql' session, you should run the following commands for creating users. 
+
+      psql> create user hscana with password 'something you want to set';
+      psql> alter role hscana with createdb, createrole;
+      psql> create user kensaku with password 'something you want to set';
+      psql> create user touroku with password 'something you want to set';
+
+     You can exit from 'psql' session by running '\q' command. 
+
+  (2) Confirm the accessibility to your database by the user 'hscana'
+
+      % psql -U hscana -d postgres -h your_hostname
+ 
+      If the command failed, you should try to re-create user 'hscana'. 
+
+  (3) Create your database instance. 
+
+      % createdb -U hscana -h your_hostname database_name 
+       If you want to create database instance 'dr_early' on the host 'takoyaki', 
+       the command should be 'createdb -U hscana -h takoyaki dr_early'.
+
+2. Download the dump file
+
+   The dump files of PostgreSQL can be downloaded from the site. 
+
+     https://hscdata.mtk.nao.ac.jp:4443/hsc_ssp/dr_early/DB_dump/
+
+   There are 2 dump files, one for COSMOS and another for GAMA fields. 
+
+     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140623.dmp.gz   (~100GB)
+     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140623.dmp.gz    (~160GB)
+
+3. Restore the dump file into your database instance. 
+
+   Unzip the dump files by using gunzip. 
+
+   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140623.dmp' and   
+   'pgdump_ssp_s14a0_wide_20140523a_20140623.dmp'. 
+
+   You can restore these dump into your database by the following command. 
+
+   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140623.dmp  
+   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_wide_20140523a_20140623.dmp  
+
+   It will take for a while......
+
+  The following command hopefully will work also. 
+  (gunzip -c /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140623.dmp.gz |  psql -U hscana -d dr_early -h your_hostname) 
+
+4. Check the accessibility to your restored tables. 
+
+   % psql -U kensaku -d dr_early -h your_hostname
+
+   psql> select count(*) from ssp_s14a0_wide_20140523a.frame;
+
+   If the count 10399 returned, it is OK. 
+
+   Enjoy the HSC SSP database world !!
+
+User document for searching the data you want to have is in the file 'HOWTO_USE_DR_DB'. 
+        (Not provided yet...)
+
