@@ -17,6 +17,8 @@ schema, etc) to get going is posted just below the table of contents.
    database/queries
    database/cloning
 
+See also the NAOJ online `Schema Browser <https://hscdata.mtk.nao.ac.jp:4443/schema_browser/hsc/hsc_online_schema_tableonly.html>`_.
+
 DB connection info::
 
    # This will not often change
