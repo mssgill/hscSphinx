@@ -54,7 +54,7 @@ Table Name                  FITS Data      Description
 **frame_icsourcelist**      ICSRC          Bright SourceCatalog for each reduced CCD 
 **frame_matchlist**         ML             Match list for each reduced CCD 
 **frame_forcelist**         FORCEDSRC      Forced photometry Catalog for each reduced CCD 
-**calibfarme_sourcelist**   CALSRC         Mosaic calibrated SourceCatalog for each reduced CCD 
+**calibframe_sourcelist**   CALSRC         Mosaic calibrated SourceCatalog for each reduced CCD 
 **mosaic_sourcelist**       src            SourceCatalog for each coadd image
 **mosaic_icsourcelist**     icSrc          Bright SourceCatalog for coadd image
 **mosaic_matchlist**        srcMatchFull   Match list for each coadd image
