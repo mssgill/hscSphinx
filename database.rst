@@ -14,6 +14,7 @@ schema, etc) to get going is posted just below the table of contents.
    :maxdepth: 3
 
    database/postgres
+   database/tables
    database/queries
    database/cloning
 
