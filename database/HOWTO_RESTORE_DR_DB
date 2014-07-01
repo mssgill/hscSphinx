@@ -1,6 +1,7 @@
 How to restore database dump to PostgreSQL on your site
 
                                        2014.06.18  Tadafumi Takata (NAOJ)
+				       2014.07.01  Updated
 
 This is the document for the user who want to have HSC SSP early data release(EDR) 
 database contents on their own machine. 
@@ -77,15 +78,15 @@ a free relational database server software, we've prepared the dump file of EDR.
 
    There are 2 dump files, one for COSMOS and another for GAMA fields. 
 
-     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140623.dmp.gz   (~100GB)
-     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140623.dmp.gz    (~160GB)
+     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140630.dmp.gz   (~93.6GB)
+     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140630.dmp.gz    (~160GB)
 
 3. Restore the dump file into your database instance. 
 
    Unzip the dump files by using gunzip. 
 
-   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140623.dmp' and   
-   'pgdump_ssp_s14a0_wide_20140523a_20140623.dmp'. 
+   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140630.dmp' and   
+   'pgdump_ssp_s14a0_wide_20140523a_20140630.dmp'. 
 
    You can restore these dump into your database by the following command. 
 
