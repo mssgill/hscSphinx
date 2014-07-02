@@ -132,8 +132,8 @@ CCD images taken under good seeing conditions can be considered and coadd images
 different from 'deepCoadd' based one. So 'mos_rerun' (meaning mosaic rerun) is considered to separate the relating table names. 
 It is also essential to consider different source catalog tables based on different reference filter coadd images (i-band 
 selected and r-band selected, for example), and we define 'cat_rerun'(meaning catalog rerun) for specifying the 
-database tables. Therefore, the full name of the tables will be **schema_name.mosaic???__(mos_rerun)__(cat_rerun)**, 
-however (mos_rerun) and/or (cat_rerun) will be 
+database tables. Therefore, the full name of the tables will be **schema_name.table_root_name__(mos_rerun)__(cat_rerun)**, 
+although (mos_rerun) and/or (cat_rerun) will be omitted if unnecessary. 
 For example, the name of '**mosaic_forcelist**' table in S14A0 release for UDEEP, based on 'deepCoadd' mosaicking and i-band 
 selected is '**ssp_s14a0_udeep_20140523a.mosaic_forcelist__deepcoadd__iselect**'. The name is currently so long and we 
 strongly recommend to use alias for these tables to get shorter names, as described in the following section.   
