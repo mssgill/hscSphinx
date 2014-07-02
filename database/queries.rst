@@ -28,5 +28,14 @@ Download :download:`example2.sql`
 .. literalinclude:: example2.sql
    :language: sql
 
+Example 3
+^^^^^^^^^
+
+Download :download:`example3.sql`
+
+.. literalinclude:: example3.sql
+   :language: sql
+
+
 
 

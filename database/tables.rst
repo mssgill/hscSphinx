@@ -35,10 +35,10 @@ Table Name     FITS Data   Description                                     Mng  
 Each table will be accompanied by 'mng' table, in which some information 
 for file management (file path, proposal IDs, data transfer dates etc.). 
 For 'frame' table, management table is named as 'frame_mng'. 
-'frame', 'calibframe', 'warped' and 'mosaic' tables are also accompanied 
+'**frame**', '**calibframe**', '**warped**' and '**mosaic**' tables are also accompanied 
 by 'hpx11' tables, which are the list of HEALPix order 11 indeces for 
-covering the sky area of corresponding images. For 'frame' table, 
-this type table is named as 'frame_hpx11'. 
+covering the sky area of corresponding images. For '**frame**' table, 
+this type table is named as '**frame_hpx11**'. 
 Those tables are assumend to be used for searching the place of FITS data on 
 file systems based on various meta information like covering sky area, seeing 
 and transparency (zero point per second, for example), and more basics like 
@@ -138,6 +138,23 @@ For example, the name of '**mosaic_forcelist**' table in S14A0 release for UDEEP
 selected is '**ssp_s14a0_udeep_20140523a.mosaic_forcelist__deepcoadd__iselect**'. The name is currently so long and we 
 strongly recommend to use alias for these tables to get shorter names, as described in the following section.   
 
+Views for flags of coadd measurements on each filter 
+-----------------------------------------------------
+By selecting the all records from **mosaic_forceflag** table on each filter, the views '**mosaic_forceflag_filter** 
+are defined. The current list of views are as follows, on S14A0 release. 
+
+========================== ======================================== ===== ====
+View Name                  Description                              UDEEP WIDE
+========================== ======================================== ===== ====
+mosaic_forceflag_g         g-band flags for coadd forced measurents   O    
+mosaic_forceflag_r         r-band flags for coadd forced measurents   O
+mosaic_forceflag_i         i-band flags for coadd forced measurents   O    O
+mosaic_forceflag_z         z-band flags for coadd forced measurents   O
+mosaic_forceflag_y         y-band flags for coadd forced measurents   O    O
+========================== ======================================== ===== ====
+
+These views are assumed to be used for selecting objects in the coadd summary table (**photoobj_mosaic**) by 
+using some flags of each band measurements.  
 
 How to 'join' the tables for your queries
 --------------------------------
@@ -152,8 +169,8 @@ For the purpose, it is reasonable to use 'join' in the relational database,
 like PostgreSQL, we are using for the HSC SSP database. 
 Here are some examples specific for the tables in HSC SSP database. 
 Please see the :ref:`HSC Query Examples <database_queries>` section for more examples. 
-There are several ways to enable the 'join' in SQL of PostgreSQL, and here we show only 
-limited numbers of samples.  
+There are several ways to enable the 'join' in SQL of PostgreSQL, and only limited 
+numbers of samples are shown here.   
 
 
 Searching objects measured in CCD images
@@ -216,7 +233,7 @@ with good centroid measurement in i-band image and i-band psf magnitude brighter
 	pm.imag_psf, pm.imag_psf_err, pm.zmag_psf, pm.zmag_psf_err,  pm.ymag_psf, pm.ymag_psf_err
    FROM
         ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm,  -- alias pm for 'photoobj_mosaic' table
-        ssp_s14a0_udeep_20140523a.mosaic_forceflag__deepcoadd__iselect mff  -- alias mff for 'mosaic_forceflag' table
+        ssp_s14a0_udeep_20140523a.mosaic_forceflag_i__deepcoadd__iselect mff  -- alias mff for 'mosaic_forceflag_i' view 
    WHERE
             pm.tract = mff.tract and pm.patch = mff.patch                              -- joining pm with mff 
             and pm.pointing = mff.pointing and pm.id = mff.id                          -- joining pm with mff
@@ -224,6 +241,5 @@ with good centroid measurement in i-band image and i-band psf magnitude brighter
 
 '**photoobj_mosaic**' and '**mosaic_forceflag**' tables have the common primary keys (tract, patch, pointing, id), then 
 use these columns for joining them. 'tract' and 'patch' will be eliminated from primary keys in the future. 
-
 
 
