@@ -79,7 +79,7 @@ a free relational database server software, we've prepared the dump file of EDR.
    There are 2 dump files, one for COSMOS and another for GAMA fields. 
 
      (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140630.dmp.gz   (~93.6GB)
-     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140630.dmp.gz    (~160GB)
+     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140630.dmp.gz    (~196GB)
 
 3. Restore the dump file into your database instance. 
 
