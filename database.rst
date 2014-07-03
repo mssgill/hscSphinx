@@ -15,6 +15,7 @@ schema, etc) to get going is posted just below the table of contents.
 
    database/postgres
    database/tables
+   database/stored_function
    database/queries
    database/schema_browsing
    database/cloning
