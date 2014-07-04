@@ -3,8 +3,8 @@
 ================
 Stored Functions
 ================
-For making user's search more convenient, the stored functions are prepared 
-for use. Additional to standard aggregate and other types of functions which 
+For making user's search more convenient, the stored functions (in other relational database, may be called 
+Stored Procedure) are prepared for use. Additional to standard aggregate and other types of functions which 
 are `originally implemented in PostgreSQL server <http://www.postgresql.org/docs/9.3/static/functions-aggregate.html>`_, 
 some user defined functions are available on NAOJ HSC database server for HSC SSP data. 
 More functions are planned to be added in near future, for example, coordinate string converter to degrees 
@@ -117,6 +117,16 @@ example of f_getobj_circle(ra, dec, radius, table_name)::
       
       SELECT * from f_getobj_circle(150.403189, 1.485288, 2.0, 'ssp_s14a0_udeep_20140523a.frame_forcelist__deepcoadd__iselect');
   
+      -- get object's id, ra, dec, sinc magnitudes of g,r,i,z,y bands and distance from the central coordinates specified. 
+      -- the cone search is for objects within 3 arcsec from the coordinate (RA,DEC)=(150.403189,1.485288). 
+      -- Joining the query result of cone search with photoobj_mosaic table.  
+      -- distance in arcsec  
+
+      SELECT pm.id, pm.ra2000, pm.decl2000, pm.gmag_sinc, pm.rmag_sinc, pm.imag_sinc, pm.zmag_sinc, pm.ymag_sinc, obj.distance 
+      FROM f_getobj_circle(150.93, 1.93, 3.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect') obj, 
+           ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm 
+      WHERE obj.id=pm.id and obj.tract=pm.tract and obj.patch=pm.patch and obj.pointing = pm.pointing 
+      ORDER by obj.distance;
 
 example of f_getobj_rectangle(ra, dec, delta_ra, delta_dec, table_name)::
 
@@ -125,4 +135,42 @@ example of f_getobj_rectangle(ra, dec, delta_ra, delta_dec, table_name)::
       -- RA and DEC are in degrees.  
 
       SELECT * from f_getobj_rectangle(150.403189, 1.485288, 2.0, 2.0, 'ssp_s14a0_udeep_20140523a.frame_forcelist__deepcoadd__iselect');
+
       
+Setting Stored Functions in your own Database
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If you want to run the stored functions in your own database servers, you should 
+do install and set-up the functions. 
+All functions described in this document available in the latest **hscDb** package 
+(version later than 2014.07.04), under 'python/hsc/hscDb/pgfunctions' directories. 
+
+For C and C++ functions, you should run Makefile first, then do make install as 
+root user, then run 'create extension [function_name]' in psql command. ::
+
+     # For example on qmedian 
+     
+     % cd pgfunctions/c/qmedian
+     % make 
+     % su <-- switch to root user
+     % make install
+
+     % /usr/local/pgsql/bin/psql -U hscana -d dr_early -h your_db_host
+
+     psql> create extension qmedian;
+
+Please see README file in each package directory. 
+
+For PL/pgSQL functions, you should run all SQL scripts under the plpgsql directory.::
+
+     % /usr/local/pgsql/bin/psql -U hscana -d dr_early -h your_db_host -f f_arcsec2radian.sql 
+     % /usr/local/pgsql/bin/psql -U hscana -d dr_early -h your_db_host -f ......
+     % ..........................
+
+**Caution** 
+
+As the stored functions are set up to each database instance, you should run 'create extension' 
+or 'create function' command when you newly create the database instance with 'create database' 
+or createdb command. 
+
+You can see the set-up functions by using '**\df**' command on psql prompt. 
+
