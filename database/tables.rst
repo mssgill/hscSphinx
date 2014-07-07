@@ -19,6 +19,10 @@ The following list shows the tables for HSC database.
 
 Table for image meta data
 -------------------------
+The most contents of these tables are coming from FITS header of each corresponding 
+data. They are information on FITS format, date-obs, filter name, exposure time, WCS 
+keywords, seeing, magnitude zero point and so on, which are used for constraints on 
+searching the user's necessary FITS data from database.  
 
 ============== =========== ============================================== ====== =====
 Table Name     FITS Data   Description                                     Mng   HPX11
@@ -46,6 +50,11 @@ filter names, observational dates and so on.
 
 Table for catalog data (as of 2014.07.01)
 ----------------------
+Our basic concept of producing catalog database is to extract all columns' values of FITS BINTABLE file and 
+store them into the database columns with the same names. It is for avoiding the confusion caused by the 
+shortened column names. There are some expansion of arrays in FITS data into seperate database columns, for 
+example, on sky coordinates. The flags stored as bits in FITS data will be expanded to each boolean column 
+in database in current implementation.   
 
 =========================== ============== ====================================================== ===== =====
 Table Name                  FITS Data      Description                                            Photo Coord
@@ -58,8 +67,8 @@ Table Name                  FITS Data      Description                          
 **mosaic_sourcelist**       src            SourceCatalog for each coadd image                       O     X
 **mosaic_icsourcelist**     icSrc          Bright SourceCatalog for coadd image                     O     X
 **mosaic_matchlist**        srcMatchFull   Match list for each coadd image                          O     X
-**mosaic_forcelist**        forced         Forced photometry object Catalog for each coadd image    O     X
-**mosaic_forceflag**                       All flags accompanied to each measurement on coadd 
+**mosaic_forcelist**        forced_src     Forced photometry object Catalog for each coadd image    O     X
+**mosaic_forceflag**        (forced_src)   All flags accompanied to each measurement on coadd 
 
 **photoobj_mosaic**                        Summary table for coadd forced sources
 **photoobj_frame**                         Summary table for reduced CCD forced sources
