@@ -52,12 +52,12 @@ Aggregate Functions
    * - skewness
      - double precision
      - same as argument data type
-     - the skewness of all input values: κ,,3,,/κ,,2,,^3/2^ where κ,,i,, denotes the unbiased i-th cumulant
+     - the skewness of all input values: κ\ :sub:`3`\ /κ\ :sub:`2`\ :sup:`3/2` where κ\ :sub:`i` denotes the unbiased i-th cumulant
 
    * - kurtosis
      - double precision
      - same as argument data type
-     - the kurtosis of all input values: κ,,4,,/κ,,2,,^2^ where κ,,i,, denotes the unbiased i-th cumulant
+     - the kurtosis of all input values: κ\ :sub:`4`\ /κ\ :sub:`2`\ :sup:`2` where κ\ :sub:`i` denotes the unbiased i-th cumulant
 
 example of qmedian::
 
@@ -91,16 +91,16 @@ example of mean, variance & stddev::
       -- and the standard deviation of flux_cmodel that are not NaN
       -- in the UDEEP CCD frame table
 
-      SELECT mean(mag_sinc_err, '>', 0), variance(mag_gaussian, '!=', 99.99), stddev(flux_cmodel, '==', flux_cmodel)
+      SELECT mean(mag_sinc_err, '>', 0), variance(mag_gaussian, '<', 99.99), stddev(flux_cmodel, '==', flux_cmodel)
         FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect
         WHERE tract=0;
 
 example of skewness & kurtosis::
 
       -- calculate the skewness of mag_sinc that are valid,
-      -- and the kurtosis of mag_sinc that are valid
+      -- and the kurtosis of mag_gaussian that are valid
 
-      SELECT skewness(mag_sinc, '>', 0), kurtosis(mag_sinc, '>', 0),
+      SELECT skewness(mag_sinc, '<', 99.99), kurtosis(mag_gaussian, '<', 99,99),
         FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect
         WHERE tract=0;
 
