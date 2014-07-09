@@ -3,64 +3,64 @@
 ================
 Stored Functions
 ================
-For making user's search more convenient, the stored functions (in other relational database, may be called 
-Stored Procedure) are prepared for use. Additional to standard aggregate and other types of functions which 
-are `originally implemented in PostgreSQL server <http://www.postgresql.org/docs/9.3/static/functions-aggregate.html>`_, 
-some user defined functions are available on NAOJ HSC database server for HSC SSP data. 
-More functions are planned to be added in near future, for example, coordinate string converter to degrees 
-(hh:mm:ss.s,+/-dd:mm:ss.s -> degrees), and magnitude to/from flux density converters.  
+For making user's search more convenient, the stored functions (in other relational database, may be called
+Stored Procedure) are prepared for use. Additional to standard aggregate and other types of functions which
+are `originally implemented in PostgreSQL server <http://www.postgresql.org/docs/9.3/static/functions-aggregate.html>`_,
+some user defined functions are available on NAOJ HSC database server for HSC SSP data.
+More functions are planned to be added in near future, for example, coordinate string converter to degrees
+(hh:mm:ss.s,+/-dd:mm:ss.s -> degrees), and magnitude to/from flux density converters.
 
-Aggregate Functions  
+Aggregate Functions
 ^^^^^^^^^^^^^^^^^^^
 .. list-table:: **User Defined Functions(Aggregate)**
 
-   * - **Functions**    
-     - **Argument Type(s)**           
-     - **Return Type**       
+   * - **Functions**
+     - **Argument Type(s)**
+     - **Return Type**
      - **Description**
 
-   * - qmedian(expression)      
-     - int, bigint, numeric, double precision        
+   * - qmedian(expression)
+     - int, bigint, numeric, double precision
      - same as argument data type
-     - the median of all input values 
+     - the median of all input values
 
    * - quantile(expression)
-     - int, bigint, numeric, double precision 
+     - int, bigint, numeric, double precision
      - same as argument data type
-     - the quantile of all input values 
-   
+     - the quantile of all input values
+
    * - weighted_mean(values, q-value or array of q-values)
      - numeric
      - same as argument data type
      - the weighted mean of all input values
 
    * - mean
-     - double precision 
+     - double precision
      - same as argument data type
-     - the mean of all input values 
+     - the mean of all input values
 
    * - variance
-     - double precision 
+     - double precision
      - same as argument data type
-     - the variance of all input values 
+     - the (unbiased) variance of all input values
 
-   * - stddev 
-     - double precision 
+   * - stddev
+     - double precision
      - same as argument data type
-     - the standard deviation of all input values 
+     - sqrt of the unbiased variance
 
-   * - kurtosis 
-     - double precision 
+   * - skewness
+     - double precision
      - same as argument data type
-     - the kurtosis of all input values 
+     - the skewness of all input values: κ,,3,,/κ,,2,,^3/2^ where κ,,i,, denotes the unbiased i-th cumulant
 
-   * - skewness 
-     - double precision 
+   * - kurtosis
+     - double precision
      - same as argument data type
-     - the skewness of all input values 
+     - the kurtosis of all input values: κ,,4,,/κ,,2,,^2^ where κ,,i,, denotes the unbiased i-th cumulant
 
 example of qmedian::
-   
+
       -- calculate median of seeing values in frame table of UDEEP CCD data
 
       SELECT qmedian(seeing) from ssp_s14a0_udeep_20140523a.frame;
@@ -69,29 +69,40 @@ example of quantile::
 
       -- calculate 30% quantile of seeing values in frame table of UDEEP CCD data
 
-      SELECT quantile(seeing, 0.3) from ssp_s14a0_udeep_20140523a.frame;    
-      
+      SELECT quantile(seeing, 0.3) from ssp_s14a0_udeep_20140523a.frame;
+
       -- calculate quantile (30, 50 and 70%) of seeing values in frame table of UDEEP CCD data
 
-      SELECT quantile(seeing, array[0.3, 0.5, 0.7]) from ssp_s14a0_udeep_20140523a.frame;    
+      SELECT quantile(seeing, array[0.3, 0.5, 0.7]) from ssp_s14a0_udeep_20140523a.frame;
 
 example of weighted_mean::
 
-      -- calculate weighted_mean of Sinc magnitudes with weight by error of Sinc magnitudes 
+      -- calculate weighted_mean of Sinc magnitudes with weight by error of Sinc magnitudes
       -- Caution!! only numeric input is allowed currently and cast to numeric is essential
 
       SELECT weighted_mean(mag_sinc::numeric, 1.0/mag_sinc_err::numeric)     -- cast inputs to numeric type
-        FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect 
+        FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect
        WHERE tract=0 and id=207876417126408 and mag_sinc_err > 0.0;
 
 example of mean, variance & stddev::
 
-      To be coming soon....
+      -- calculate the mean of mag_sinc_err that are valid,
+      -- the variance of mag_gaussian that are valid,
+      -- and the standard deviation of flux_cmodel that are not NaN
+      -- in the UDEEP CCD frame table
 
+      SELECT mean(mag_sinc_err, '>', 0), variance(mag_gaussian, '!=', 99.99), stddev(flux_cmodel, '==', flux_cmodel)
+        FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect
+        WHERE tract=0;
 
-example of kurtosis & skewness::
+example of skewness & kurtosis::
 
-      To be coming soon....
+      -- calculate the skewness of mag_sinc that are valid,
+      -- and the kurtosis of mag_sinc that are valid
+
+      SELECT skewness(mag_sinc, '>', 0), kurtosis(mag_sinc, '>', 0),
+        FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect
+        WHERE tract=0;
 
 
 
@@ -99,7 +110,7 @@ Function for spatial searches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. list-table:: **User Defined Functions(Spatial Search)**
 
-   * - **Functions**    
+   * - **Functions**
      - **Description**
 
    * - f_getobj_circle(ra, dec, radius, table_name)
@@ -111,46 +122,46 @@ Function for spatial searches
 
 example of f_getobj_circle(ra, dec, radius, table_name)::
 
-      -- get objects' tract, patch, pointing, id, ra2000, decl2000, cx, cy, cz, xxyyzz, distance 
-      -- within 2 arcsec radius centered at (RA,DEC)=(150.403189,1.485288) in frame_forcelist of UDEEP CCD 
-      -- RA and DEC are in degrees.  
-      
-      SELECT * from f_getobj_circle(150.403189, 1.485288, 2.0, 'ssp_s14a0_udeep_20140523a.frame_forcelist__deepcoadd__iselect');
-  
-      -- get object's id, ra, dec, sinc magnitudes of g,r,i,z,y bands and distance from the central coordinates specified. 
-      -- the cone search is for objects within 3 arcsec from the coordinate (RA,DEC)=(150.403189,1.485288). 
-      -- Joining the query result of cone search with photoobj_mosaic table.  
-      -- distance in arcsec  
+      -- get objects' tract, patch, pointing, id, ra2000, decl2000, cx, cy, cz, xxyyzz, distance
+      -- within 2 arcsec radius centered at (RA,DEC)=(150.403189,1.485288) in frame_forcelist of UDEEP CCD
+      -- RA and DEC are in degrees.
 
-      SELECT pm.id, pm.ra2000, pm.decl2000, pm.gmag_sinc, pm.rmag_sinc, pm.imag_sinc, pm.zmag_sinc, pm.ymag_sinc, obj.distance 
-      FROM f_getobj_circle(150.93, 1.93, 3.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect') obj, 
-           ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm 
-      WHERE obj.id=pm.id and obj.tract=pm.tract and obj.patch=pm.patch and obj.pointing = pm.pointing 
+      SELECT * from f_getobj_circle(150.403189, 1.485288, 2.0, 'ssp_s14a0_udeep_20140523a.frame_forcelist__deepcoadd__iselect');
+
+      -- get object's id, ra, dec, sinc magnitudes of g,r,i,z,y bands and distance from the central coordinates specified.
+      -- the cone search is for objects within 3 arcsec from the coordinate (RA,DEC)=(150.403189,1.485288).
+      -- Joining the query result of cone search with photoobj_mosaic table.
+      -- distance in arcsec
+
+      SELECT pm.id, pm.ra2000, pm.decl2000, pm.gmag_sinc, pm.rmag_sinc, pm.imag_sinc, pm.zmag_sinc, pm.ymag_sinc, obj.distance
+      FROM f_getobj_circle(150.93, 1.93, 3.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect') obj,
+           ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm
+      WHERE obj.id=pm.id and obj.tract=pm.tract and obj.patch=pm.patch and obj.pointing = pm.pointing
       ORDER by obj.distance;
 
 example of f_getobj_rectangle(ra, dec, delta_ra, delta_dec, table_name)::
 
-      -- get objects' tract, patch, pointing, id, ra2000, decl2000, cx, cy, cz, xxyyzz, distance 
-      -- within 2 x 2 arcsec centered at (RA,DEC)=(150.403189,1.485288) in frame_forcelist of UDEEP CCD 
-      -- RA and DEC are in degrees.  
+      -- get objects' tract, patch, pointing, id, ra2000, decl2000, cx, cy, cz, xxyyzz, distance
+      -- within 2 x 2 arcsec centered at (RA,DEC)=(150.403189,1.485288) in frame_forcelist of UDEEP CCD
+      -- RA and DEC are in degrees.
 
       SELECT * from f_getobj_rectangle(150.403189, 1.485288, 2.0, 2.0, 'ssp_s14a0_udeep_20140523a.frame_forcelist__deepcoadd__iselect');
 
-      
+
 Setting Stored Functions in your own Database
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If you want to run the stored functions in your own database servers, you should 
-do install and set-up the functions. 
-All functions described in this document available in the latest **hscDb** package 
-(version later than 2014.07.04), under 'python/hsc/hscDb/pgfunctions' directories. 
+If you want to run the stored functions in your own database servers, you should
+do install and set-up the functions.
+All functions described in this document available in the latest **hscDb** package
+(version later than 2014.07.04), under 'python/hsc/hscDb/pgfunctions' directories.
 
-For C and C++ functions, you should run Makefile first, then do make install as 
+For C and C++ functions, you should run Makefile first, then do make install as
 root user, then run 'create extension [function_name]' in psql command. ::
 
-     # For example on qmedian 
-     
+     # For example on qmedian
+
      % cd pgfunctions/c/qmedian
-     % make 
+     % make
      % su <-- switch to root user
      % make install
 
@@ -158,19 +169,19 @@ root user, then run 'create extension [function_name]' in psql command. ::
 
      psql> create extension qmedian;
 
-Please see README file in each package directory. 
+Please see README file in each package directory.
 
 For PL/pgSQL functions, you should run all SQL scripts under the plpgsql directory.::
 
-     % /usr/local/pgsql/bin/psql -U hscana -d dr_early -h your_db_host -f f_arcsec2radian.sql 
+     % /usr/local/pgsql/bin/psql -U hscana -d dr_early -h your_db_host -f f_arcsec2radian.sql
      % /usr/local/pgsql/bin/psql -U hscana -d dr_early -h your_db_host -f ......
      % ..........................
 
-**Caution** 
+**Caution**
 
-As the stored functions are set up to each database instance, you should run 'create extension' 
-or 'create function' command when you newly create the database instance with 'create database' 
-or createdb command. 
+As the stored functions are set up to each database instance, you should run 'create extension'
+or 'create function' command when you newly create the database instance with 'create database'
+or createdb command.
 
-You can see the set-up functions by using '**\df**' command on psql prompt. 
+You can see the set-up functions by using '**\df**' command on psql prompt.
 
