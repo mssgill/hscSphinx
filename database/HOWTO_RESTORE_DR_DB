@@ -25,9 +25,12 @@ a free relational database server software, we've prepared the dump file of EDR.
 
      It is also OK to use binary distribution. 
 
-  (2) You need about 505 GB for storing EDR S14A_0 database on your machine. 
+  (2) You need about 687 GB for storing EDR S14A_0 database on your machine. 
       Please prepare devices like HDD or so with sufficient capacity for the 
       database table space. 
+
+      The amount will be increased because the photoobj_frame table and related indeces are missing 
+      in this release. 
 
 1. Preparation for the database table restoration
 
