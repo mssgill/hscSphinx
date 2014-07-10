@@ -1,7 +1,8 @@
 How to restore database dump to PostgreSQL on your site
 
                                        2014.06.18  Tadafumi Takata (NAOJ)
-				       2014.07.01  Updated
+                                       2014.07.01  Updated
+                                       2014.07.10  Updated
 
 This is the document for the user who want to have HSC SSP early data release(EDR) 
 database contents on their own machine. 
@@ -73,30 +74,31 @@ a free relational database server software, we've prepared the dump file of EDR.
 2. Download the dump file
 
    The dump files of PostgreSQL can be downloaded from the site. 
+   This site is under access control by user/password authentication.  
 
      https://hscdata.mtk.nao.ac.jp:4443/hsc_ssp/dr_early/DB_dump/
 
    There are 2 dump files, one for COSMOS and another for GAMA fields. 
 
-     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140630.dmp.gz   (~93.6GB)
-     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140630.dmp.gz    (~196GB)
+     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp.gz   (~100GB)
+     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140709.dmp.gz    (~160GB)
 
 3. Restore the dump file into your database instance. 
 
    Unzip the dump files by using gunzip. 
 
-   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140630.dmp' and   
-   'pgdump_ssp_s14a0_wide_20140523a_20140630.dmp'. 
+   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp' and   
+   'pgdump_ssp_s14a0_wide_20140523a_20140709.dmp'. 
 
    You can restore these dump into your database by the following command. 
 
-   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140623.dmp  
-   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_wide_20140523a_20140623.dmp  
+   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp  
+   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_wide_20140523a_20140709.dmp  
 
    It will take for a while......
 
   The following command hopefully will work also. 
-  (gunzip -c /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140623.dmp.gz |  psql -U hscana -d dr_early -h your_hostname) 
+  (gunzip -c /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp.gz |  psql -U hscana -d dr_early -h your_hostname) 
 
 4. Check the accessibility to your restored tables. 
 
@@ -108,6 +110,10 @@ a free relational database server software, we've prepared the dump file of EDR.
 
    Enjoy the HSC SSP database world !!
 
-User document for searching the data you want to have is in the file 'HOWTO_USE_DR_DB'. 
-        (Not provided yet...)
+User document for searching the data you want to have is in the file 'HOWTO_USE_DR_DB', which 
+is in the same site of pgdump files. 
+The user document for knowing database and methods of database searches are in the user document 
+at http://hsca.ipmu.jp/hscsphinx/database.html. 
+ 
+
 
