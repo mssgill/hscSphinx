@@ -104,8 +104,6 @@ example of skewness & kurtosis::
         FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect
         WHERE tract=0;
 
-
-
 Function for spatial searches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. list-table:: **User Defined Functions(Spatial Search)**
@@ -146,6 +144,36 @@ example of f_getobj_rectangle(ra, dec, delta_ra, delta_dec, table_name)::
       -- RA and DEC are in degrees.
 
       SELECT * from f_getobj_rectangle(150.403189, 1.485288, 2.0, 2.0, 'ssp_s14a0_udeep_20140523a.frame_forcelist__deepcoadd__iselect');
+
+
+Functions for utils 
+^^^^^^^^^^^^^^^^^^^
+Some utility functions for handling HSC information are prepared. They are (visit, ccd) <-> FrameId conversion etc. 
+
+.. list-table:: **User Defined Functions(Utils)**
+
+   * - **Functions**
+     - **Argument Type(s)**
+     - **Return Type**
+     - **Description**   
+
+   * - frameid2visitccd
+     - text 
+     - set of integer
+     - transform of FrameId to (visit, ccd)
+
+   * - visitccd2frameid
+     - set of integer
+     - text
+     - transform of (visit, ccd) to FrameId 
+
+example of frameid2visitccd and  visitccd2frameid::
+
+      SELECT frameid2visitccd('HSCA00000301');
+      return (2,27)
+
+      SELECT visitccd2frameid(2, 27);
+      return 'HSCA00000301'
 
 
 Setting Stored Functions in your own Database
