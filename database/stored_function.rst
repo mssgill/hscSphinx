@@ -167,6 +167,26 @@ Some utility functions for handling HSC information are prepared. They are (visi
      - text
      - transform of (visit, ccd) to FrameId 
 
+   * - hms2deg
+     - text (hh:mm:ss.sss)
+     - double precision
+     - transform RA in hh:mm:ss.sss to degree unit
+
+   * - deg2hms
+     - double precision
+     - text (hh:mm:ss.sss)
+     - transform RA in degree to hh:mm:ss.sss
+
+   * - dms2deg
+     - text (+/-dd:mm:ss.ss)
+     - double precision
+     - transform DEC in +/-dd:mm:ss.ss to degree unit
+
+   * - deg2dms
+     - double precision
+     - text (+/-dd:mm:ss.ss)
+     - transform DEC in degree to +/-dd:mm:ss.ss
+
 example of frameid2visitccd and  visitccd2frameid::
 
       SELECT frameid2visitccd('HSCA00000301');
@@ -174,6 +194,22 @@ example of frameid2visitccd and  visitccd2frameid::
 
       SELECT visitccd2frameid(2, 27);
       return 'HSCA00000301'
+
+example of hms2deg and dms2deg::
+
+      SELECT hms2deg('12:12:12.345');
+        return 183.0514375
+
+      SELECT dms2deg('-01:00:12.00');
+        return -1.00333333333333
+
+example of deg2hms and deg2dms::
+
+      SELECT deg2hms(183.051416666667);
+        return 12:12:12.34
+
+      SELECT deg2dms(83.0514375);
+        return +83:03:05.18
 
 
 Setting Stored Functions in your own Database
