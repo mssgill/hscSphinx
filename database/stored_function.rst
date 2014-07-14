@@ -29,9 +29,9 @@ Aggregate Functions
      - same as argument data type
      - the quantile of all input values
 
-   * - weighted_mean(values, q-value or array of q-values)
-     - numeric
-     - same as argument data type
+   * - weighted_mean(values, weight_values)
+     - set of double precision
+     - double precision
      - the weighted mean of all input values
 
    * - mean
@@ -77,10 +77,10 @@ example of quantile::
 
 example of weighted_mean::
 
-      -- calculate weighted_mean of Sinc magnitudes with weight by error of Sinc magnitudes
-      -- Caution!! only numeric input is allowed currently and cast to numeric is essential
+      -- calculate weighted_mean of Sinc magnitudes with weight by error of Sinc magnitudes (mag_sinc_err)^{-2}
+      -- Caution!! only double precision input is allowed currently and cast to numeric is essential
 
-      SELECT weighted_mean(mag_sinc::numeric, 1.0/mag_sinc_err::numeric)     -- cast inputs to numeric type
+      SELECT weighted_mean(mag_sinc, (1.0/mag_sinc_err)*(1.0/mag_sinc_err))     
         FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect
        WHERE tract=0 and id=207876417126408 and mag_sinc_err > 0.0;
 
