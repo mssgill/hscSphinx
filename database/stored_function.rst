@@ -211,6 +211,18 @@ example of deg2hms and deg2dms::
       SELECT deg2dms(83.0514375);
         return +83:03:05.18
 
+example for getting coordinates with hh:mm:ss.sss and +/-dd:mm:ss.ss rather than degree::
+
+      SELECT deg2hms(ra2000) as ra, deg2dms(decl2000) as dec 
+      FROM ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect 
+      LIMIT 10;
+
+example for getting objects' id, coordinates in degree and hms/dms formats which are within 20 arcsec from the center at 
+(RA, DEC) = (10:03:45.000, +02:00:00.00) in photoobj_mosaic table of UDEEP survey. ::
+
+      SELECT id, ra2000, decl2000, deg2hms(ra2000) as ra, deg2dms(decl2000) as dec 
+      FROM f_getobj_circle(hms2deg('10:03:45.000'), dms2deg('+02:00:00.00'), 20.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect');
+
 
 Setting Stored Functions in your own Database
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
