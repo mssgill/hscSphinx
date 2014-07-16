@@ -185,12 +185,12 @@ Some utility functions for handling HSC information are prepared. They are (visi
    * - equ2gal
      - set of double precision (ra, dec) J2000
      - set of double precision (gallon, gallat) 
-     - transform equatrial coordinates in degree to galactic coordinates in degree 
+     - transform equatrial coordinates in degree to galactic coordinates in degree (based on SLALIB 2.5-4)
 
    * - gal2equ
      - set of double precision (gallon, gallat)
      - set of double precision (ra, dec) J2000
-     - transform galactic coordinates in degree to equatrial coordinates in degree 
+     - transform galactic coordinates in degree to equatrial coordinates in degree (based on SLALIB 2.5-4)
 
 
 example of frameid2visitccd and  visitccd2frameid::
