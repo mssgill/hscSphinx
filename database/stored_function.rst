@@ -182,10 +182,16 @@ Some utility functions for handling HSC information are prepared. They are (visi
      - double precision
      - transform DEC in +/-dd:mm:ss.ss to degree unit
 
-   * - deg2dms
-     - double precision
-     - text (+/-dd:mm:ss.ss)
-     - transform DEC in degree to +/-dd:mm:ss.ss
+   * - equ2gal
+     - set of double precision (ra, dec) J2000
+     - set of double precision (gallon, gallat) 
+     - transform equatrial coordinates in degree to galactic coordinates in degree 
+
+   * - gal2equ
+     - set of double precision (gallon, gallat)
+     - set of double precision (ra, dec) J2000
+     - transform galactic coordinates in degree to equatrial coordinates in degree 
+
 
 example of frameid2visitccd and  visitccd2frameid::
 
@@ -222,6 +228,12 @@ example for getting objects' id, coordinates in degree and hms/dms formats which
 
       SELECT id, ra2000, decl2000, deg2hms(ra2000) as ra, deg2dms(decl2000) as dec 
       FROM f_getobj_circle(hms2deg('10:03:45.000'), dms2deg('+02:00:00.00'), 20.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect');
+
+example of equ2gal and gal2equ::
+
+      SELECT equ2gal(120.0, 30.0);
+
+      SELECT gal2equ(230.0, 20.0);
 
 
 Setting Stored Functions in your own Database
