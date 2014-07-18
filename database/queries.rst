@@ -49,9 +49,21 @@ Download :download:`example4.sql`
 Example 5
 ^^^^^^^^^
 
+One of the example for searching high-z objects. Magnitude limits must be tuned to the data quality. 
+
 Download :download:`example5.sql`
 
 .. literalinclude:: example5.sql
+   :language: sql
+
+Example 6
+^^^^^^^^^
+
+Searching the objects around the specified sky coordinates with color constraints. 
+
+Download :download:`example6.sql`
+
+.. literalinclude:: example6.sql
    :language: sql
 
 
