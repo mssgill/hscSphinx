@@ -8,7 +8,7 @@ SELECT
 FROM ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm, 
      ssp_s14a0_udeep_20140523a.mosaic_forcelist__deepcoadd__iselect mfi 
 WHERE pm.tract=mfi.tract and pm.patch=mfi.patch and 
-      pm.pointing=mfi.pointing and pm.id = mfi.id 
+      pm.pointing=mfi.pointing and pm.id = mfi.object_id 
   and mfi.filter01='HSC-I' 
   and mfi.classification_extendedness = 0  --- not extended
 -----  the follwing constraints are similar to those of Richards et al. (2002) AJ 123, 2945

@@ -17,7 +17,7 @@ FROM
     ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm,
     ssp_s14a0_udeep_20140523a.mosaic_forceflag_i__deepcoadd__iselect iflg 
 WHERE
-    pm.tract = iflg.tract AND pm.patch = iflg.patch AND pm.pointing = iflg.pointing AND pm.id = iflg.id 
+    pm.tract = iflg.tract AND pm.patch = iflg.patch AND pm.pointing = iflg.pointing AND pm.id = iflg.object_id 
     AND 
     pm.imag_sinc < 25.5
     AND
