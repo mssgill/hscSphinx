@@ -221,7 +221,7 @@ information.
     Hirata-Seljac-Mandelbaum
         This refers to a collection of shape measurement algorithms
         coded-up, bundled together, and made public by Chris Hirata,
-        Eros Seljac, and Rachel Mandelbaum.  The package includes 'KSB'
+        Uros Seljak, and Rachel Mandelbaum.  The package includes 'KSB'
         (HSM_KSB), 'regaussianization' (HSM_REGAUSS), 'Bernstein-Jarvis'
         (HSM_BJ), 'linear' (HSM_LINEAR), and a shapelet-based algorithm
         (HSC_SHAPELET).  It is enabled by default in the HSC pipeline.
