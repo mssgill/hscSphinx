@@ -17,7 +17,7 @@ you can't find what you're looking for, please contact the software
 group and let us know!  We can be found at
 <hsc_software@astro.princeton.edu>.
 
-Much of the material is also translated to :ref:`Japanese <jp_index>`.
+Some of the material is also translated to :ref:`Japanese <jp_index>`.
 
 Contents:
 
