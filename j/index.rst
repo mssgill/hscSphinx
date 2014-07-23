@@ -9,7 +9,10 @@
 Welcome to HSC Data's Japanese documentation!
 =============================================
 
-This will soon be translated to Japanese!
+.. note::
+
+    Japanese translation is underway, but not all sections 
+    have complete translation at this time.
 
 This site hosts information relevant to running the HSC pipeline and
 handling the data products in their various forms.  We've tried (are
