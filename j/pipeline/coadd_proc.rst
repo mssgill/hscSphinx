@@ -80,7 +80,7 @@ SkyMap.  Here it was used to display two visits superimposed on a
 discrete (partial) SkyMap.  Only the patches overlapped by the visits
 are shown.  Each patch is labeled.
 
-.. image:: ../images/showVisitSkyMap.png
+.. image:: ../../images/showVisitSkyMap.png
 
 
 Making a Custom SkyMap
