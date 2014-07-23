@@ -192,6 +192,35 @@ Some utility functions for handling HSC information are prepared. They are (visi
      - set of double precision (ra, dec) J2000
      - transform galactic coordinates in degree to equatrial coordinates in degree (based on SLALIB 2.5-4)
 
+   * - date2mjd
+     - text (date string: YYYY-MM-DD)
+     - integer (mjd in integer)
+     - transform date-obs to MJD
+
+   * - datetime2mjd
+     - text (datetime string: YYYY-MM-DDThh:mm:ss.sss)
+     - double precision (mjd)
+     - transform date-obs + UT to MJD
+ 
+   * - datetime2mjd
+     - set of text (date string: YYYY-MM-DD, time string hh:mm:ss.sss)
+     - double precision (mjd)
+     - transform date-obs + UT to MJD
+
+   * - mjd2date
+     - integer (MJD in integer)
+     - text (date string: YYYY-MM-DD)
+     - transform MJD to date string
+
+   * - mjd2datetime
+     - double precision (MJD)
+     - text (datetime string: YYYY-MM-DDThh:mm:ss.sss)
+     - transform MJD to string DATE-OBJ + UT
+
+   * - mjd2datetime2
+     - double precision (MJD)
+     - set of text (date string: YYYY-MM-DD, time string: hh:mm:ss.sss)
+     - transform MJD to string DATE-OBJ + UT
 
 example of frameid2visitccd and  visitccd2frameid::
 
@@ -235,6 +264,21 @@ example of equ2gal and gal2equ::
 
       SELECT gal2equ(230.0, 20.0);
 
+example of date2mjd and mjd2date::
+
+      SELECT date2mjd('2014-07-17');
+
+      SELECT mjd2date(56855);
+
+example of datetime2mjd and mjd2datetime, mjd2datetime2::
+
+      SELECT datetime2mjd('2014-07-17T12:12:12.000');
+      
+      SELECT datetime2mjd('2014-07-17', '12:12:12.000');
+
+      SELECT mjd2datetime(56855.5084722222);
+
+      SELECT mjd2datetime2(56855.5084722222);
 
 Setting Stored Functions in your own Database
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
