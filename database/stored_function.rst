@@ -271,5 +271,5 @@ As the stored functions are set up to each database instance, you should run 'cr
 or 'create function' command when you newly create the database instance with 'create database'
 or createdb command.
 
-You can see the set-up functions by using '**\df**' command on psql prompt.
+You can see the set-up functions by using '**\\df**' command on psql prompt.
 
