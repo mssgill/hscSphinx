@@ -218,7 +218,7 @@ information.
         ..todo:: We support this, but I don't know of anywhere where we're currently using it.
     
     HSM
-    Hirata-Seljac-Mandelbaum
+    Hirata-Seljak-Mandelbaum
         This refers to a collection of shape measurement algorithms
         coded-up, bundled together, and made public by Chris Hirata,
         Uros Seljak, and Rachel Mandelbaum.  The package includes 'KSB'
