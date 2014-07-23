@@ -71,7 +71,7 @@ Displaying Info about the Database, Schema, and Tables
 
 * Set a schema to be the default (in this example ... the early wide data ::
 
-    > set search_path to ssp_s14a0_wide_20140523a
+    > set search_path to ssp_s14a0_wide_20140523a;
 
     
 * Describe tables in the current database and schema (assuming you set ``search_path`` already)::
