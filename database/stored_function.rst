@@ -264,6 +264,16 @@ example of equ2gal and gal2equ::
 
       SELECT gal2equ(230.0, 20.0);
 
+      -- get the objects' id, ra, dec and galactic coordinates which are within 20 arcsec from the center at 
+      -- (RA, DEC) = (10:03:45.000, +02:00:00.00) in photoobj_mosaic table of UDEEP survey. 
+
+      SELECT pm.id, pm.ra2000, pm.decl2000, e2g.l as gallon, e2g.b as gallat 
+      FROM 
+         f_getobj_circle(hms2deg('10:03:45.000'), dms2deg('+02:00:00.00'), 20.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect') pm, 
+         equ2gal(pm.ra2000, pm.decl2000) e2g
+      ;
+
+
 example of date2mjd and mjd2date::
 
       SELECT date2mjd('2014-07-17');
