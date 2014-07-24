@@ -14,6 +14,8 @@ Example Scripts
    scripts/psfMosaic
    scripts/showInDs9
    scripts/showVisitSkyMap
+   scripts/toyShear
+   scripts/rotateMomentToWcs
 
 .. These ones aren't in the TOC, but they still exist if some has saved a link in their browser
    
@@ -21,3 +23,4 @@ Example Scripts
    :hidden:
    
    scripts/print_mags_from_butler
+   
