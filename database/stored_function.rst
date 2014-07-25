@@ -290,6 +290,40 @@ example of datetime2mjd and mjd2datetime, mjd2datetime2::
 
       SELECT mjd2datetime2(56855.5084722222);
 
+
+Functions for using WCS  
+^^^^^^^^^^^^^^^^^^^^^^^^
+Conversion of sky to pixel coordinate and vice versa is available by using database only. 
+
+.. list-table:: **User Defined Functions(WCS related)**
+
+   * - **Functions**
+     - **Argument Type(s)**
+     - **Return Type**
+     - **Description**   
+
+   * - sky2pix
+     - set of double precision, text and integer (ra, dec, schema, tract, frame-id) ra and dec in degree
+     - set of double precision (x, y)
+     - convert sky to pixel coordinate on spicified image data
+
+   * - pix2sky
+     - set of double precision, text and integer (x, y, schema, tract, frame-id)
+     - set of double precision (ra, dec) in degree
+     - convert pixel to sky coordinate on spicified image data
+
+example of sky2pix and pix2sky::
+
+      -- get (x, y) coordinate of (RA,DEC)=(150.5 deg, 1.5 deg) 
+      -- on image data with tract is 0 and frame_id 'HSCA00188753'
+
+      SELECT sky2pix(150.5, 1.5,'ssp_s14a0_udeep_20140523a', 0, 'HSCA00188753');
+
+      -- get (ra, dec) coordinate of (x,y)=(1750.325,359.630)  
+      -- on image data with tract is 0 and frame_id 'HSCA00188753'
+
+      SELECT pix2sky(1750.325,359.630,'ssp_s14a0_udeep_20140523a', 0, 'HSCA00188753');
+
 Setting Stored Functions in your own Database
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If you want to run the stored functions in your own database servers, you should
