@@ -24,17 +24,18 @@ data. They are information on FITS format, date-obs, filter name, exposure time,
 keywords, seeing, magnitude zero point and so on, which are used for constraints on 
 searching the user's necessary FITS data from database.  
 
-============== =========== ============================================== ====== =====
-Table Name     FITS Data   Description                                     Mng   HPX11
-============== =========== ============================================== ====== =====
-**frame**      CORR        Reduced CCD image                                O      O
-**calibframe** CALEXP      Mosaic Corrected Reduced CCD image               O      O
-**exposure**   metaQaExp   Exposure meta information                        O
-**wcs**        wcs         wcs file output by mosaicking                    O
-**fcr**        fcr         flux correction by mosaicking                    O
-**warped**     warp        warped image for one exposure(visit) per patch   O      O
-**mosaic**     calexp      coadd image                                      O      O 
-============== =========== ============================================== ====== =====
+================= =========== ============================================== ====== =====
+Table Name        FITS Data   Description                                     Mng   HPX11
+================= =========== ============================================== ====== =====
+**frame**         CORR        Reduced CCD image                                O      O
+**calibframe**    CALEXP      Mosaic Corrected Reduced CCD image               O      O
+**exposure**      metaQaExp   Exposure meta information                        O
+**wcs**           wcs         wcs file output by mosaicking                    O
+**fcr**           fcr         flux correction by mosaicking                    O
+**warped**        warp        warped image for one exposure(visit) per patch   O      O
+**mosaic**        calexp      coadd image                                      O      O 
+**mosaicframe**               set of (visit,ccd) which consist of coadd                  
+================= =========== ============================================== ====== =====
 
 Each table will be accompanied by 'mng' table, in which some information 
 for file management (file path, proposal IDs, data transfer dates etc.). 
@@ -49,7 +50,7 @@ and transparency (zero point per second, for example), and more basics like
 filter names, observational dates and so on.  
 
 Table for catalog data (as of 2014.07.01)
-----------------------
+-----------------------------------------
 Our basic concept of producing catalog database is to extract all columns' values of FITS BINTABLE file and 
 store them into the database columns with the same names. It is for avoiding the confusion caused by the 
 shortened column names. There are some expansion of arrays in FITS data into seperate database columns, for 
@@ -166,7 +167,7 @@ These views are assumed to be used for selecting objects in the coadd summary ta
 using some flags of each band measurements.  
 
 How to 'join' the tables for your queries
---------------------------------
+-----------------------------------------
 
 As mentioned above, the information for objects, measured in various phase 
 of the pipeline processing, is stored in several separate tables, for ease 
