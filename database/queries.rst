@@ -66,5 +66,13 @@ Download :download:`example6.sql`
 .. literalinclude:: example6.sql
    :language: sql
 
+Example 7
+^^^^^^^^^
 
+Search the objects detected on a CCD image by forced measurement and get their sky coordinate 
+based shape information.  
 
+Download :download:`example7.sql`
+
+.. literalinclude:: example7.sql
+   :language: sql
