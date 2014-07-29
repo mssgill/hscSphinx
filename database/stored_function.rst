@@ -294,6 +294,8 @@ example of datetime2mjd and mjd2datetime, mjd2datetime2::
 Functions for using WCS  
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Conversion of sky to pixel coordinate and vice versa is available by using database only. 
+Currently these functions use the table 'wcs', which is based on wcs*.fits coming from mosaicking, 
+therefore, applicable only for CCD sources with mosaic-calibrated. 
 
 .. list-table:: **User Defined Functions(WCS related)**
 
@@ -303,7 +305,7 @@ Conversion of sky to pixel coordinate and vice versa is available by using datab
      - **Description**   
 
    * - sky2pix
-     - set of double precision, text and integer (ra, dec, schema, tract, frame-id) ra and dec in degree
+     - set of double precision, text and integer (ra, dec, schema, tract, frame-id) [ra and dec in degree]
      - set of double precision (x, y)
      - convert sky to pixel coordinate on spicified image data
 
@@ -311,6 +313,16 @@ Conversion of sky to pixel coordinate and vice versa is available by using datab
      - set of double precision, text and integer (x, y, schema, tract, frame-id)
      - set of double precision (ra, dec) in degree
      - convert pixel to sky coordinate on spicified image data
+
+   * - shape_sky2pix
+     - set of double precision, text and integer (shape_array, ra, dec, schema, tract, frame-id) [shape_array (I_xx, I_yy, I_xy), ra and dec in degree]
+     - array of double precision (Is_xx, Is_yy, Is_xy) in degree^2
+     - convert shape params to pixel-coord based one
+
+   * - shape_pix2sky
+     - set of double precision, text and integer (shape_array, x, y, schema, tract, frame-id)[shape_array (Is_xx, Is_yy, Is_xy), ra and dec in degree]
+     - array of double precision (I_xx, I_yy, I_xy)
+     - convert shape params to sky-coord based one
 
 example of sky2pix and pix2sky::
 
@@ -323,6 +335,18 @@ example of sky2pix and pix2sky::
       -- on image data with tract is 0 and frame_id 'HSCA00188753'
 
       SELECT pix2sky(1750.325,359.630,'ssp_s14a0_udeep_20140523a', 0, 'HSCA00188753');
+
+
+example of shape_sky2pix and shape_pix2sky::
+
+      SELECT shape_pix2sky(shape_sdss, centroid_sdss_x, centroid_sdss_y, 'ssp_s14a0_wide_20140523a', tract, frame_id) 
+      FROM ssp_s14a0_wide_20140523a.frame_forcelist__deepcoadd__iselect
+      limit 10;
+
+      SELECT shape_sdss, shape_sky2pix(shape_pix2sky(shape_sdss, centroid_sdss_x, centroid_sdss_y, 'ssp_s14a0_wide_20140523a', tract, frame_id),  ra2000, decl2000, 'ssp_s14a0_wide_20140523a', tract, frame_id) 
+      FROM ssp_s14a0_wide_20140523a.frame_forcelist__deepcoadd__iselect
+      limit 10;
+
 
 Setting Stored Functions in your own Database
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
