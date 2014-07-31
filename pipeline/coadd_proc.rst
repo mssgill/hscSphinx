@@ -142,7 +142,59 @@ constructed a partial SkyMap with ``makeDiscreteSkyMap.py``, then your
 tract number will be 0.  ``stack.py`` distributes jobs over PBS
 TORQUE, and the remaining command line arguments shown are related the
 batch processing.  See :ref:`TORQUE <back_torque>` for details.
-          
+
+.. _coadd_rerun_change:
+
+Writing Coadd outputs to a different Rerun
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Coadd processing involves loading input data which are themselves
+outputs of an earlier pipeline stage.  In the example above, the coadd
+outputs will be written to the same rerun from which the inputs were
+loaded.  However, it's not unusual to want to write the coadd outputs
+to a different location.  There are a few ways to do that.
+
+#. Use a colon to separate in_rerun from out_rerun ``--rerun=in_rerun:out_rerun``, e.g. ::
+
+    $ stack.py /data/Subaru/HSC --rerun=cosmos:cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
+
+This will produce a new rerun directory called ``cosmos_coadd`` in the
+main ``/data/Subaru/HSC/rerun`` directory.
+    
+#. Use ``/data/Subaru/HSC/rerun/in_rerun --rerun=out_rerun``, e.g.::
+
+    $ stack.py /data/Subaru/HSC/rerun/cosmos --rerun=cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
+
+This will produce a new rerun directory tree ``rerun/cosmos_coadd``
+**which is a subdirectory** in the input ``cosmos`` rerun, i.e.:
+``/data/Subaru/HSC/rerun/cosmos/rerun/cosmos_coass`` directory.
+
+    
+#. Use ``--output=/totally/different/path/out_rerun``, e.g.::
+
+    $ stack.py /data/Subaru/HSC/rerun/cosmos --output=/data/work/cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
+
+This will write all outputs to a new directory
+``/data/work/cosmos_coadd``.  This option does not require that the
+output rerun be located in the main data repository.
+
+Restacking
+^^^^^^^^^^
+
+If you've completed the single-frame processing and wish to build and
+process coadds multiple times (for debugging, or to test the effects
+of different input parameters), you will need to write to different
+output reruns (see :ref:`coadd_rerun_change`).  If coadds have already
+been produced in a rerun directory, you'll want to specify a separate
+``--output`` location or use ``--rerun=inrerun:outrerun``, and you
+will also need to ``--clobber-config``, and enable output overwrites
+with ``--config doOverwriteOutput=True doOverwriteCoadd=True`` (yes,
+even though outputs will be written to a new location, you must still
+enable overwriting)::
+
+    $ stack.py /data/Subaru/HSC/rerun/cosmos --output=/data/work/cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack --clobber-config --config doOverwriteOutput=True doOverwriteCoadd=True
+
+ 
 
 Coadd Processing in Steps
 -------------------------
