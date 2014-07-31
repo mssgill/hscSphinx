@@ -27,7 +27,7 @@ Each step is described below.  However, ``warp``, ``assemble``, and
 described below).
 
 
-.. _skymap:
+.. _jp_skymap:
 
 Making a SkyMap
 ---------------
@@ -104,7 +104,7 @@ tangent point.  This is done by specifying config parameters to
 
 .. warning:: untested.
 
-.. _mosaic:
+.. _jp_mosaic:
 
 mosaic.py
 ^^^^^^^^^
@@ -124,7 +124,7 @@ included.
     $ mosaic.py /data/Subaru/HSC/ --rerun=cosmos --id tract=0 visit=1000..1020:2 ccd=0..103
 
 
-.. _stack:    
+.. _jp_stack:    
 
 Coadd Processing with One Command
 ---------------------------------
@@ -141,7 +141,7 @@ now used to specify the tract and patch dataId for the output.  If you
 constructed a partial SkyMap with ``makeDiscreteSkyMap.py``, then your
 tract number will be 0.  ``stack.py`` distributes jobs over PBS
 TORQUE, and the remaining command line arguments shown are related the
-batch processing.  See :ref:`TORQUE <back_torque>` for details.
+batch processing.  See :ref:`TORQUE <jp_back_torque>` for details.
           
 
 Coadd Processing in Steps
@@ -165,7 +165,7 @@ with ``assembleCoadd.py`` to produce the 'coadd' or 'stack'.
 The final part of coadd processing is to run detection and measurement
 with ``hscProcessCoadd.py``.
 
-.. _warp:
+.. _jp_warp:
           
 Warping
 ^^^^^^^
@@ -180,7 +180,7 @@ Tract and Patch that you wish to create, while ``--selectId`` refers
 to the *input* visits, CCDs, etc. that you wish warp to the specified
 tract and patch.
 
-.. _assemblecoadd:
+.. _jp_assemblecoadd:
 
 Coadding
 ^^^^^^^^
@@ -200,7 +200,7 @@ set to be the same as the settings you used for
     types of stacks.
 
     
-.. _processcoadd:
+.. _jp_processcoadd:
         
 Coadd Processing (i.e. detection, measurement)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -4,7 +4,7 @@
    <style> .red {color:red} </style>
 
 
-.. _detrend:
+.. _jp_detrend:
       
 ===================================================
 Making Detrends (biases, flats, darks, and fringes)

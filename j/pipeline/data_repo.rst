@@ -16,7 +16,7 @@ mind that the data repo is intended to be written-to and read-from
 only by the pipeline tools.
 
 
-.. _ingest:
+.. _jp_ingest:
 
 Creating a Data Repo and Ingesting Data
 ---------------------------------------
@@ -72,7 +72,7 @@ stored in another data repo::
     # register data which is already in place
     $ hscIngestImages.py /data/Subaru/HSC/ --mode=skip /data/Subaru/HSC/M31/2013-03-21/00100/HSC-I/HSC-*fits
 
-.. _registryinfo:
+.. _jp_registryinfo:
 
 Registry Information
 ^^^^^^^^^^^^^^^^^^^^

@@ -14,7 +14,7 @@ HSCパイプラインでは、データ処理のいろいろな局面に共通�
 .. more practical importance for actually running the pipeline code
 .. effectively.
 
-.. _back_eups:
+.. _jp_back_eups:
 
 EUPS
 ----
@@ -131,7 +131,7 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
 
      
 ローカルディレクトリにある開発中コードの利用設定
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. Setting up development code in a directory
 
 
@@ -198,7 +198,7 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
      
     
 パイプラインの実行設定
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. Setting up for a run
 
 一般に、HSCパイプラインを使って作業をする場合には、以下のステップを
@@ -229,11 +229,12 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
 
 .. For the calibration catalog, CHOOSE ONLY ONE!  A `setup` command will override it's predecessor!::
     
-.. _back_eupsworks:    
+.. _jp_back_eupsworks:    
     
 .. How EUPS works
+
 EUPSの動作の仕組み
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 ユーザの皆さんはEUPSの実装の詳細にはおそらく興味がないでしょう。しかし、
 EUPSを使う際には、お使いのシェルの環境変数が何がしか変更されることに
@@ -252,7 +253,7 @@ EUPSを使う際には、お使いのシェルの環境変数が何がしか変�
 実行コマンドを ``PATH`` 変数に設定することができます。
 たとえば、EUPSに対して ``setup foo 2.1.0`` と指示すれば、EUPSは `` foo`` 
 パッケージのバージョン2.1.0がどこにインストールされているかを検索し、
- ``foo/2.1.0/bin`` に対する適切な実行パスを ``PATH`` 環境変数に追加
+``foo/2.1.0/bin`` に対する適切な実行パスを ``PATH`` 環境変数に追加
 してくれます。同時に、``foo`` パッケージのほかのバージョンのコマンド
 パスが ``PATH`` 変数の中に混在していないかを確認してくれます。
 これにより、異なるシェルで異なるバージョンのコードを使い分けることが出来ます。
@@ -270,7 +271,7 @@ EUPSを使う際には、お使いのシェルの環境変数が何がしか変�
 
 ただし、HSCパイプラインには90ほどのモジュール（主としてPythonコードで
 呼び出されて実行されるソフトウェア）が含まれるため、EUPSはあなたの
- ``PATH`` 変数に大量のパスを追加することになります。
+``PATH`` 変数に大量のパスを追加することになります。
 同様に、 ``LD_LIBRARY_PATH`` や ``PYTHONPATH`` にも見慣れないほど多数のパスが
 追加されますので驚かないで下さい。
 
@@ -324,7 +325,7 @@ EUPSは、既存の環境変数を操作するほかに、EUPSがHSCパイプラ
 ..    You must never (never never) try to edit any of the files you find
 ..    in a ``*_DIR`` directory.  These files are installed code.
     
-.. _back_torque:
+.. _jp_back_torque:
 
 PBS/TORQUE
 ----------
@@ -392,6 +393,7 @@ qstat
 
 
 .. For reference, here are the job status codes::
+
 Sの欄には、下記のジョブの状態コードのいずれかが表示されます::
   
     C -  ジョブは実行のあと完了(complete)した
@@ -406,6 +408,7 @@ Sの欄には、下記のジョブの状態コードのいずれかが表示さ�
 
 
 .. Here are the most popular options used with `qstat`::
+
 以下に `qstat` コマンドのうち、よく使われるオプションを記します::
 
     $ qstat -q          すべてのキューを表示
@@ -442,8 +445,9 @@ qdel
 
 
 .. Pipeline TORQUE-related arguments
+
 TORQUE制御のHSCパイプラインコマンドのオプション
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. The pipeline tasks which use TORQUE (e.g. ``reduceFrames.py``, and
 .. ``stack.py``) allow you to specific how your job will make use of the
@@ -456,7 +460,7 @@ TORQUE制御のHSCパイプラインコマンドのオプション
 TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py`` 、 ``stack.py`` など） 
 は、どのように計算機リソースを使って実行するか（キューの種類、ノード数、コア数など）
 をTORQUEに対して指定するためのコマンドオプションを提供します。
- ``reduce*.py`` と名付けられたコマンド（ ``reduceBias.py`` 、 ``reduceFlat.py`` , ``reduceFrames.py`` など）は
+``reduce*.py`` と名付けられたコマンド（ ``reduceBias.py`` 、 ``reduceFlat.py`` , ``reduceFrames.py`` など）は
 一般にこのTORQUEインターフェースを持ちます。これらのコマンドではTORQUEの
 ジョブ管理方法を指定する以下のオプションを使うことが出来ます:
 
@@ -499,7 +503,7 @@ TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py``
 
     各ノードで起動するプロセス数です。 ノード数の場合と同様に、キューが指定する
     最大プロセス数を超えてはいけません。 最大プロセス数を確認するには、
-     ``qmgr -c 'print server'`` コマンドにより表示される ``resources_max.ncpus`` 
+    ``qmgr -c 'print server'`` コマンドにより表示される ``resources_max.ncpus`` 
     の値を確認します。 ``procs`` x ``nodes`` (つまりジョブが要求するCPUコアの総数）
     が ``resources_max.ncpus`` を超えないように指定して下さい。
 
@@ -541,7 +545,7 @@ TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py``
 ..    .. todo::    I haven't played with this.  Paul? What does it do?
 
 Reruns（リラン）
----------------
+------------------
 
 .. The term ``rerun`` originated in SDSS.  It simply refers to a single
 .. processing run, performed with a specified version of the reduction
@@ -562,7 +566,7 @@ Reruns（リラン）
     short, and won't change.
 
     
-.. _back_dataId:
+.. _jp_back_dataId:
 
 DataId (データID)
 ---------------------
@@ -622,8 +626,9 @@ tract と patch は、coadd画像の天域を指定しますので、一つの (
 対して複数の filter や dateObs の組み合わせを取り得ます。
 
 .. Ranges and Multiple ``--id`` values
+
 ``--id`` オプションの範囲指定と複数指定 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. A dataId will also let you specify a range of values, or a set of
 .. separate discrete values.  Pay careful attention to the ``:`` (step
@@ -637,18 +642,21 @@ tract と patch は、coadd画像の天域を指定しますので、一つの (
 
 .. * ``..`` denotes are range of values.  E.g. visit 1000 with all CCDs
 ..   between 40 and 60, inclusive::
+
  * ``..`` は値の範囲を指定します。例えば、visit = 1000 のデータのうち、ccd = 40 と 60 を含む
  その間の範囲の全CCDを指定するには次のように指定します::
 
     --id visit=1000 ccd=40..60
 
 .. * ``^`` separates discrete values.  E.g. visit 1000 and 1004::
+
  * ``^`` は個々の値を繋いで同時に指定します。例えば、visit = 1000 と 1004 の２つのvisitのデータを同時に指定するには::
 
     --id visit=1000^1004
 
 .. * ``:`` specifies a step to use for a range, and thus is only ever
 ..  used with ``..``.  E.g. even-numbered visits 1000 to 1010::
+
 * ``:`` 値の範囲指定をする際の刻み幅です。常に ``..`` と一緒に使います。
   例えば、visit = 1000 と 1010 を含むその間のvisitのうち、偶数のデータだけを指定するには::
 
@@ -656,8 +664,9 @@ tract と patch は、coadd画像の天域を指定しますので、一つの (
 
 
 .. Configuration Parameters
+
 設定パラメータ (config)
-------------------------
+--------------------------
 
 .. A variety of things about the pipeline are configurable through either
 .. command-line arguements, or as settings in configuration parameter
@@ -673,14 +682,16 @@ HSCパイプラインのコマンドは、コマンドライン引数に設定�
 一見とてつもない数のパラメータがあるのですが、ユーザにとってはそのごく
 一握りだけが重要でしょう。参考までに、２つのコマンドについて、デフォルトのconfigパラメータを
 以下にリンクします。
- :ref:`reduceFrames.py <reduceframes_config_defaults>`  :ref:`stack.py <stack_config_defaults>`.
+:ref:`reduceFrames.py <reduceframes_config_defaults>`  :ref:`stack.py <stack_config_defaults>`.
 
 .. Configuration parameters have a hierarchical form, with each parameter
 .. belonging to a specific pipeline module called a 'Task', and each
 .. nested sub-task separated by a decimal point.  For example, the
 .. 'instrument signature removal' task (ISR, responsible for bias
 .. subtraction, flat fielding, etc.) has a configurable parameter
+
 .. ``doFringe``::
+
 Configパラメータ は階層構造を持っています。それぞれのパラメータは
 'Task' と呼ばれるパイプラインの一部を成す特定の解析を行うコード（モジュール）
 の中で定義されています。さらにそのTaskに属する'subtask' （Taskから派生した解析コード）
@@ -718,9 +729,9 @@ Configパラメータ は階層構造を持っています。それぞれのパ�
 * ファイルを読み込ませてconfigパラメータをオーバーライドする場合には、
   プレインテキスト形式のファイルに１行あたり１パラメータの値の設定を書き、 
   ``--configfile filename`` （ ``-C filename`` も同じ意味） のように
-  指定します::
+  指定します.
   
-.. _back_policy:  
+.. _jp_back_policy:  
   
 Policy (.paf) ファイル
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -757,6 +768,7 @@ Policy (.paf) ファイル
 .. However, the policy files are being phased out for the most part, and
 .. eventually they'll disappear completely.  But, for now, they still
 .. exist in a few places.
+
 Policyファイルはパイプラインコードのほとんどの箇所で使われなくなっており、
 規定路線ではいずれは完全になくなります。しかし、今のところは、いくつかの限られた
 場所でまだ使われています。

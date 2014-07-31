@@ -30,12 +30,12 @@ opened, or use an ssh tunnel.  If you're on a cluster and have
 `PBS/Torque <www.adaptivecomputing.com/products/open-source/torque/>`_
 for your system (and want to use it), install it now (and see below
 about Gotchas for mpich2).  We've also posted a brief outline of
-:ref:`how to use PBS/Torque <back_torque>`
+:ref:`how to use PBS/Torque <jp_back_torque>`
  
 `EUPS <https://github.com/RobertLuptonTheGood/eups>`_ is our product
 management tool.  Various guides for it are available including `one
 from the LSST wiki <https://dev.lsstcorp.org/trac/wiki/Eups>`_ and one
-from :ref:`this site <back_eups>`.  We need to install it before we can do
+from :ref:`this site <jp_back_eups>`.  We need to install it before we can do
 anything else.  In all of the following, I'll assume you're installing
 into /install, and your workspace is in /work; modify these
 directories as appropriate.  All our software is designed to be

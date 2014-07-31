@@ -19,8 +19,6 @@ Pipeline
    pipeline/data_repo
    pipeline/detrend
    pipeline/singleframe_proc
-   pipeline/reduceFrames.config
-   pipeline/stack.config
    pipeline/coadd_proc
    pipeline/error 
 
