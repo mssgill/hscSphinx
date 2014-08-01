@@ -4,6 +4,7 @@ How to restore database dump to PostgreSQL on your site
                                        2014.07.01  Updated
                                        2014.07.10  Updated
                                        2014.07.14  Updated 
+                                       2014.08.01  Updated
 
 This is the document for the user who want to have HSC SSP early data release(EDR) 
 database contents on their own machine. 
@@ -75,7 +76,7 @@ a free relational database server software, we've prepared the dump file of EDR.
        If you want to create database instance 'dr_early' on the host 'takoyaki', 
        the command should be 'createdb -U hscana -h takoyaki dr_early'.
 
-2. Download the dump file (additionally patch file for database tables.)
+2. Download the dump file 
 
    The dump files of PostgreSQL can be downloaded from the site. 
    This site is under access control by user/password authentication.  
@@ -84,34 +85,27 @@ a free relational database server software, we've prepared the dump file of EDR.
 
    There are 2 dump files, one for COSMOS and another for GAMA fields. 
 
-     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp.gz   (~100GB)
-     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140709.dmp.gz    (~160GB)
-
-   You should also download a patch script file 'renamecol_ssp_s14a0_udeep_and_wide_20140523a_20140709.sql' 
-   in the same directory of the download site.  
+     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140731.dmp.gz   (~94GB)
+     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140731.dmp.gz    (~178GB)
 
 3. Restore the dump file into your database instance. 
 
    Unzip the dump files by using gunzip. 
 
-   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp' and   
-   'pgdump_ssp_s14a0_wide_20140523a_20140709.dmp'. 
+   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140731.dmp' and   
+   'pgdump_ssp_s14a0_wide_20140523a_20140731.dmp'. 
 
    You can restore these dump into your database by the following command. 
 
-   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp  
-   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_wide_20140523a_20140709.dmp  
+   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140731.dmp  
+   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_wide_20140523a_20140731.dmp  
 
    It will take for a while......
 
   The following command hopefully will work also. 
   (gunzip -c /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp.gz |  psql -U hscana -d dr_early -h your_hostname) 
 
-4. Change 'cmodel' related columns names by applying the patch script. 
-
-   % psql -U hscana -d dr_early -h your_hostname -f renamecol_ssp_s14a0_udeep_and_wide_20140523a_20140709.sql
-
-5. Check the accessibility to your restored tables. 
+4. Check the accessibility to your restored tables. 
 
    % psql -U kensaku -d dr_early -h your_hostname
 
