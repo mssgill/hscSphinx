@@ -17,3 +17,8 @@ Pipeline
 
    pipeline/quick
 
+.. toctree::
+   :hidden:
+
+   pipeline/pipeQa
+   
