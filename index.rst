@@ -51,6 +51,7 @@ Quick Links:
 .. toctree::
    :hidden:
 
+   known_artifacts
    afw
    faq
    links
