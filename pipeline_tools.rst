@@ -80,6 +80,25 @@ request is for ``calexp_md`` (for calibrated exposure)::
 
     calexp_md = butler.get("calexp_md", dataId)
 
+
+.. Where should this warning go???    
+.. .. warning:: Loading reprocessed data (i.e. inputs from one repo,
+..   outputs written to another), may yield unexpected results.  This
+..   can occur when coadd outputs have been produced in one repository,
+..   and a second coadd has been produced from the same single-frame
+..   outputs.  If the butler is unable to find a requested dataset, it
+..   will then check the parent repository.  Thus, if a given patch or
+..   CCD is produced in the original coadd, but not in the second coadd,
+..   the butler will load the data from the original.  If this is a
+..   concern (i.e. if you're loading reprocessed coadds), the
+..   ``_filename`` suffix can be used as a butler target to get the path
+..   and verify which data is being loaded.  Data loaded from the parent
+..   repository will include the directory (a symlink) ``_parent`` in
+..   the path.  This may actually be exactly what you want (calibration
+..   data, single-frame outputs, etc. will all live in the parent repo),
+..   but could cause confusion for e.g. deepCoadd_src.
+
+    
 .. _tool_dataref:
     
 The dataRef
