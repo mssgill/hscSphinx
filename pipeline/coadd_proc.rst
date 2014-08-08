@@ -188,11 +188,11 @@ output reruns (see :ref:`coadd_rerun_change`).  If coadds have already
 been produced in a rerun directory, you'll want to specify a separate
 ``--output`` location or use ``--rerun=inrerun:outrerun``, and you
 will also need to ``--clobber-config``, and enable output overwrites
-with ``--config doOverwriteOutput=True doOverwriteCoadd=True`` (yes,
-even though outputs will be written to a new location, you must still
-enable overwriting)::
+with ``--config doOverwriteOutput=True doOverwriteCoadd=True
+makeCoaddTempExp.doOverwrite=True`` (yes, even though outputs will be
+written to a new location, you must still enable overwriting)::
 
-    $ stack.py /data/Subaru/HSC/rerun/cosmos --output=/data/work/cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack --clobber-config --config doOverwriteOutput=True doOverwriteCoadd=True
+    $ stack.py /data/Subaru/HSC/rerun/cosmos --output=/data/work/cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack --clobber-config --config doOverwriteOutput=True doOverwriteCoadd=True makeCoaddTempExp.doOverwrite=True
 
  
 
