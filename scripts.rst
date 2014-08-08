@@ -16,7 +16,8 @@ Example Scripts
    scripts/showVisitSkyMap
    scripts/toyShear
    scripts/rotateMomentToWcs
-
+   scripts/showBackground
+   
 .. These ones aren't in the TOC, but they still exist if some has saved a link in their browser
    
 .. toctree::
