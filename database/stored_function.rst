@@ -324,6 +324,11 @@ therefore, applicable only for CCD sources with mosaic-calibrated.
      - array of double precision (I_xx, I_yy, I_xy)
      - convert shape params to sky-coord based one
 
+   * - f_enum_frames_containing
+     - set of double precision and text (ra2000, decl2000, schema) [ra,decl in degree] 
+     - set of text, integer and double precision (frame_id, tract, x, y) [x,y in pixel coord]
+     - get all frames' id in which really contain the specified coordinate in them 
+
 example of sky2pix and pix2sky::
 
       -- get (x, y) coordinate of (RA,DEC)=(150.5 deg, 1.5 deg) 
@@ -347,6 +352,26 @@ example of shape_sky2pix and shape_pix2sky::
       FROM ssp_s14a0_wide_20140523a.frame_forcelist__deepcoadd__iselect
       limit 10;
 
+example of f_enum_frames_containing::
+
+      --- get frame_ids (CCD's id) which really include the point with coord of (RA,DEC)=(150.0,2.0) 
+      --- in UDEEP data 
+      select f_enum_frames_containing(150.0, 2.0, 'ssp_s14a0_udeep_20140523a')
+
+      select frame_id, tract, x, y from f_enum_frames_containing(150.0, 2.0, 'ssp_s14a0_udeep_20140523a');
+
+      ---
+      --- The procedure is doint the following processes. 
+      ---
+      --- 1. First we obtain the healpix index corresponding to (ra, dec).
+      --- 2. We then look into "frame_hpx11" table to obtain a list of frames
+      ---    that possess the healpix.
+      --- 3. Then we join "frame" table and "wcs" table with the condition
+      ---    that the "frame_id" is contained in the list we've got in (2).
+      --- 4. Finally, we select from the joined table those records
+      ---    whose WCSs transform (ra, dec) to pixel coord within themselves.
+
+      
 
 Setting Stored Functions in your own Database
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
