@@ -329,6 +329,11 @@ therefore, applicable only for CCD sources with mosaic-calibrated.
      - set of text, integer and double precision (frame_id, tract, x, y) [x,y in pixel coord]
      - get all frames' id in which really contain the specified coordinate in them 
 
+   * - f_enum_mosaics_containing
+     - set of double precision and text (ra2000, decl2000, schema) [ra,decl in degree] 
+     - set of text, integer and double precision (frame_id, tract, x, y) [x,y in pixel coord]
+     - get all coadds' id in which really contain the specified coordinate in them 
+
 example of sky2pix and pix2sky::
 
       -- get (x, y) coordinate of (RA,DEC)=(150.5 deg, 1.5 deg) 
@@ -371,7 +376,15 @@ example of f_enum_frames_containing::
       --- 4. Finally, we select from the joined table those records
       ---    whose WCSs transform (ra, dec) to pixel coord within themselves.
 
+example of f_enum_mosaics_containing::
       
+      --- get coadds' ids (tract, patch, filter) which really include the point with coord of (RA,DEC)=(150.0,2.0) 
+      --- in UDEEP data 
+
+      select f_enum_mosaics_containing(150.0, 2.0, 'ssp_s14a0_udeep_20140523a');
+
+      select tract, patch, filter01, x, y from f_enum_mosaics_containing(150.0, 2.0, 'ssp_s14a0_udeep_20140523a');
+
 
 Setting Stored Functions in your own Database
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
