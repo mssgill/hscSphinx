@@ -13,6 +13,20 @@ Filter Passband Variability
 
 - width, wavel center, both?
 
+.. image:: images/artifact_filterG.png
+   :width: 1.5in
+   
+.. image:: images/artifact_filterR.png
+   :width: 1.5in
+
+.. image:: images/artifact_filterI.png
+   :width: 1.5in
+
+.. image:: images/artifact_filterZ.png
+   :width: 1.5in
+
+.. image:: images/artifact_filterY.png
+   :width: 1.5in
 
 
 Dove tails and scattered light
