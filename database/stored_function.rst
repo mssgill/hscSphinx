@@ -222,6 +222,36 @@ Some utility functions for handling HSC information are prepared. They are (visi
      - set of text (date string: YYYY-MM-DD, time string: hh:mm:ss.sss)
      - transform MJD to string DATE-OBJ + UT
 
+   * - mag2flux
+     - double precision (AB magnitude)
+     - double precision (flux in erg/s/cm^2/Hz)
+     - transform AB magnitude to flux
+
+   * - mag2fluxJy
+     - double precision (AB magnitude)
+     - double precision (flux in Jansky)
+     - transform AB magnitude to flux in Jy
+
+   * - flux2mag
+     - double precision (flux in erg/s/cm^2/Hz)
+     - double precision (AB magnitude)
+     - transform flux to AB magnitude
+
+   * - fluxJy2mag
+     - double precision (flux in Jansky)
+     - double precision (AB magnitude)
+     - transform flux in Jy to AB magnitude
+
+   * - flux_cgs2Jy
+     - double precision (flux in erg/s/cm^2/Hz)
+     - double precision (flux in Jansky)
+     - transform flux in erg/s/cm^2/Hz to flux in Jy
+
+   * - flux_cgs2Jy
+     - double precision (flux in Jansky)
+     - double precision (flux in erg/s/cm^2/Hz)
+     - transform flux in Jy to flux in erg/s/cm^2/Hz
+
 example of frameid2visitccd and  visitccd2frameid::
 
       SELECT frameid2visitccd('HSCA00000301');
