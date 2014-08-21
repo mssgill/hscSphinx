@@ -80,7 +80,7 @@ example of weighted_mean::
       -- calculate weighted_mean of Sinc magnitudes with weight by error of Sinc magnitudes (mag_sinc_err)^{-2}
       -- Caution!! only double precision input is allowed currently and cast to numeric is essential
 
-      SELECT weighted_mean(mag_sinc, (1.0/mag_sinc_err)*(1.0/mag_sinc_err))     
+      SELECT weighted_mean(mag_sinc, (1.0/mag_sinc_err)*(1.0/mag_sinc_err))
         FROM ssp_s14a0_udeep_20140523a.frame_forcephoto__deepcoadd__iselect
        WHERE tract=0 and id=207876417126408 and mag_sinc_err > 0.0;
 
@@ -146,26 +146,26 @@ example of f_getobj_rectangle(ra, dec, delta_ra, delta_dec, table_name)::
       SELECT * from f_getobj_rectangle(150.403189, 1.485288, 2.0, 2.0, 'ssp_s14a0_udeep_20140523a.frame_forcelist__deepcoadd__iselect');
 
 
-Functions for utils 
+Functions for utils
 ^^^^^^^^^^^^^^^^^^^
-Some utility functions for handling HSC information are prepared. They are (visit, ccd) <-> FrameId conversion etc. 
+Some utility functions for handling HSC information are prepared. They are (visit, ccd) <-> FrameId conversion etc.
 
 .. list-table:: **User Defined Functions(Utils)**
 
    * - **Functions**
      - **Argument Type(s)**
      - **Return Type**
-     - **Description**   
+     - **Description**
 
    * - frameid2visitccd
-     - text 
+     - text
      - set of integer
      - transform of FrameId to (visit, ccd)
 
    * - visitccd2frameid
      - set of integer
      - text
-     - transform of (visit, ccd) to FrameId 
+     - transform of (visit, ccd) to FrameId
 
    * - hms2deg
      - text (hh:mm:ss.sss)
@@ -184,7 +184,7 @@ Some utility functions for handling HSC information are prepared. They are (visi
 
    * - equ2gal
      - set of double precision (ra, dec) J2000
-     - set of double precision (gallon, gallat) 
+     - set of double precision (gallon, gallat)
      - transform equatrial coordinates in degree to galactic coordinates in degree (based on SLALIB 2.5-4)
 
    * - gal2equ
@@ -201,7 +201,7 @@ Some utility functions for handling HSC information are prepared. They are (visi
      - text (datetime string: YYYY-MM-DDThh:mm:ss.sss)
      - double precision (mjd)
      - transform date-obs + UT to MJD
- 
+
    * - datetime2mjd
      - set of text (date string: YYYY-MM-DD, time string hh:mm:ss.sss)
      - double precision (mjd)
@@ -248,14 +248,14 @@ example of deg2hms and deg2dms::
 
 example for getting coordinates with hh:mm:ss.sss and +/-dd:mm:ss.ss rather than degree::
 
-      SELECT deg2hms(ra2000) as ra, deg2dms(decl2000) as dec 
-      FROM ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect 
+      SELECT deg2hms(ra2000) as ra, deg2dms(decl2000) as dec
+      FROM ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect
       LIMIT 10;
 
-example for getting objects' id, coordinates in degree and hms/dms formats which are within 20 arcsec from the center at 
+example for getting objects' id, coordinates in degree and hms/dms formats which are within 20 arcsec from the center at
 (RA, DEC) = (10:03:45.000, +02:00:00.00) in photoobj_mosaic table of UDEEP survey. ::
 
-      SELECT id, ra2000, decl2000, deg2hms(ra2000) as ra, deg2dms(decl2000) as dec 
+      SELECT id, ra2000, decl2000, deg2hms(ra2000) as ra, deg2dms(decl2000) as dec
       FROM f_getobj_circle(hms2deg('10:03:45.000'), dms2deg('+02:00:00.00'), 20.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect');
 
 example of equ2gal and gal2equ::
@@ -264,12 +264,12 @@ example of equ2gal and gal2equ::
 
       SELECT gal2equ(230.0, 20.0);
 
-      -- get the objects' id, ra, dec and galactic coordinates which are within 20 arcsec from the center at 
-      -- (RA, DEC) = (10:03:45.000, +02:00:00.00) in photoobj_mosaic table of UDEEP survey. 
+      -- get the objects' id, ra, dec and galactic coordinates which are within 20 arcsec from the center at
+      -- (RA, DEC) = (10:03:45.000, +02:00:00.00) in photoobj_mosaic table of UDEEP survey.
 
-      SELECT pm.id, pm.ra2000, pm.decl2000, e2g.l as gallon, e2g.b as gallat 
-      FROM 
-         f_getobj_circle(hms2deg('10:03:45.000'), dms2deg('+02:00:00.00'), 20.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect') pm, 
+      SELECT pm.id, pm.ra2000, pm.decl2000, e2g.l as gallon, e2g.b as gallat
+      FROM
+         f_getobj_circle(hms2deg('10:03:45.000'), dms2deg('+02:00:00.00'), 20.0, 'ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect') pm,
          equ2gal(pm.ra2000, pm.decl2000) e2g
       ;
 
@@ -283,7 +283,7 @@ example of date2mjd and mjd2date::
 example of datetime2mjd and mjd2datetime, mjd2datetime2::
 
       SELECT datetime2mjd('2014-07-17T12:12:12.000');
-      
+
       SELECT datetime2mjd('2014-07-17', '12:12:12.000');
 
       SELECT mjd2datetime(56855.5084722222);
@@ -291,18 +291,18 @@ example of datetime2mjd and mjd2datetime, mjd2datetime2::
       SELECT mjd2datetime2(56855.5084722222);
 
 
-Functions for using WCS  
+Functions for using WCS
 ^^^^^^^^^^^^^^^^^^^^^^^^
-Conversion of sky to pixel coordinate and vice versa is available by using database only. 
-Currently these functions use the table 'wcs', which is based on wcs*.fits coming from mosaicking, 
-therefore, applicable only for CCD sources with mosaic-calibrated. 
+Conversion of sky to pixel coordinate and vice versa is available by using database only.
+Currently these functions use the table 'wcs', which is based on wcs*.fits coming from mosaicking,
+therefore, applicable only for CCD sources with mosaic-calibrated.
 
 .. list-table:: **User Defined Functions(WCS related)**
 
    * - **Functions**
      - **Argument Type(s)**
      - **Return Type**
-     - **Description**   
+     - **Description**
 
    * - sky2pix
      - set of double precision, text and integer (ra, dec, schema, tract, frame-id) [ra and dec in degree]
@@ -316,32 +316,42 @@ therefore, applicable only for CCD sources with mosaic-calibrated.
 
    * - shape_sky2pix
      - set of double precision, text and integer (shape_array, ra, dec, schema, tract, frame-id) [shape_array (I_xx, I_yy, I_xy), ra and dec in degree]
-     - array of double precision (Is_xx, Is_yy, Is_xy) in degree^2
-     - convert shape params to pixel-coord based one
+     - array of double precision (Is_xx, Is_yy, Is_xy) in pixel^2
+     - convert shape params (in arcsec^2) to pixel-coord based one
 
    * - shape_pix2sky
-     - set of double precision, text and integer (shape_array, x, y, schema, tract, frame-id)[shape_array (Is_xx, Is_yy, Is_xy), ra and dec in degree]
-     - array of double precision (I_xx, I_yy, I_xy)
-     - convert shape params to sky-coord based one
+     - set of double precision, text and integer (shape_array, x, y, schema, tract, frame-id)[shape_array (Is_xx, Is_yy, Is_xy)]
+     - array of double precision (I_xx, I_yy, I_xy) in arcsec^2
+     - convert shape params (in pixel^2) to sky-coord based one
+
+   * - shape_err_sky2pix
+     - set of double precision, text and integer (err_array, ra, dec, schema, tract, frame-id) [err_array is covariance of (I_xx, I_yy, I_xy) arranged as (xx-xx, xx-yy, yy-yy, xx-xy, yy-xy, xy-xy), ra and dec in degree]
+     - array of double precision (xx-xx, xx-yy, yy-yy, xx-xy, yy-xy, xy-xy) in pixel^4 that is the covariance of (Is_xx, Is_yy, Is_xy)
+     - convert the covariance of shape params (in arcsec^4) to pixel-coord based one
+
+   * - shape_err_pix2sky
+     - set of double precision, text and integer (err_array, x, y, schema, tract, frame-id)[err_array is covariance of (Is_xx, Is_yy, Is_xy) arranged as (xx-xx, xx-yy, yy-yy, xx-xy, yy-xy, xy-xy)]
+     - array of double precision (xx-xx, xx-yy, yy-yy, xx-xy, yy-xy, xy-xy) in arcsec^4 that is the covariance of (I_xx, I_yy, I_xy)
+     - convert the covariance of shape params (in pixel^4) to sky-coord based one
 
    * - f_enum_frames_containing
-     - set of double precision and text (ra2000, decl2000, schema) [ra,decl in degree] 
+     - set of double precision and text (ra2000, decl2000, schema) [ra,decl in degree]
      - set of text, integer and double precision (frame_id, tract, x, y) [x,y in pixel coord]
-     - get all frames' id in which really contain the specified coordinate in them 
+     - get all frames' id in which really contain the specified coordinate in them
 
    * - f_enum_mosaics_containing
-     - set of double precision and text (ra2000, decl2000, schema) [ra,decl in degree] 
+     - set of double precision and text (ra2000, decl2000, schema) [ra,decl in degree]
      - set of text, integer and double precision (frame_id, tract, x, y) [x,y in pixel coord]
-     - get all coadds' id in which really contain the specified coordinate in them 
+     - get all coadds' id in which really contain the specified coordinate in them
 
 example of sky2pix and pix2sky::
 
-      -- get (x, y) coordinate of (RA,DEC)=(150.5 deg, 1.5 deg) 
+      -- get (x, y) coordinate of (RA,DEC)=(150.5 deg, 1.5 deg)
       -- on image data with tract is 0 and frame_id 'HSCA00188753'
 
       SELECT sky2pix(150.5, 1.5,'ssp_s14a0_udeep_20140523a', 0, 'HSCA00188753');
 
-      -- get (ra, dec) coordinate of (x,y)=(1750.325,359.630)  
+      -- get (ra, dec) coordinate of (x,y)=(1750.325,359.630)
       -- on image data with tract is 0 and frame_id 'HSCA00188753'
 
       SELECT pix2sky(1750.325,359.630,'ssp_s14a0_udeep_20140523a', 0, 'HSCA00188753');
@@ -349,24 +359,24 @@ example of sky2pix and pix2sky::
 
 example of shape_sky2pix and shape_pix2sky::
 
-      SELECT shape_pix2sky(shape_sdss, centroid_sdss_x, centroid_sdss_y, 'ssp_s14a0_wide_20140523a', tract, frame_id) 
+      SELECT shape_pix2sky(shape_sdss, centroid_sdss_x, centroid_sdss_y, 'ssp_s14a0_wide_20140523a', tract, frame_id)
       FROM ssp_s14a0_wide_20140523a.frame_forcelist__deepcoadd__iselect
       limit 10;
 
-      SELECT shape_sdss, shape_sky2pix(shape_pix2sky(shape_sdss, centroid_sdss_x, centroid_sdss_y, 'ssp_s14a0_wide_20140523a', tract, frame_id),  ra2000, decl2000, 'ssp_s14a0_wide_20140523a', tract, frame_id) 
+      SELECT shape_sdss, shape_sky2pix(shape_pix2sky(shape_sdss, centroid_sdss_x, centroid_sdss_y, 'ssp_s14a0_wide_20140523a', tract, frame_id),  ra2000, decl2000, 'ssp_s14a0_wide_20140523a', tract, frame_id)
       FROM ssp_s14a0_wide_20140523a.frame_forcelist__deepcoadd__iselect
       limit 10;
 
 example of f_enum_frames_containing::
 
-      --- get frame_ids (CCD's id) which really include the point with coord of (RA,DEC)=(150.0,2.0) 
-      --- in UDEEP data 
+      --- get frame_ids (CCD's id) which really include the point with coord of (RA,DEC)=(150.0,2.0)
+      --- in UDEEP data
       select f_enum_frames_containing(150.0, 2.0, 'ssp_s14a0_udeep_20140523a')
 
       select frame_id, tract, x, y from f_enum_frames_containing(150.0, 2.0, 'ssp_s14a0_udeep_20140523a');
 
       ---
-      --- The procedure is doint the following processes. 
+      --- The procedure is doint the following processes.
       ---
       --- 1. First we obtain the healpix index corresponding to (ra, dec).
       --- 2. We then look into "frame_hpx11" table to obtain a list of frames
@@ -377,9 +387,9 @@ example of f_enum_frames_containing::
       ---    whose WCSs transform (ra, dec) to pixel coord within themselves.
 
 example of f_enum_mosaics_containing::
-      
-      --- get coadds' ids (tract, patch, filter) which really include the point with coord of (RA,DEC)=(150.0,2.0) 
-      --- in UDEEP data 
+
+      --- get coadds' ids (tract, patch, filter) which really include the point with coord of (RA,DEC)=(150.0,2.0)
+      --- in UDEEP data
 
       select f_enum_mosaics_containing(150.0, 2.0, 'ssp_s14a0_udeep_20140523a');
 
