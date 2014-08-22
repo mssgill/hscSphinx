@@ -33,7 +33,7 @@ Contents:
    glossary
    camera
    machine-specific
-   
+   developer   
 
 Quick Links:
    
