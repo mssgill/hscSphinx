@@ -51,6 +51,7 @@ Quick Links:
 .. toctree::
    :hidden:
 
+   developer   
    known_artifacts
    afw
    faq
