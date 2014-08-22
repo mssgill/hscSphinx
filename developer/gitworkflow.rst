@@ -131,3 +131,27 @@ fictional user ``jdoe``.
     
 * Put the issue into **"Done".**
 
+
+
+Commit Messages
+---------------
+
+(From [Hsc_software 3243])
+
+* Please give each commit a summary that makes sense in the context of
+  the entire package (not just the issue you're working on).  The
+  summary is the first line of the commit message, and is an integral
+  part of the git version control system (e.g., "git log --oneline"
+  shows only the summary, "git cherry -v" shows only the summary).
+  Good summaries allow me to easily identify commits that need to be
+  moved between releases.  For more good advice about commit messages,
+  see `<http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_
+
+* Please try to keep git commits self-contained.  As far as possible,
+  each feature should be contained within one commit, and each commit
+  should contain only one feature.  This simplifies the exchange of
+  commits between releases.  A useful tool for this is "git gui"
+  (which you may have to install separately from the git core with
+  your linux distro's package manager), which allows you to separate
+  work into different commits by line or by hunk.  If you're working
+  remotely and can't use a GUI, "git add -p" is useful.
