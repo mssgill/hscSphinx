@@ -14,6 +14,28 @@ Tabs with light blue color are for tables of image meta data, and green ones for
 User can do the search on the table by clicking the 'magnify glass' mark at the lower left corner, 
 and also do reloading and setting the page size to be displayed. 
 
+.. warning::
+
+     * Current schema browser is not compatible with some types of web browser softwares. 
+       We've confirmed the functionality with the following sets of browsers/OS in the development. 
+
+          ======= =======
+          OS      Browser
+          ======= =======
+          Linux   Firefox
+          Linux   Chrome
+          MacOS   Safari
+          MacOS   Chrome
+          MacOS   Firefox
+          Windows Firefox
+          Windows Chrome
+          ======= =======
+
+       Microsoft IE is not good for the use currently.
+
+     * The loading is a little too slow.. We're planning to improve the speed of browsing in the next release. 
+    
+ 
 Scripts in hscDb package
 ------------------------
 If the user installed HSC pipeline, hscDb package is available and there are 2 scripts for enabling 
