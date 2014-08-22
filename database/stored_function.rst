@@ -247,7 +247,7 @@ Some utility functions for handling HSC information are prepared. They are (visi
      - double precision (flux in Jansky)
      - transform flux in erg/s/cm^2/Hz to flux in Jy
 
-   * - flux_cgs2Jy
+   * - flux_Jy2cgs
      - double precision (flux in Jansky)
      - double precision (flux in erg/s/cm^2/Hz)
      - transform flux in Jy to flux in erg/s/cm^2/Hz
@@ -320,6 +320,26 @@ example of datetime2mjd and mjd2datetime, mjd2datetime2::
 
       SELECT mjd2datetime2(56855.5084722222);
 
+example of mag2flux and flux2mag::
+
+      -- Compare flux/magnitude in DB with those computed by the conversion functions
+      SELECT iflux_sinc, mag2flux(imag_sinc), imag_sinc, flux2mag(iflux_sinc)
+      FROM ssp_s14a0_wide_20140523a.photoobj_mosaic__deepcoadd__iselect
+      LIMIT 10;
+
+example of flux_Jy2cgs and fluxJy2mag::
+
+      -- Select those objects that are brighter than 1e-6 Jy
+      SELECT iflux_sinc
+      FROM ssp_s14a0_wide_20140523a.photoobj_mosaic__deepcoadd__iselect
+      WHERE iflux_sinc > flux_Jy2cgs(1e-6)
+      LIMIT 10;
+
+      -- or,
+      SELECT imag_sinc
+      FROM ssp_s14a0_wide_20140523a.photoobj_mosaic__deepcoadd__iselect
+      WHERE imag_sinc < fluxJy2mag(1e-6)
+      LIMIT 10;
 
 Functions for using WCS
 ^^^^^^^^^^^^^^^^^^^^^^^^
