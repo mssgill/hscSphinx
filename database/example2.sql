@@ -6,7 +6,7 @@
 --   --> Remove 'LIMIT 10' for your query
 --   --> Edit the schema name 'ssp_s14a0_udeep_20140523a' for your query.
 SELECT
-    id, ra2000, decl2000,
+    object_id, ra2000, decl2000,
     gmag_sinc, gmag_sinc_err,
     rmag_sinc, rmag_sinc_err,
     imag_sinc, imag_sinc_err,

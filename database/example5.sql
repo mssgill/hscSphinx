@@ -2,13 +2,13 @@
 ----- based on Richards et al. (2002) AJ 123, 2945 
 ----- including i band based classification of extendedness (PSF-like objects) 
 SELECT 
-      pm.id, pm.ra2000, pm.decl2000, pm.gmag_kron, pm.gmag_kron_err, 
+      pm.object_id, pm.ra2000, pm.decl2000, pm.gmag_kron, pm.gmag_kron_err, 
       pm.rmag_kron, pm.rmag_kron_err, pm.imag_kron, pm.imag_kron_err, 
       pm.zmag_kron, pm.zmag_kron_err, pm.ymag_kron, pm.ymag_kron_err 
 FROM ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm, 
      ssp_s14a0_udeep_20140523a.mosaic_forcelist__deepcoadd__iselect mfi 
 WHERE pm.tract=mfi.tract and pm.patch=mfi.patch and 
-      pm.pointing=mfi.pointing and pm.id = mfi.object_id 
+      pm.pointing=mfi.pointing and pm.object_id = mfi.object_id 
   and mfi.filter01='HSC-I' 
   and mfi.classification_extendedness = 0  --- not extended
 -----  the follwing constraints are similar to those of Richards et al. (2002) AJ 123, 2945

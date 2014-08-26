@@ -7,7 +7,7 @@
 --   --> Remove 'LIMIT 10' for your query
 --   --> Edit the schema name 'ssp_s14a0_udeep_20140523a' for your query.
 SELECT
-    pm.id, pm.ra2000, pm.decl2000,
+    pm.object_id, pm.ra2000, pm.decl2000,
     pm.gmag_sinc, pm.gmag_sinc_err,
     pm.rmag_sinc, pm.rmag_sinc_err,
     pm.imag_sinc, pm.imag_sinc_err,
@@ -17,7 +17,7 @@ FROM
     ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm,
     ssp_s14a0_udeep_20140523a.mosaic_forceflag_i__deepcoadd__iselect iflg 
 WHERE
-    pm.tract = iflg.tract AND pm.patch = iflg.patch AND pm.pointing = iflg.pointing AND pm.id = iflg.object_id 
+    pm.tract = iflg.tract AND pm.patch = iflg.patch AND pm.pointing = iflg.pointing AND pm.object_id = iflg.object_id 
     AND 
     pm.imag_sinc < 25.5
     AND

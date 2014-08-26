@@ -10,7 +10,7 @@
 --   --> Edit the schema name 'ssp_s14a0_udeep_20140523a' for your query.
 
 SELECT
-        id, ra2000, decl2000,
+        object_id, ra2000, decl2000,
         imag_kron, imag_kron_err,
         ymag_kron, ymag_kron_err,
         imag_kron - ymag_kron AS i_y
