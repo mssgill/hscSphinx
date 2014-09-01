@@ -5,6 +5,8 @@ How to restore database dump to PostgreSQL on your site
                                        2014.07.10  Updated
                                        2014.07.14  Updated 
                                        2014.08.01  Updated
+                                       2014.08.23  Updated
+                                       2014.09.01  Updated
 
 This is the document for the user who want to have HSC SSP early data release(EDR) 
 database contents on their own machine. 
@@ -85,20 +87,20 @@ a free relational database server software, we've prepared the dump file of EDR.
 
    There are 2 dump files, one for COSMOS and another for GAMA fields. 
 
-     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140731.dmp.gz   (~94GB)
-     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140731.dmp.gz    (~178GB)
+     (COSMOS) pgdump_ssp_s14a0_udeep_20140523a_20140901.dmp.gz   (~100GB)
+     (GAMA)   pgdump_ssp_s14a0_wide_20140523a_20140901.dmp.gz    (~189GB)
 
 3. Restore the dump file into your database instance. 
 
    Unzip the dump files by using gunzip. 
 
-   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140731.dmp' and   
-   'pgdump_ssp_s14a0_wide_20140523a_20140731.dmp'. 
+   The name of dump files are 'pgdump_ssp_s14a0_udeep_20140523a_20140901.dmp' and   
+   'pgdump_ssp_s14a0_wide_20140523a_20140901.dmp'. 
 
    You can restore these dump into your database by the following command. 
 
-   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140731.dmp  
-   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_wide_20140523a_20140731.dmp  
+   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140901.dmp  
+   % psql -U hscana -d dr_early -h your_hostname < /path/to/pgdump_ssp_s14a0_wide_20140523a_20140901.dmp  
 
    It will take for a while......
 
