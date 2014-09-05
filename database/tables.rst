@@ -78,10 +78,11 @@ Table Name                  FITS Data      Description                          
 The tables with corresponding FITS data contain all records of FITS BINTABLE, one record per one 
 measurements for the object.  
 Each table will be accompanied by '**photo**' and '**coord**' tables, in which various types of magnitudes, 
-fluxes(in erg/cm^2/Hz) or (RA, DEC) coordinates of centroids ('**coord**' tables have not been implemented 
+fluxes(in erg/cm^2/Hz/sec) or (RA, DEC) coordinates of centroids ('**coord**' tables have not been implemented 
 for S14A0 release, yet). Those tables consist of a set, with common primary keys. For '**frame_*list**', 
 FRAME_ID is the primary key, while 'tract', 'patch', 'filter', 'poinitng' and 'id' are those for 
-'**mosaic_*list**' tables. In near future, primary key will be set only for 'id'. 
+'**mosaic_*list**' tables. On the tables for objects with forced photometry, like '**frame_forcelist**' or '**frame_forcephoto**' 
+and '**mosaic_forcelist**' or '**mosaic_forcephoto**', 'id' should be replaced by 'object_id'.
 
 Summary tables are produced from force_photo and force_coord for CCD (frame) or Coadd (mosaic). 
 '**Photoobj_mosaic**' table compile all records for an object (for about some filters) in '**mosaic_force_photo**' 
@@ -239,17 +240,15 @@ Getting id, RA, DEC, psf magnitudes and their errors for g,r,i,z,y bands in coad
 with good centroid measurement in i-band image and i-band psf magnitude brighter than 24.0. ::
 
    SELECT  
-        pm.id, pm.ra2000, pm.decl2000, pm.gmag_psf, pm.gmag_psf_err, pm.rmag_psf, pm.rmag_psf_err,  
+        pm.object_id, pm.ra2000, pm.decl2000, pm.gmag_psf, pm.gmag_psf_err, pm.rmag_psf, pm.rmag_psf_err,  
 	pm.imag_psf, pm.imag_psf_err, pm.zmag_psf, pm.zmag_psf_err,  pm.ymag_psf, pm.ymag_psf_err
    FROM
         ssp_s14a0_udeep_20140523a.photoobj_mosaic__deepcoadd__iselect pm,  -- alias pm for 'photoobj_mosaic' table
         ssp_s14a0_udeep_20140523a.mosaic_forceflag_i__deepcoadd__iselect mff  -- alias mff for 'mosaic_forceflag_i' view 
    WHERE
             pm.tract = mff.tract and pm.patch = mff.patch                              -- joining pm with mff 
-            and pm.pointing = mff.pointing and pm.id = mff.id                          -- joining pm with mff
+            and pm.pointing = mff.pointing and pm.object_id = mff.object_id            -- joining pm with mff
 	and pm.imag_psf < 24.0 and mff.centroid_sdss_flags is not True                 -- magnitude limit and flag filtering 
 
-'**photoobj_mosaic**' and '**mosaic_forceflag**' tables have the common primary keys (tract, patch, pointing, id), then 
+'**photoobj_mosaic**' and '**mosaic_forceflag**' tables have the common primary keys (tract, patch, pointing, object_id), then 
 use these columns for joining them. 'tract' and 'patch' will be eliminated from primary keys in the future. 
-
-
