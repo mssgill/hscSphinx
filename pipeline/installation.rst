@@ -94,14 +94,19 @@ following environment variables:
 Mac OSX (10.7 and later)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-An additional flag is required so as to use the clang compiler rather
-than the (old) gcc front-end: SCONSFLAGS+=" cc=clang"
- 
+Mac OSX includes an old gcc front-end to clang that doesn't parse
+modern C++ all that well.  To get around this, set::
+
+    export CC=clang
+    export CXX=clang++
+    SCONSFLAGS+=" cc=clang"
+
 You also need to tell eups that you're going to use the "system"
 version of some of the requirements::
  
    cd /work
    git clone git://hsca.ipmu.jp/repos/devenv/buildFiles.git
+   eups declare gcc system -r none -m none
    eups declare python system -r none -m none -L buildFiles/python/python.cfg
    eups declare libjpeg system -r none -m none -L buildFiles/libjpeg/libjpeg.cfg
  
@@ -112,7 +117,7 @@ knows to use these::
     gmp     None
     mpfr    None
     mpc     None
-    gcc     None
+    gcc     system
     libjpeg system
 
     
@@ -128,25 +133,6 @@ add some additional flags to your environment variables (see also
     SCONSFLAGS+=" LINKFLAGS='-Wl,--no-as-needed'"
 
     
-astrometry.net on Mac OSX 10.8
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Building astrometry.net 0.30 fails on Mac OSX 10.8.3, due to a bad sed
-command in the blind/Makefile.  We hope to upgrade to a newer version
-of astrometry.net soon, where there are various updates, including a
-fix to the Makefile.  In the mean time, the suggested workaround is to
-apply the following patch to
-$EUPS_PATH/EupsBuildDir/DarwinX86/astrometry_net-0.30/astrometry.net-0.30/blind/Makefile:
-
-Download :download:`an30.patch`.
-
-.. literalinclude:: an30.patch
-
- 
-Then install manually following the build file
-$EUPS_PATH/EupsBuildDir/DarwinX86/astrometry_net-0.30/astrometry_net-0.30.build
- 
- 
 Redhat machines from Mac OSX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
