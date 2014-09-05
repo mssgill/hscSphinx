@@ -10,3 +10,8 @@ Developer
 
 
    developer/gitworkflow
+
+.. toctree::
+   :hidden:
+   
+   developer/pipeline_structure
