@@ -1,5 +1,5 @@
 
--- Get an object where Galactic extinction corrected sinc mag of r band brighter than 25.5 mag, 
+-- Get objects where Galactic extinction corrected sinc mag of i band brighter than 25.5 mag, 
 -- and -0.5 < r - i < 0.5 and g - r < 2.0 and centroid well determined and no error 
 -- in measuring sinc fluxes on i-band coadd image.
 

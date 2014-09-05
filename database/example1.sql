@@ -1,8 +1,8 @@
 
 
 -- Simple area search based on the range of RA and DEC getting all object
--- with r band Kron magnitudes are smaller than 25.5, and in the area in
--- the range RA J2000 between 210.0 and 215.0 degrees and DEC J2000 2.3
+-- with i band Kron magnitudes smaller than 25.5, and in the area with 
+-- the range of RA J2000 between 210.0 and 215.0 degrees and DEC J2000 0.3
 -- and 2.31 degrees.
 
 -- WARNING:
