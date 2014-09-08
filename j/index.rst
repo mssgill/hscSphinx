@@ -11,20 +11,18 @@ Welcome to HSC Data's Japanese documentation!
 
 .. note::
 
-    Japanese translation is underway, but not all sections 
-    have complete translation at this time.
+    日本語版は製作中です。一部の文書が利用可能です。
 
-This site hosts information relevant to running the HSC pipeline and
-handling the data products in their various forms.  We've tried (are
-trying) to include any and all types of information that the science
-collaborators may find useful or helpful in working with the data.
-There is also a `PDF summary of pipeline ouputs
-<http://hsca.ipmu.jp/datainfo.php>`_ which contains some more specific
-information about the pipeline products. If you can't find what you're
-looking for, please contact the software group and let us know!  We
-can be found at <hsc_software@astro.princeton.edu>.
+このサイトでは、HSCパイプラインを走らせたり、処理済データを扱うため
+の情報を掲載します。共同研究者がHSCデータで作業するにあたって、
+便利、助かる、と思えるような情報であればどのようなものであって載せられると
+よいと思っています。
+`PDF版のパイプライン出力についての文書 <http://hsca.ipmu.jp/datainfo.php>`_ 
+もあります。
+もしもこんな情報が見当たらないといったことがあれば
+開発者メンバーににお知らせ下さい。
 
-This site is also available in :ref:`English <en_index>`.
+英語版はこちらにあります :ref:`English <en_index>`.
 
 Contents:
 

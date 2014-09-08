@@ -8,7 +8,7 @@ Pipeline
    :maxdepth: 2
 
    pipeline/background
-
+   pipeline/data_repo
    
 .. these sections are still in English
    
@@ -16,7 +16,6 @@ Pipeline
    :hidden:
    
    pipeline/installation
-   pipeline/data_repo
    pipeline/detrend
    pipeline/singleframe_proc
    pipeline/coadd_proc
