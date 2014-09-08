@@ -105,7 +105,7 @@ a free relational database server software, we've prepared the dump file of EDR.
    It will take for a while......
 
   The following command hopefully will work also. 
-  (gunzip -c /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140709.dmp.gz |  psql -U hscana -d dr_early -h your_hostname) 
+  (gunzip -c /path/to/pgdump_ssp_s14a0_udeep_20140523a_20140901.dmp.gz |  psql -U hscana -d dr_early -h your_hostname) 
 
 4. Check the accessibility to your restored tables. 
 

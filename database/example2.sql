@@ -1,6 +1,6 @@
 
--- Get an object where sinc mag of r band smaller than 25.5 mag, and -0.5
--- < r - i < 0.5 and g - r < 2.0.
+-- Get objects where sinc mag of i band smaller than 25.5 mag, and 
+-- -0.5 < r - i < 0.5 and g - r < 2.0.
 
 -- WARNING:
 --   --> Remove 'LIMIT 10' for your query
