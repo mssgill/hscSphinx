@@ -67,6 +67,16 @@ fictional user ``jdoe``.
           f740de0 Add fancy feature #1
           < other log entries >
 
+  * If you rebase a branch which has already been pushed to the
+    main Git repo, you will need ``--force`` to push the rebased
+    working copy.  Note that doing this will rewrite the history in
+    the main Git repository.  It's fine to do this on your personal
+    ``u/jdoe/HSC-1234`` branch, but **you should never use** ``--force``
+    **on the master branch** (or any branch which is shared with other
+    developers).::
+
+          $ git push --force
+
           
 * **Put the issue into "In Review" in Jira.** Choose a suitable
   reviewer (don't need to change the assignee).  Be sure to tell them
