@@ -10,7 +10,7 @@ Online schema browser is available on the NAOJ online
 `Schema Browser <https://hscdata.mtk.nao.ac.jp:4443/schema_browser2/schema_browser.html>`_. 
 It shows column names, format in database, descriptions, value format, unit, DB key information and 
 corresponding names in HSC pipeline. The target table can be switched by clicking the table names under the 
-trees of the database schema, like 'ssp_s14a0_udeep_20140523a'(for UDEEP COSMOS), in the right panel.
+trees of the database schema, like 'ssp_s14a0_udeep_20140523a'(for UDEEP COSMOS), in the left panel.
 Please read the top page of this `Schema Browser <https://hscdata.mtk.nao.ac.jp:4443/schema_browser2/schema_browser.html>`_ 
 for the detail of usage. 
 
