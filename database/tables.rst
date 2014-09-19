@@ -207,7 +207,7 @@ we are using 3 tables '**frame_sourcelist**', '**frame_sourcephoto**' and '**fra
 for joining. For joining the tables, common primary keys should be used after 'where' clause. 
 In this example, 'frame_id' and 'id' are used for joining fs and fp tables, instead only 'frame_id' 
 for fs and ft. Primary keys can be identified in the NAOJ online 
-`Schema Browser <https://hscdata.mtk.nao.ac.jp:4443/schema_browser/hsc/hsc_online_schema_tableonly.html>`_ 
+`Schema Browser <https://hscdata.mtk.nao.ac.jp:4443/schema_browser2/schema_browser.html>`_ 
 by the column 'DB keys' set to 'P'. 
 As values of 'visit' and 'ccd' for identifying the CCD image is only stored 
 in '**frame**' table, it is also joined for this example. If you know the frame_id like 

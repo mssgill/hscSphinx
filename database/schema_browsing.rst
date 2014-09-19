@@ -7,35 +7,13 @@ Schema Browsing of HSC SSP database
 Online Schema Browser at NAOJ 
 -----------------------------
 Online schema browser is available on the NAOJ online 
-`Schema Browser <https://hscdata.mtk.nao.ac.jp:4443/schema_browser/hsc/hsc_online_schema_tableonly.html>`_. 
+`Schema Browser <https://hscdata.mtk.nao.ac.jp:4443/schema_browser2/schema_browser.html>`_. 
 It shows column names, format in database, descriptions, value format, unit, DB key information and 
-corresponding names in HSC pipeline. The target table can be switched by clicking the tabs on upper side. 
-Tabs with light blue color are for tables of image meta data, and green ones for catalog tables. 
-User can do the search on the table by clicking the 'magnify glass' mark at the lower left corner, 
-and also do reloading and setting the page size to be displayed. 
+corresponding names in HSC pipeline. The target table can be switched by clicking the table names under the 
+trees of the database schema, like 'ssp_s14a0_udeep_20140523a'(for UDEEP COSMOS), in the right panel.
+Please read the top page of this `Schema Browser <https://hscdata.mtk.nao.ac.jp:4443/schema_browser2/schema_browser.html>`_ 
+for the detail of usage. 
 
-.. warning::
-
-     * Current schema browser is not compatible with some types of web browser softwares. 
-       We've confirmed the functionality with the following sets of browsers/OS in the development. 
-
-          ======= =======
-          OS      Browser
-          ======= =======
-          Linux   Firefox
-          Linux   Chrome
-          MacOS   Safari
-          MacOS   Chrome
-          MacOS   Firefox
-          Windows Firefox
-          Windows Chrome
-          ======= =======
-
-       Microsoft IE is not good for the use currently.
-
-     * The loading is a little too slow.. We're planning to improve the speed of browsing in the next release. 
-    
- 
 Scripts in hscDb package
 ------------------------
 If the user installed HSC pipeline, hscDb package is available and there are 2 scripts for enabling 
@@ -66,5 +44,3 @@ Using psql
 As already explained in :ref:`Basic PostgreSQL<postgres_intro>`, it is easy to use 'psql' command 
 for accessing the database and '\dt+', '\dv+', '\di+' command for browsing information of tables, views 
 and indeces. 
-
-
