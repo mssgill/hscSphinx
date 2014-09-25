@@ -16,7 +16,7 @@ HSC Forum         <http://hsca.ipmu.jp:8080/>
 HSC Trac          <http://hsc-gw1.mtk.nao.ac.jp:8000/>
     We use Trac as our bug tracker for HSC.  If you find a bug in the code, you can file a ticket to report it to the developers.  This provides the developers with an organized system for managing issues, bug fixes, and development.  Please let us know if you find a bug.
 
-Schema Browser    <http://hsc-gw1.mtk.nao.ac.jp/schema_browser/hsc_online_schema_tableonly.html>
+Schema Browser    <https://hscdata.mtk.nao.ac.jp:4443/schema_browser2/schema_browser.html>
     The schema (layout of data tables) for our database are all listed here in an interactive display.  As the project evolves, we're likely to change field names, and this site will (should) always contain the latest information about the schema to help you construct your queries.
 
 Doxygen           <http://hsca.ipmu.jp/doxygen/>
