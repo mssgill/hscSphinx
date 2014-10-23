@@ -4,6 +4,11 @@
 PipeQA
 ======
 
+.. contents::
+   :local:
+   :depth: 2
+
+
 
 Quick Start
 -----------
