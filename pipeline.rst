@@ -14,7 +14,8 @@ Pipeline
    pipeline/singleframe_proc
    pipeline/coadd_proc
    pipeline/error 
-
+   pipeline/pipeQa
+   
    pipeline/quick
 
 .. toctree::
