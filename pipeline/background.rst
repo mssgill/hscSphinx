@@ -393,7 +393,9 @@ Ranges and Multiple ``--id`` values
 A dataId will also let you specify a range of values, or a set of
 separate discrete values.  Pay careful attention to the ``:`` (step
 size) notation as HSC visit numbers are incremented by 2 (always
-even).
+even).  If you're interested in running a subset of the CCDs, the CCD
+numbers for some standard patterns are available :ref:`here
+<hscccds>`.
 
 * ``..`` denotes are range of values.  E.g. visit 1000 with all CCDs
   between 40 and 60, inclusive::

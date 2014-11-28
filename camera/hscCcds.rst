@@ -3,7 +3,9 @@
 ========
 HSC CCDs
 ========
-   
+
+.. _hscccds:
+
 It's often useful to run a subset of CCDs quickly.  You can specify
 e.g. CCDs 49 and 50 with ``--id ccd=49^50``, but other parts of the
 camera may be of interest. Below are various patterns which may be
