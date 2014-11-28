@@ -10,4 +10,4 @@ HSC Camera
    camera/layout
    camera/flat
    camera/nonlinear
-
+   camera/hscCcds
