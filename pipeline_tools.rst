@@ -3,6 +3,8 @@
 Pipeline Tools
 ==============
 
+.. note:: See also Jim Bosch's IPython notebook summary of `HSC Pipeline Outputs <http://www.astro.princeton.edu/~jbosch/hsc/HSC-Pipeline-Outputs.html>`_;
+
 The HSC data reduction pipeline is built on a framework of software
 tools which are under active development for the LSST pipeline.  For
 those who are interested in working with data catalog information, the
