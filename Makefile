@@ -51,11 +51,15 @@ clean:
 
 
 install:
+	tar cvf developer/simpleTools.tar developer/simpleTools
+	@echo
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) /var/www/html/hscsphinx
 	@echo
 	@echo "Build finished.  The HTML pages were *installed* in /var/www/html/hscsphinx."
 
 html:
+	tar cvf developer/simpleTools.tar developer/simpleTools
+	@echo
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
