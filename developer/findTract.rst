@@ -14,6 +14,14 @@ E.g. to get the tract for visit 1234, CCD 50 from ``myrerun`` in ``/path/to/data
 
     $ ./findTract.py /path/to/data --rerun=myrerun --id visit=1234 ccd=50
 
+For a script this simple, you'd certainly be able to do write command
+line interface yourself with argparse, and you could create your own
+``butler`` to fetch the data.  But, by using the pipeline
+``CmdLineTask`` you get these features by default, and you also gain
+built-in parallel processing with the ``-j`` option.  With very little
+effort, the script will run in the same way that all the pipeline
+tools run.
+
 The key points are to inherit from ``CmdLineTask``, and define a
 ``run()`` method which takes a ``dataRef``.  To use this new Task as a
 script, be sure to include the final block which calls
