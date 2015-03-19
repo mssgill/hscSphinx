@@ -160,8 +160,7 @@ files will be deleted and which lines will be dropped from the
 database, run with the ``-n`` option.  This will report the plan, but
 will not actually remove anything.
 
-``-p`` will make the output a bit
-more verbose.::
+``-p`` will make the output a bit more verbose.:
 
 
 E.g. to remove a given tract from a Coadd QA run.  See the online QA site for the text key
