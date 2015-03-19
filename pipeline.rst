@@ -13,6 +13,7 @@ Pipeline
    pipeline/detrend
    pipeline/singleframe_proc
    pipeline/coadd_proc
+   pipeline/multiband
    pipeline/error 
    pipeline/pipeQa
    

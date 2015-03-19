@@ -1,4 +1,5 @@
 
+.. _coadd_proc:
 
 ================
 Coadd Processing

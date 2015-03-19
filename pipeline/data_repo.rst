@@ -194,3 +194,100 @@ focus) CCDs for each visit processed::
 The Coadd outputs
 ^^^^^^^^^^^^^^^^^
 
+The coadd outputs are produced by ``stack.py`` (see :ref:`Coadd
+Processing <coadd_proc>`).  They live in one of two directories in the
+data repository: ``deepCoadd/`` and ``deepCoadd-results/``.  Below,
+the structures of both of these are show.  Although the entire process
+can be handled by ``stack.py``, each sub-processing step can be run
+independently, so the relevant script is shown with each file.
+
+This example shows the outputs for a run of ``stack.py`` to make a
+single patch coadd for some of the HSC SSP data, specifically HSC-I
+visits 1228 and 1238.  This dataset was specially chosen to show a
+single patch (number 1,1), but in general there would be similar files
+for all patchs (typically up to patch 10,10, depending on how the
+skymap is configured).
+
+The first step in coadding is to create a skymap.  The skymap is then
+used to warp the input images to a common coordinate system for the
+final coadd.  Outputs for these steps are shown in the ``deepCoadd/``
+directory.
+
+::
+
+    $ tree /data/Subaru/HSC/rerun/myrerun/deepCoadd/
+    /data/Subaru/HSC/rerun/myrerun/deepCoadd/
+    |-- HSC-I
+    |   `-- 0
+    |       |-- 1,1
+    |       |   |-- warp-HSC-I-0-1,1-1228.fits        # visit 1228 warped to tract/patch = 0/1,1
+    |       |   `-- warp-HSC-I-0-1,1-1238.fits        # visit 1238 warped to tract/patch = 0/1,1
+    |       `-- 1,1.fits                              # coadd of all tract/patch = 0/1,1 warps
+    `-- skyMap.pickle                                 # the skymap
+
+
+Measurements on the coadd (``1,1.fits`` above) are stored in the
+``deepCoadd-results/`` directory.  The main source catalog is in the
+``src-HSC-I-0-1,1.fits`` file.
+    
+::
+
+    $ tree /data/Subaru/HSC/rerun/myrerun/deepCoadd-results/
+    /data/Subaru/HSC/rerun/myrerun/deepCoadd-results/
+    `-- HSC-I
+        `-- 0
+            `-- 1,1
+                |-- src-HSC-I-0-1,1.fits              # measurements on sources in tract/patch 0/1,1
+                |-- srcMatch-HSC-I-0-1,1.fits
+                `-- srcMatchFull-HSC-I-0-1,1.fits
+
+
+
+
+The Multiband outputs
+^^^^^^^^^^^^^^^^^^^^^
+
+Recall that the purpose of the ``multiBand.py`` script is to perform
+consistent measurements on coadds in different filters.  For this
+example, directories for both HSC-I and HSC-R are shown, but in
+general you should expect to see a separate directory tree for each
+filter you ran in ``multiBand.py``.
+
+As with ``stack.py``, the steps in ``multiBand.py`` can be run
+separately (see :ref:`Multiband Processing <multiband_proc>`).  When
+each step is run independently, a few extra intermediate files are
+written, so in this example *all* files are shown.  If you run
+``multiBand.py``, the ``detectMD-*`` and ``measMD-`` files will not be
+written by default, and that's been marked in the file list.
+
+::
+
+    $ tree /data/Subaru/HSC/rerun/myrerun/deepCoadd-results/
+    /data/Subaru/HSC/rerun/myrerun/deepCoadd-results/
+    |-- HSC-I
+    |   `-- 0
+    |       `-- 1,1
+    |           |-- bkgd-HSC-I-0-1,1.fits             # detectCoaddSources.py
+    |           |-- det-HSC-I-0-1,1.fits              # detectCoaddSources.py
+    |           |-- detectMD-HSC-I-0-1,1.boost        # detectCoaddSources.py      (not with multiBand.py)
+    |           |-- forced_src-HSC-I-0-1,1.fits       # forcedPhotCoadd.py
+    |           |-- meas-HSC-I-0-1,1.fits             # measureCoaddSources.py
+    |           |-- measMD-HSC-I-0-1,1.boost          # measureCoaddSources.py     (not with multiBand.py)
+    |           `-- srcMatch-HSC-I-0-1,1.fits         # measureCoaddSources.py
+    |-- HSC-R
+    |   `-- 0
+    |       `-- 1,1
+    |           |-- bkgd-HSC-R-0-1,1.fits             # detectCoaddSources.py
+    |           |-- det-HSC-R-0-1,1.fits              # detectCoaddSources.py
+    |           |-- detectMD-HSC-R-0-1,1.boost        # detectCoaddSources.py      (not with multiBand.py)
+    |           |-- forced_src-HSC-R-0-1,1.fits       # forcedPhotCoadd.py
+    |           |-- meas-HSC-R-0-1,1.fits             # measureCoaddSources.py
+    |           |-- measMD-HSC-R-0-1,1.boost          # measureCoaddSources.py     (not with multiBand.py)
+    |           `-- srcMatch-HSC-R-0-1,1.fits         # measureCoaddSources.py
+    `-- merged
+        `-- 0
+            `-- 1,1
+                |-- mergeDet-0-1,1.fits               # mergeCoaddDetections.py
+                `-- ref-0-1,1.fits                    # mergeCoaddMeasurements.py
+
+
