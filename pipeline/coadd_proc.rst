@@ -37,11 +37,12 @@ Before stacking, you need to make a SkyMap.  A SkyMap is a tiling or
 'tesselation' of the celestial sphere, and is used as coordinate
 system for the final coadded image.  The largest region in the system
 is called a 'Tract', and it contains smaller 'Patch' regions.  Both
-tracts and patches overlap their neighbours (by 1 arcmin, by default).
-Each tract contains a different WCS, but the WCSs used for the patches
-within a given tract are just offset versions of the same WCS.  In a
-later step, your input images will be warped from their observed WCSs
-to the common WCS of the SkyMap.
+tracts and patches overlap their neighbours.  By default, tracts
+overlap by 1 arcmin, and patches overlap by 100 pixels (in a 4000x4000
+patch).  Each tract contains a different WCS, but the WCSs used for
+the patches within a given tract are just offset versions of the same
+WCS.  In a later step, your input images will be warped from their
+observed WCSs to the common WCS of the SkyMap.
 
 There are two ways to create SkyMaps: (1) for the whole sky [probably
 **not** what you want for individual PI-type observations], or (2) for
@@ -55,7 +56,12 @@ To create a full SkyMap (again, not likely what you want), do the following::
    
     $ makeSkyMap.py /data/Subaru/HSC/ --rerun=cosmos
 
-    
+If you're using a full SkyMap, the Tracts are a fixed system and you
+may find you have to look-up which tracts your data live in.  If you
+wish to look up a tract,patch for a specific visit,CCD, one of the
+Task examples can be used for this, see :ref:`findTract.py
+<findTract>`.
+
 Partial SkyMap
 ^^^^^^^^^^^^^^
 
@@ -65,11 +71,7 @@ be used to define the region of the SkyMap.  In this case the example
 shows visits 1000 to 1020 with increment 2 (i.e. every other one, as
 is the standard for HSC visit naming).  Because you chose a local
 SkyMap, all your data will be within a single Tract, and that Tract
-will be defined to have ID 0 (zero).  If you're using a full SkyMap,
-the Tracts are a fixed system and you'll have to look-up which tracts
-your data live in.
-
-.. todo:: Describe how to lookup tract IDs.
+will be defined to have ID 0 (zero).
 
 **(probably what you want)**
 
@@ -106,7 +108,38 @@ tangent point.  This is done by specifying config parameters to
 
     $ makeSkyMap.py /data/Subaru/HSC --rerun=cosmos --configfile overrides.config
 
-.. warning:: This custom skymap code wasn't tested.
+
+Large Discrete SkyMaps
+^^^^^^^^^^^^^^^^^^^^^^
+
+When a discrete SkyMap becomes large, various problems may occur.  The
+projection used is a tangent projection and it may not be suitable
+near the edges if your tract is very large.  Another (more rigid)
+issue is that the **patch number must be less than 32** (i.e. the
+largest discrete SkyMap is 32x32 patches).  If you really must use a
+discrete SkyMap and your area is too large to fit in 32x32 patches,
+you have two options:
+
+* Adjust the patchInnerDimensions config parameter to use larger
+ patches (the default is 4000,4000)::
+
+    root.skyMap["discrete"].patchInnerDimensions = (5000,5000)
+
+* Use multiple tracts in a discrete SkyMap.  Each 'list'-type
+ parameter will allow multiple values to be specified, and tract
+ numbers will be assigned in order.  Thus, the following override file
+ would produce a skymap with two adjacent tracts centered on RA/Dec
+ 149.7/2.3 and 150.1/2.3, which would be referred to as tracts 0 and
+ 1::
+
+    $ cat overrides.config
+    root.skyMap = "discrete"
+    root.skyMap["discrete"].raList = [149.7,150.1]
+    root.skyMap["discrete"].decList = [2.3, 2.3]
+    root.skyMap["discrete"].radiusList = [0.35, 0.35]
+    root.skyMap["discrete"].pixelScale = 0.2
+    root.skyMap["discrete"].projection = "TAN"
+    root.skyMap["discrete"].tractOverlap = 0
 
 
 .. _mosaic:
