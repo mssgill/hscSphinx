@@ -1,4 +1,5 @@
 
+.. _errormessages:
 
 ======================
 Common Pipeline Errors
@@ -11,6 +12,9 @@ If you don't, it's just a confusing mess.  Below are a few of the most
 common blow-ups that you'll run into.  If you've run into an error
 that isn't shown here, please let us know so that we can post info
 about it here.
+
+If you're having trouble finding the ``stdout``, please see
+:ref:`Debugging <debugging>`.
 
 
 Missing astrometry_net_data.

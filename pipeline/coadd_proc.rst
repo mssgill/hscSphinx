@@ -33,10 +33,13 @@ described below).
 Making a SkyMap
 ---------------
 
-Before stacking, you need to make a SkyMap.  A SkyMap is a tiling
-or 'tesselation' of the celestial sphere, and is used as coordinate
+Before stacking, you need to make a SkyMap.  A SkyMap is a tiling or
+'tesselation' of the celestial sphere, and is used as coordinate
 system for the final coadded image.  The largest region in the system
-is called a 'Tract', and it contains smaller 'Patch' regions. In a
+is called a 'Tract', and it contains smaller 'Patch' regions.  Both
+tracts and patches overlap their neighbours (by 1 arcmin, by default).
+Each tract contains a different WCS, but the WCSs used for the patches
+within a given tract are just offset versions of the same WCS.  In a
 later step, your input images will be warped from their observed WCSs
 to the common WCS of the SkyMap.
 
@@ -103,7 +106,8 @@ tangent point.  This is done by specifying config parameters to
 
     $ makeSkyMap.py /data/Subaru/HSC --rerun=cosmos --configfile overrides.config
 
-.. warning:: untested.
+.. warning:: This custom skymap code wasn't tested.
+
 
 .. _mosaic:
 
@@ -125,6 +129,11 @@ included.
     $ mosaic.py /data/Subaru/HSC/ --rerun=cosmos --id tract=0 visit=1000..1020:2 ccd=0..103
 
 
+Depending on the number of input visits, the mosaic solution can take
+some time to complete.  It can't currently make use of parallelization
+on a cluster.
+
+    
 .. _stack:    
 
 Coadd Processing with One Command
@@ -140,9 +149,10 @@ In the example, the input visits are specified with ``--selectId``
 (even-numbered visits from 1000 to 1020).  The ``--id`` parameter is
 now used to specify the tract and patch dataId for the output.  If you
 constructed a partial SkyMap with ``makeDiscreteSkyMap.py``, then your
-tract number will be 0.  ``stack.py`` distributes jobs over PBS
-TORQUE, and the remaining command line arguments shown are related the
-batch processing.  See :ref:`TORQUE <back_torque>` for details.
+tract number will be 0.  ``stack.py`` distributes jobs over a batch
+processing system (PBS TORQUE or Slurm), and the remaining command
+line arguments shown are related the batch processing.  See
+:ref:`Batch Processing <back_batch>` for details.
 
 .. _coadd_rerun_change:
 
@@ -265,14 +275,4 @@ same Tract,Patch which has been constructed above with
 ``assembleCoadd.py``::
     
     $ hscProcessCoadd.py /data/Subaru/HSC --rerun cosmos --id tract=9000 patch=1,1 filter=HSC-Y
-
-
-    
-.. todo::
-    
-   Is hscOverlaps.py still used?
-   
-.. todo::
-   
-   Is hscStack.py still used?
 

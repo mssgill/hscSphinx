@@ -9,6 +9,7 @@ Pipeline
 
    pipeline/installation
    pipeline/background
+   pipeline/debugging
    pipeline/data_repo
    pipeline/detrend
    pipeline/singleframe_proc

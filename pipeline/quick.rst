@@ -10,7 +10,9 @@ end.  This hypothetical data includes calibration exposures for BIAS,
 DARK, and DOMEFLAT, and assumes the target field is called "COSMOS",
 and it has been observed in HSC-I band in visits 100 to 200 with
 increment 2 (i.e. 100..200:2).  **You'll have to adjust the target
-field name and visit numbers to match your data.**.
+field name and visit numbers to match your data.**.  Note also that
+any commands which include arguments like ``--queue``, ``--nodes``,
+and ``--procs`` will use a batch processing system.
 
 
 #. Setup (:ref:`full details <back_eups>`)::
@@ -22,6 +24,7 @@ field name and visit numbers to match your data.**.
 #. Ingest the rawdata (:ref:`full details <ingest>`)::
 
      $ mkdir /data/Subaru/HSC
+     $ echo lsst.obs.hsc.HscMapper > /data/Subaru/HSC/_mapper
      $ cd /path/to/rawdata/
      $ hscIngestImages.py /data/Subaru/HSC/ --create --mode=link HSCA*.fits
 
@@ -52,7 +55,8 @@ field name and visit numbers to match your data.**.
      
 #. Run the single frame processing (:ref:`full details <reduceframes>`)::
 
-     $ reduceFrames.py /data/Subaru/HSC/ --rerun cosmos --id field=COSMOS visit=100..200:2
+     $ reduceFrames.py /data/Subaru/HSC/ --rerun cosmos --id visit=100..200:2 \
+         --queue small --nodes 4 --procs 6 --job redframes
 
 
 ..     
@@ -78,5 +82,11 @@ field name and visit numbers to match your data.**.
 
 #. Coadd Processing (:ref:`full details <stack>`)::
 
-    $ stack.py /data/Subaru/HSC/ --rerun=cosmos --id tract=0 filter=HSC-I \
-          --selectId visit=100..200:2 --queue small --nodes 4 --procs 6 --job stack
+    $ stack.py /data/Subaru/HSC/ --rerun=cosmos --id tract=0 filter=HSC-I --selectId visit=100..200:2 \
+          --queue small --nodes 4 --procs 6 --job stack
+
+#. MultiBand Processing (assuming R,I,Z bands:ref:`full details <multiband>`)::
+
+    $ multiBand.py /data/Subaru/HSC/ --rerun cosmos --id tract=0 filter=HSC-R^HSC-I^HSC-Z \
+          --queue small --nodes 4 --procs 6 --job multiband
+

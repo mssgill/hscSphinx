@@ -6,20 +6,18 @@ Git Workflow
 ==============
 
 The following outlines the HSC (borrowed from LSST) workflow for a
-fictional issue being developed (which will be Issue number 1234) by a
-fictional user ``jdoe``.
-
+fictional issue being developed (which will be Issue number 1234).
 
 * **Put the issue into "In Progress" in Jira**.  This is important, as
   it tells others what you're working on so that work isn't
   duplicated.  It also helps with the accumulation of statistics that
   inform our progress.
 
-* **Create a Git branch** "u/<username>/HSC-<issue number>" from the
+* **Create a Git branch** "tickets/HSC-<issue number>" from the
   appropriate place (e.g., master, releases/S14A_0)::
 
       $ git co master
-      $ git co -b u/jdoe/HSC-1234
+      $ git co -b tickets/HSC-1234
 
 * **Commit changes to this branch as you work**.  Push them to
   hsc-repo.  These changes may not be particularly clean --- the
@@ -71,7 +69,7 @@ fictional user ``jdoe``.
     main Git repo, you will need ``--force`` to push the rebased
     working copy.  Note that doing this will rewrite the history in
     the main Git repository.  It's fine to do this on your personal
-    ``u/jdoe/HSC-1234`` branch, but **you should never use** ``--force``
+    ``tickets/HSC-1234`` branch, but **you should never use** ``--force``
     **on the master branch** (or any branch which is shared with other
     developers).::
 
@@ -119,16 +117,6 @@ fictional user ``jdoe``.
      7bc123e Add fancy feature #2
      f740de0 Add fancy feature #1
 
-     
-* **Create branch "tickets/HSC-<issue number>"** from your "u/"
-  personal issue branch.  This is your last chance to clean up your
-  commits to keep the history clean.  If you have any "fixup" commits,
-  do a "rebase -i" to squash them into the original.  Push the branch
-  to hsc-repo::
-
-      $ git co u/jdoe/HSC-1234
-      $ git co -b tickets/HSC-1234
-      $ git rebase -i master
     
 * **Merge the "tickets/HSC-<issue number>" branch to master** (or the
   desired location).  If it doesn't merge cleanly, I suggest rebasing

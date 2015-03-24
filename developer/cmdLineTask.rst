@@ -29,7 +29,7 @@ calling the ``parseAndRun()`` method on ``YourCmdLineTask``::
 
     #!/usr/bin/env python
     import yourModule
-    yourModule.YourCmdLineTask.parserAndRun()
+    yourModule.YourCmdLineTask.parseAndRun()
     
 
 cmdLineTask.py

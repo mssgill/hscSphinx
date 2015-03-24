@@ -190,18 +190,24 @@ lives).
     in a ``*_DIR`` directory.  These files are installed code.
 
     
-.. _back_torque:
+.. _back_batch:
 
-PBS/TORQUE
-----------
+Batch Processing with PBS/TORQUE (or Slurm)
+-------------------------------------------
 
-Our batch processing is handled with a system called TORQUE, which is
-a popular variant of PBS (Portable Batch System).  The system handles
-job scheduling and queue management for parallel jobs being run on
-distributed compute nodes.  For the purposes of running the HSC
-pipeline, there are only a handful of commands you'll need to concern
-yourself with, mainly checking the status of your job, and possibly
-cancelling it.  An example of each is shown below.
+Our batch processing can be handled with either a system called
+'TORQUE', which is a popular variant of PBS (Portable Batch System),
+or one called 'Slurm'.  Both systems handle job scheduling and queue
+management for parallel jobs being run on distributed compute nodes.
+At this time, *only PBS/TORQUE usage is described here*.  To select the
+batch processing system, use the ``--batch-type=pbs``, or
+``--batch-type=slurm`` ('pbs' is the default) with any of the batch
+commands (e.g. ``reduceFrames.py``, ``stack.py``, and ``multiBand.py``).
+
+For the purposes of running the HSC pipeline, there are only a handful
+of commands you'll need to concern yourself with, mainly checking the
+status of your job, and possibly cancelling it.  An example of each is
+shown below.
 
 There may be various 'queues' defined on a Torque system, with each
 having different levels of access to resources (i.e. the max number of
@@ -329,7 +335,7 @@ arguments to control TORQUE's behaviour:
     for debugging specific problems, but shouldn't ever be used for a
     large job (it would just take too long!).
     
-``--pbs-output``
+``--batch-output``
 
     .. todo::    I haven't played with this.  Paul? What does it do?
 
@@ -344,10 +350,18 @@ code, and with a specific set of configuration parameters.  The
 assumption is that within a given 'rerun', the data have been handled
 in a homogeneous way.
 
-.. todo::
+Each pipeline command will accept a ``--rerun=XXX`` argument.  The
+resulting outputs will then be written to a directory specifically for
+that rerun (see the :ref:`Data Repository <data_repo>` for details).
+Because of the nature of the pipeline, there are a number times when a
+command loads inputs from a previous step, and then produces new
+outputs.  You can use the ``--rerun`` argument to specify separate
+reruns for the inputs and outputs.  The most common case where this
+occurs is in writing coadds to a different rerun than the one used to
+process the original single-frame images, and the various details are
+included the relevant section :ref:`Writing Coadd Outputs to a
+Different Rerun <coadd_rerun_change>`.
 
-    This is repeated in the glossary.  Are both places needed?  It's
-    short, and won't change.
 
     
 .. _back_dataId:
@@ -420,9 +434,15 @@ A variety of things about the pipeline are configurable through either
 command-line arguements, or as settings in configuration parameter
 files.  At last count, there were approximately 1 bazillion
 configuration parameters.  The overwhelming majority of them are
-things that you'll never even need to be aware of, much less
-modify.  E.g. default config parameters for
-:ref:`reduceFrames.py <reduceframes_config_defaults>` and :ref:`stack.py <stack_config_defaults>`.
+things that you'll never even need to be aware of, much less modify.
+If you'd like to see *all* the available configuration parameters
+(with their default values) for a given command, you can pass the
+argument ``--show config``.  However, you can also specify a glob if
+you have a specific keyword that you think might have a config
+parameter.  For example, to see all config parameters which match the
+word '*background*' for the ``hscProcessCcd.py`` command::
+
+    $ hscProcessCcd.py /path/to/data/ --show config="*background*"
 
 Configuration parameters have a hierarchical form, with each parameter
 belonging to a specific pipeline module called a 'Task', and each

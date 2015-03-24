@@ -37,7 +37,12 @@ retarget for each case)::
 
     $ hscProcessCcd.py /path/to/data/ --rerun=myrerun --id visit=100 ccd=50 -C my-fast-overrides.config
     
-The ``detectFewer.py`` code is the following::
+The ``detectFewer.py`` code is below.  Note that this task does *not*
+override the three ``get<>Name()`` methods.  That's only required for
+tasks which inherit from CmdLineTask and will be used as executable
+scripts.  Since this task is to be inserted into the pipeline in place
+of ``SourceDetectionTask``, the ``get<>Name()`` methods are handled by
+``hscProcessCcd.py``.::
 
     import random
     import lsst.pex.config as pexConfig

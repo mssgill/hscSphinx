@@ -41,34 +41,21 @@ is written explicitly after each command example below::
 
 
 The ``--root`` directory should point to ``CALIB/`` in your data
-repository, and the ``--validity`` period is the length of time a
-given calibration product should be considered stable and useable.
+repository, and the ``--validity`` period is the number of days a
+given calibration product should be considered stable and useable.  In
+the examples here, I've specified 12 days, but that may be too short.
+Some users set a much longer validity period, and as of this writing the
+length of time the detrends remain stable isn't well known.  Please
+use your best judgement.
 
 
-Debugging hints
-^^^^^^^^^^^^^^^
+calibVersions
+^^^^^^^^^^^^^
 
-If for some reason you have trouble with any of the following
-commands, here are a few details which may help diagnose the problem.
-
-#. A TORQUE job will write its ``stdout`` to files with the form:
-   jobname.nodename.NNNNN.  Jobname is what you call the submitted job
-   by setting the ``--job foo`` command line argument.  Nodename is the
-   node which sent its output to the file (probably called
-   ``analysisNN``, NN is a number from 01 to 40), and NNNNN a number
-   assigned by the scheduler.  If you suspect something went wrong
-   with your job, have a look through a few of these files and see
-   what the log messages say.
-
-#. If the info in the TORQUE output files isn't helpful, you can try
-   running the job in the current shell with the ``--do-exec`` option.
-   HOWEVER, these jobs can be really big, so you should first try to
-   reproduce the problem with a smaller subset of your data.  You can
-   specify a few specific visits using ``..``, ``:`` and ``^`` to denote
-   number ranges, e.g. ``--id visit=1234..1244:2 ccd=50`` (visits 1234
-   to 1244 incrementing by 2, CCD 50 only) or ``--id visit=1234^1244
-   ccd=40..60`` (visits 1234 and 1244, CCDs 40 to 60).
-   
+Each type of detrend (bias, flat, fringe) will allow you to specify a
+useful label for it with ``calibVersion``.  In the examples below,
+I've used 'all' in each case, but labels like 'dome', or 'twilight'
+are popular for flats, for example.
    
 Biases
 ------
@@ -96,7 +83,7 @@ The details:
 
 * ``/data/Subaru/HSC`` is the location of the data repository
 * ``--rerun my_biases``  is the rerun for the reduced input frames (trimmed, bias subtracted)
-* ``--detrendId calibVersion=all``  The final output flats will be stored with ``calibVersion`` label ``all``.
+* ``--detrendId calibVersion=all``  The final detrend output will be stored with ``calibVersion`` label ``all``.
 * ``--id``  allows you to specify which frames to use as inputs.
 * PBS Torque options
   * ``--queue small``  The name of the PBS queue
@@ -109,15 +96,19 @@ If you try to restart a job which fails, or you try to add data to an
 existing rerun, the pipeline will complain as doing this could cause
 the rerun to have outputs processed with different processing
 parameters.  This is intended to keep you from shooting yourself in
-the foot, but it's often necessary during development.  If your foot
-has it coming, add ``--clobber-config``.
+the foot, but it's often necessary during development.  If your not
+worried about producing inhomogeneous data (i.e. different outputs
+created with different parameters), add ``--clobber-config``.
 
 
    
 Darks
 -----
   
-Darks are constructed using ``reduceDark.py`` located in the hscPipe package. The command line arguments needed are essentially the same as those required for making biases, so refer back to that section for details.
+Darks are constructed using ``reduceDark.py`` located in the hscPipe
+package. The command line arguments needed are essentially the same as
+those required for making biases, so refer back to that section for
+details.
 
 Darks Example 1
 ^^^^^^^^^^^^^^^
@@ -141,10 +132,7 @@ section for details.  The obvious exception here is that you'll need
 to run reduceFlat.py for each filter you observed.  The example shows
 only the HSC-I filter.
 
-.. todo::
-   :red:`Can reduceFlat.py handle multiple filters at once?`
 
-          
 Flat Example 1
 ^^^^^^^^^^^^^^
 

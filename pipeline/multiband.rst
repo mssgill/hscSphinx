@@ -46,18 +46,27 @@ assumes that you've already run ``stack.py`` to produce the stacked
 images in a rerun called 'myrerun'.  In this case, only a single patch
 was processed to the parameters for the compute cluster (--nodes,
 --procs) are set to 1.  For a real data processing run, these should
-of course be set to make use of the available cluster resources.  This
-single patch (3 filters) ran in approximately 2 hours on one core
-at IPMU.
+of course be set to make use of the available cluster resources.  For
+reference, this single patch (3 filters) ran in approximately 2 hours
+on one core at IPMU.  With 3 filters, we could have benefited from
+distributing the job to 3 cores.
 
 ::
 
-    $ multiBand.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 filter=HSC-R^HSC-I^HSC-Z --nodes 1 --procs 1 --mpiexec='-bind-to socket' --time 1000 --job multiband
+    $ multiBand.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 patch=1,1 filter=HSC-R^HSC-I^HSC-Z --nodes 1 --procs 1 --mpiexec='-bind-to socket' --time 1000 --job multiband
 
 
 Here, ``--job`` is simple the name of the job used by the PBS cluster,
 and the ``--mpiexec='bind-to socket'`` option helps performance on the
 PBS system.
+
+
+Writing Mulitband outputs to a different Rerun
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As with coadds, the multiband outputs can be written to a different
+rerun than the one used for inputs.  See the section :ref:`Writing
+Coadds to a different Rerun <coadd_rerun_change>` for details.
 
     
 Multiband Processing in Steps
@@ -72,9 +81,11 @@ it took to run on a single core for this example.
 detectCoaddSources.py
 ^^^^^^^^^^^^^^^^^^^^^
 
+.. note:: detectCoaddSources.py is scheduled to be run as a part of :ref:`stack.py <stack>`.  If you constructed your coadds with ``stack.py``, you may already have produced these outputs. 
+
 Detect sources and model background for the single band data (< 1 min)::
 
-    $ detectCoaddSources.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 filter=HSC-R^HSC-I^HSC-Z
+    $ detectCoaddSources.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 patch=1,1 filter=HSC-R^HSC-I^HSC-Z
 
 
 mergeCoaddDetections.py
@@ -82,7 +93,7 @@ mergeCoaddDetections.py
 
 Merge Footprints and Peaks from all detection images into a single, consistent set (< 1 min)::
 
-    $ mergeCoaddDetections.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 filter=HSC-R^HSC-I^HSC-Z
+    $ mergeCoaddDetections.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 patch=1,1 filter=HSC-R^HSC-I^HSC-Z
 
 
 
@@ -92,7 +103,7 @@ measureCoaddSources.py
 Deblend and measure on per-band coadds (each band separately),
 starting from consistent Footprints and Peaks (~ 60 min)::
 
-    $ measureCoaddSources.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 filter=HSC-R^HSC-I^HSC-Z
+    $ measureCoaddSources.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 patch=1,1 filter=HSC-R^HSC-I^HSC-Z
 
 
 
@@ -104,7 +115,7 @@ This step essentially just chooses which band's measurement should be
 used as a reference for the final measurement (the 'forced'
 measurement ... see below)::
 
-    $  mergeCoaddMeasurements.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 filter=HSC-R^HSC-I^HSC-Z
+    $  mergeCoaddMeasurements.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 patch=1,1 filter=HSC-R^HSC-I^HSC-Z
 
 
 
@@ -116,5 +127,5 @@ very similar to ``measureCoaddSources.py``, but now uses the fixed
 parameters for the centroids and galaxy model ellipses *from the
 reference band* chosen in ``mergeCoaddMeasurements.py`` (~35 min).::
 
-    $ forcedPhotCoadd.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 filter=HSC-R^HSC-I^HSC-Z
+    $ forcedPhotCoadd.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 patch=1,1 filter=HSC-R^HSC-I^HSC-Z
 

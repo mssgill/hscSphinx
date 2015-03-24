@@ -31,12 +31,16 @@ script, be sure to include the final block which calls
 
     #!/usr/bin/env python
     import lsst.pipe.base      as pipeBase
+    import lsst.pex.config     as pexConfig
     import lsst.afw.image      as afwImage
     import lsst.afw.cameraGeom as camGeom
 
     class FindTractTask(pipeBase.CmdLineTask):
         """A Task to find the tract associated with a visit/ccd. """
 
+        _DefaultName = 'findTract'
+        ConfigClass = pexConfig.Config
+        
         def run(self, dataRef):
 
             calexp_md = dataRef.get("calexp_md")
@@ -57,6 +61,15 @@ script, be sure to include the final block which calls
             print "%-6d %3d  %5d" % (d['visit'], d['ccd'], tract)
             return tract
 
+        # Don't forget to overload these 
+        def _getConfigName(self):
+            return None
+        def _getEupsVersionsName(self):
+            return None
+        def _getMetadataName(self):
+            return None
+
+            
     if __name__ == '__main__':
         FindTractTask.parseAndRun()
 

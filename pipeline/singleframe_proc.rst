@@ -9,10 +9,11 @@ single-frame inputs, depending on what you're trying to do:
 ``reduceFrames.py``, and ``hscProcessCcd.py``.  ``hscProcessCcd.py``
 will bias subtract, flat field, and then perform object detection and
 measurement on specified visits and CCDs.  ``reduceFrames.py`` will
-perform these steps only full visits.  All scripts will require a
-:ref:`dataId <back_dataId>` of the form ``--id <identifiers>``, where
-the identifiers are such things as ``visit``, ``ccd``, ``field``,
-``dateObs``, ``filter``, etc.
+perform these steps only full visits.  ``reduceFrames.py`` will also
+perform a full astrometric solution for the exposure.  All scripts
+will require a :ref:`dataId <back_dataId>` of the form ``--id
+<identifiers>``, where the identifiers are such things as ``visit``,
+``ccd``, ``field``, ``dateObs``, ``filter``, etc.
 
 As always, full usage statements can be found with ``--help`` or ``-h``
 
@@ -23,7 +24,7 @@ reduceFrames.py
 
 As ``reduceFrames.py`` uses TORQUE, many of the command line arguments
 are related to the batch processing, and are only briefly summarized.
-For full details see :ref:`TORQUE <back_torque>`
+For full details see :ref:`Batch Processing <back_batch>`
 
 **Example 1**
 
@@ -34,8 +35,8 @@ For full details see :ref:`TORQUE <back_torque>`
 * ``/data/Subaru/HSC``      Location of the data
 * ``--rerun cosmos``        The rerun where all outputs will be written.
 * ``--id``                  Your dataId.  In this case, COSMOS data, in the HSC-I filter, taken Feb 2, 2016.
-* ``--queue default``       Name of the PBS torque queue
-* ``--job cosmos``          Name the PBS job will have while running (``qstat`` will show this name)
+* ``--queue default``       Name of the batch queue
+* ``--job cosmos``          Name the batch job will have while running (for PBS, ``qstat`` will show this name)
 * ``--nodes 2``             Run on 2 nodes of the cluster
 * ``--procs 12``            Run 12 processes on each node
 

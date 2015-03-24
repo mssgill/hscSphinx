@@ -1,4 +1,6 @@
 
+.. _data_repo:
+
 =====================
 The Data Repository
 =====================
@@ -13,7 +15,10 @@ look for a file in the pipeline data repo, it's quite possible that
 the file's location may change in later versions of the pipeline.  It
 may even disappear entirely!  Feel free to poke around, but keep in
 mind that the data repo is intended to be written-to and read-from
-only by the pipeline tools.
+only by the pipeline tools.  If you're interested in loading some
+outputs from a rerun, your best option is to use the pipeline's
+:ref:`butler <tool_butler>`, a tool designed to work with the files in
+the repo.
 
 
 .. _ingest:
@@ -72,6 +77,20 @@ stored in another data repo::
     # register data which is already in place
     $ hscIngestImages.py /data/Subaru/HSC/ --mode=skip /data/Subaru/HSC/M31/2013-03-21/00100/HSC-I/HSC-*fits
 
+    
+Parallel Ingest
+^^^^^^^^^^^^^^^
+
+If you have good I/O (i.e., fast disks with lots of spindles,
+generally not true for NFS mounted drives) you can use
+``hscIngestImagesParallel.py``.  This can actually be run with even
+more processes than there are cores (because time is spent doing the
+I/O).  Here's an example if usage::
+
+    $ hscIngestImagesParallel.py /data/Subaru/HSC --mode=link --procs=25 /path/to/rawdata/HSCA*.fits
+
+
+
 .. _registryinfo:
 
 Registry Information
@@ -79,10 +98,10 @@ Registry Information
 
 The registry file contains one entry for every file ingested, and it
 is possible to query it with the ``registryInfo.py`` command.  Many
-stages of pipeline processing require you to use visit numbers
-(i.e. frameID) to specify the input data, and ``registryInfo.py``
-makes it straightforward to find out various details about the
-ingested files::
+stages of pipeline processing require you to use some combination of
+visit numbers (i.e. frameID), fields, dates, etc. to specify the input
+data, and ``registryInfo.py`` makes it straightforward to find out
+various details about the ingested files::
 
     # get a listing of all COSMOS data taken in filter HSC-I
     $ registryInfo.py /data/Subaru/HSC/registry.sqlite3 --field COSMOS --filter HSC-I
@@ -205,8 +224,8 @@ This example shows the outputs for a run of ``stack.py`` to make a
 single patch coadd for some of the HSC SSP data, specifically HSC-I
 visits 1228 and 1238.  This dataset was specially chosen to show a
 single patch (number 1,1), but in general there would be similar files
-for all patchs (typically up to patch 10,10, depending on how the
-skymap is configured).
+for all patchs (typically up to patch 10,10, but depending on how the
+skymap is configured, you may have more patches per tract).
 
 The first step in coadding is to create a skymap.  The skymap is then
 used to warp the input images to a common coordinate system for the
