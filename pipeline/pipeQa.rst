@@ -68,7 +68,7 @@ Current versions of PHP can be found at `PHP
 * Install PHP version > 5.4.  This will install into your $HOME/usr
   directory (make that directory if it doesn't exist), and won't
   interfere with the system installation.  The build follows the
-  standard GNU make style.
+  standard GNU make style::
 
    $ tar xvzf php-tarball.tar.gz
    $ cd php/
@@ -215,8 +215,23 @@ include::
 Running PipeQA
 --------------
 
-Using Python's Multiprocessing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PipeQA is able to run in a variety of ways.  The main usage is to
+processing outputs from a rerun and perform a series of tests and
+sanity checks on your results.  When run in this way, the results are
+compared to catalog values.  However, there are times when you may
+want to compare two data sets to one another (e.g. two visits of the
+same field) or two reruns of the same data (e.g. the same data
+processed with different parameters).  These two methods of running
+are discussed separately:
+
+Regular PipeQA
+^^^^^^^^^^^^^^
+
+This section describes PipeQA as it is normally used - to assess the
+quality of pipeline outputs in a specific rerun.
+
+
+**Using Python's Multiprocessing**
 
 **Avoid using many cores with Sqlite!** The Sqlite database cannot
   handle concurrency (multiple threads) very well (it uses
@@ -233,8 +248,7 @@ Using Python's Multiprocessing
     $ hscCoaddQa.py /data/Subaru/HSC --rerun my_rerun --id tract=0 patch=5,4^5,5 filter=HSC-I -j 2
 
     
-Using Batch Processing
-^^^^^^^^^^^^^^^^^^^^^^
+**Using Batch Processing**
 
 
 * single-frame, 4 nodes with 8 processes per node.  (NOTE: --mpiexec='-bind-to socket', but will improve performance)::
@@ -244,6 +258,41 @@ Using Batch Processing
 * Coadd, 4 nodes with 8 processes per node.  (NOTE: --mpiexec='-bind-to socket', but will improve performance)::
 
     $ poolCoaddQa.py /data/Subaru/HSC --rerun my_rerun --id tract=0 filter=HSC-I --job=poolcoadd --nodes=4 --procs=8 --mpiexec='-bind-to socket'
+
+
+Comparison PipeQA
+^^^^^^^^^^^^^^^^^
+
+This section describes PipeQA when it is run to compare directly
+between two different reruns, or between different datasets in the
+same rerun.  The comparison tasks can only be run with Python's
+multiprocessing, and can not yet be run through the batch processing
+system.
+
+**Visit to Visit**
+
+To compare two visits in the same rerun (assuming the CCDs you select overlap)::
+
+    $ hscPipeCompare.py /data/Subaru/HSC --rerun=cosmos --id visit=1236 ccd=0..103 --refVisit=1238
+
+**Rerun to Rerun (single-frame)**
+
+To compare results on a dataset processed twice with two reruns (e.g. to determine the effect of changing pipeline parameters)::
+
+    $ hscPipeCompare.py /data/Subaru/HSC --rerun=cosmos --id visit=1236 ccd=0..103 --refRerun=cosmos2
+
+**Rerun to Rerun (coadd)**
+
+When comparing coadds, only rerun-to-rerun comparison is possible as tracts and patches cover separate regions (unlike visits, which may cover the same pointing exactly)::
+
+    $ hscCoaddCompare.py /data/Subaru/HSC --rerun=cosmos --id tract=0 patch=5,5 filter=HSC-I --refRerun=cosmos2
+
+
+**Coadd to Visit**
+
+One other comparison that may be of interest is a comparison between coadd data and a single-frame visit.  that can be accomplished with::
+
+    $ hscCoaddCompare.py /data/Subaru/SSP --rerun=cosmos --id tract=0 patch=5,5 filter=HSC-I --refVisit=1236
 
 
 
@@ -277,11 +326,5 @@ name of the testset.  In this case, tract 9375 in HSC-I band is being
 removed from a rerun called ``mergetest``::
     
     $ delQa.py mergetest 9375-HSC-I-i -p
-
-
-Writing a New QA Test
----------------------
-
-Just copy an existing one.
 
 
