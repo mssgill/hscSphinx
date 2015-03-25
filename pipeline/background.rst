@@ -199,10 +199,13 @@ Our batch processing can be handled with either a system called
 'TORQUE', which is a popular variant of PBS (Portable Batch System),
 or one called 'Slurm'.  Both systems handle job scheduling and queue
 management for parallel jobs being run on distributed compute nodes.
-At this time, *only PBS/TORQUE usage is described here*.  To select the
-batch processing system, use the ``--batch-type=pbs``, or
-``--batch-type=slurm`` ('pbs' is the default) with any of the batch
-commands (e.g. ``reduceFrames.py``, ``stack.py``, and ``multiBand.py``).
+At this time, *only PBS/TORQUE usage is described here*.  If you're
+using Slurm, a description of the equivalent commands can be found at
+`<https://vlsci.org.au/documentation/comparison-pbs-and-slurm-script-commands>`_.
+To select the batch processing system, use the ``--batch-type=pbs``,
+or ``--batch-type=slurm`` ('pbs' is the default) with any of the batch
+commands (e.g. ``reduceFrames.py``, ``stack.py``, and
+``multiBand.py``).
 
 For the purposes of running the HSC pipeline, there are only a handful
 of commands you'll need to concern yourself with, mainly checking the
@@ -220,8 +223,8 @@ job, please submit to the smallest queue you think you can afford to
 use.
 
         
-qstat
-^^^^^
+qstat (squeue in Slurm)
+^^^^^^^^^^^^^^^^^^^^^^^
         
 Use 'qstat' to check the status of a job.  The '-a' option provides a
 bit more info.  Much more info is available in 'man qstat', but this
@@ -264,8 +267,8 @@ Here are the most popular options used with `qstat`::
     $ qstat -n          list the nodes that the job is running on
     
     
-qdel
-^^^^
+qdel (scancel in Slurm)
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Occassionally, something goes wrong with a job.  Perhaps you submit
 with the wrong command line arguments, or the job is just taking too

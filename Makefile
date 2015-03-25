@@ -64,6 +64,13 @@ test:
 	@echo
 	@echo "Build finished.  The HTML pages were *installed* in /var/www/html/hscsphinx_test."
 
+silver:
+	tar cvf developer/simpleTools.tar developer/simpleTools
+	@echo
+	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) /home/silverman/public_html/hscsphinx
+	@echo
+	@echo "Build finished.  The HTML pages were *installed* in /home/silverman/public_html/hscsphinx."
+
 html:
 	tar cvf developer/simpleTools.tar developer/simpleTools
 	@echo

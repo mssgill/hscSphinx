@@ -153,7 +153,7 @@ The single-frame outputs
 
 Here's a short look at the structure of a single-frame rerun called
 ``test``.  In this example, for clarity only one HSC CCD was processed
-(CCD 50), but a full HSC rerun would contain 112 (104 on-sky + 8
+(CCD 50 in visit 1236), but a full HSC rerun would contain 112 (104 on-sky + 8
 focus) CCDs for each visit processed::
 
     /data/Subaru/HSC/rerun/test/    
@@ -161,42 +161,42 @@ focus) CCDs for each visit processed::
     |   `-- HSC-I                                     The filter
     
     |       |-- corr                                  Corrected frames
-    |       |   |-- BKGD-0000999-050.fits             The background (not easily readable)
-    |       |   `-- CORR-0000999-050.fits             The corrected image
+    |       |   |-- BKGD-0001236-050.fits             The background (not easily readable)
+    |       |   `-- CORR-0001236-050.fits             The corrected image
     
     |       |-- output                                Output data (i.e. measurements)
-    |       |   |-- ICSRC-0000999-050.fits                
-    |       |   |-- MATCH-0000999-050.fits            Objects matched to catalog sources
-    |       |   |-- ML-0000999-050.fits                   
-    |       |   |-- SRC-0000999-050.fits              Measurements on sources
-    |       |   |-- SRCMATCH-0000999-050.fits             
-    |       |   `-- SRCML-0000999-050.fits
+    |       |   |-- ICSRC-0001236-050.fits                
+    |       |   |-- MATCH-0001236-050.fits            Objects matched to catalog sources
+    |       |   |-- ML-0001236-050.fits                   
+    |       |   |-- SRC-0001236-050.fits              Measurements on sources
+    |       |   |-- SRCMATCH-0001236-050.fits             
+    |       |   `-- SRCML-0001236-050.fits
     
     |       |-- processCcd_metadata                   pipeline internals
-    |       |   `-- 0000999-050.boost
+    |       |   `-- 0001236-050.boost
     
     |       |-- qa                                    Quality Assurance data and figures
-    |       |   |-- ellPaGrid-0000999-050.fits
-    |       |   |-- ellipseGrid-0000999-050.png
-    |       |   |-- ellipseMap-0000999-050.png
-    |       |   |-- ellipticityGrid-0000999-050.fits
-    |       |   |-- ellipticityGrid-0000999-050.png
-    |       |   |-- ellipticityMap-0000999-050.png
-    |       |   |-- fwhmGrid-0000999-050.fits
-    |       |   |-- fwhmGrid-0000999-050.png
-    |       |   |-- magHist-0000999-050.png
-    |       |   |-- psfModelGrid-0000999-050.fits
-    |       |   |-- psfModelGrid-0000999-050.png
-    |       |   |-- psfSrcGrid-0000999-050.fits
-    |       |   |-- psfSrcGrid-0000999-050.png
-    |       |   |-- seeingGrid-0000999-050.txt
-    |       |   |-- seeingMap-0000999-050.png
-    |       |   |-- seeingMap-0000999-050.txt
-    |       |   |-- seeingRobust-0000999-050.png
-    |       |   `-- seeingRough-0000999-050.png
+    |       |   |-- ellPaGrid-0001236-050.fits
+    |       |   |-- ellipseGrid-0001236-050.png
+    |       |   |-- ellipseMap-0001236-050.png
+    |       |   |-- ellipticityGrid-0001236-050.fits
+    |       |   |-- ellipticityGrid-0001236-050.png
+    |       |   |-- ellipticityMap-0001236-050.png
+    |       |   |-- fwhmGrid-0001236-050.fits
+    |       |   |-- fwhmGrid-0001236-050.png
+    |       |   |-- magHist-0001236-050.png
+    |       |   |-- psfModelGrid-0001236-050.fits
+    |       |   |-- psfModelGrid-0001236-050.png
+    |       |   |-- psfSrcGrid-0001236-050.fits
+    |       |   |-- psfSrcGrid-0001236-050.png
+    |       |   |-- seeingGrid-0001236-050.txt
+    |       |   |-- seeingMap-0001236-050.png
+    |       |   |-- seeingMap-0001236-050.txt
+    |       |   |-- seeingRobust-0001236-050.png
+    |       |   `-- seeingRough-0001236-050.png
     |       `-- thumbs                                Thumbnail figures
-    |           |-- flattened-0000999-050.png
-    |           `-- oss-0000999-050.png
+    |           |-- flattened-0001236-050.png
+    |           `-- oss-0001236-050.png
     
     |-- _parent -> /data/Subaru/HSC                   A link back to the root of the data repo
     
@@ -208,6 +208,27 @@ focus) CCDs for each visit processed::
         |-- icSrc.fits
         `-- src.fits
 
+
+The mosaic outputs
+^^^^^^^^^^^^^^^^^^
+
+After single-frame processing, a global astrometric and photometric
+solution (also called an 'uber-calibration') is computed with
+``mosaic.py`` (see :ref:`Mosaic <mosaic>`).  This process will add two
+files for each CCD in each tract.  The files will appear in the
+``corr/<TRACT>`` directory.  For the example above, assuming tract
+'0000' (i.e. a discrete skymap) and visits 1236 and 1238 (mosaic only
+makes sense with multiple visits)::
+
+    /data/Subaru/HSC/rerun/test/
+    `-- 00100                                         The pointing
+        `-- HSC-I                                     The filter
+            `-- corr
+                `-- 0000
+                    |-- fcr-0001236-050.fits          # photometric corrections for global solution
+                    |-- fcr-0001238-050.fits
+                    |-- wcs-0001236-050.fits          # astrometric corrections for global solution
+                    `-- wcs-0001238-050.fits
 
 
 The Coadd outputs

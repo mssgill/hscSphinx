@@ -30,7 +30,7 @@ opened, or use an ssh tunnel.  If you're on a cluster and have
 `PBS/Torque <www.adaptivecomputing.com/products/open-source/torque/>`_
 for your system (and want to use it), install it now (and see below
 about Gotchas for mpich2).  We've also posted a brief outline of
-:ref:`how to use PBS/Torque <back_torque>`
+:ref:`how to use the Batch system <back_batch>`.
  
 `EUPS <https://github.com/RobertLuptonTheGood/eups>`_ is our product
 management tool.  Various guides for it are available including `one

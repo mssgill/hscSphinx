@@ -58,8 +58,12 @@ To create a full SkyMap (again, not likely what you want), do the following::
 
 If you're using a full SkyMap, the Tracts are a fixed system and you
 may find you have to look-up which tracts your data live in.  If you
-wish to look up a tract,patch for a specific visit,CCD, one of the
-Task examples can be used for this, see :ref:`findTract.py
+wish to look up a tract,patch for a specific visit,CCD, the
+``hscOverlaps.py`` command can do this::
+
+    $ hscOverlaps.py /data/Subaru/HSC --rerun=cosmos -id visit=1226 ccd=49 --coadd deep
+
+There is also a Task example which can be used, see :ref:`findTract.py
 <findTract>`.
 
 Partial SkyMap
@@ -121,16 +125,16 @@ discrete SkyMap and your area is too large to fit in 32x32 patches,
 you have two options:
 
 * Adjust the patchInnerDimensions config parameter to use larger
- patches (the default is 4000,4000)::
+  patches (the default is 4000,4000)::
 
     root.skyMap["discrete"].patchInnerDimensions = (5000,5000)
 
 * Use multiple tracts in a discrete SkyMap.  Each 'list'-type
- parameter will allow multiple values to be specified, and tract
- numbers will be assigned in order.  Thus, the following override file
- would produce a skymap with two adjacent tracts centered on RA/Dec
- 149.7/2.3 and 150.1/2.3, which would be referred to as tracts 0 and
- 1::
+  parameter will allow multiple values to be specified, and tract
+  numbers will be assigned in order.  Thus, the following override
+  file would produce a skymap with two adjacent tracts centered on
+  RA/Dec 149.7/2.3 and 150.1/2.3, which would be referred to as tracts
+  0 and 1::
 
     $ cat overrides.config
     root.skyMap = "discrete"
@@ -289,6 +293,10 @@ set to be the same as the settings you used for
 ``makeCoaddTempExp.py``::
 
     $ assembleCoadd.py /data/Subaru/HSC --rerun cosmos --id tract=9000 patch=1,1 filter=HSC-Y --selectId visit=1000^1002 ccd=0..103
+
+Note that ``stack.py`` includes a background subtraction (done as part
+of detectCoaddSources) which assembleCoadd does not have, and it also
+does "safe clipping", which assembleCoadd does not do.
 
 .. todo::
 
