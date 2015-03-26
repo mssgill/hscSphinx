@@ -12,6 +12,7 @@ Developer
    developer/pipeline_structure
    developer/writing_real_tasks
    developer/gitworkflow
+   developer/eups
 
 .. toctree::
    :hidden:
