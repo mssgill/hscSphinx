@@ -61,7 +61,7 @@ may find you have to look-up which tracts your data live in.  If you
 wish to look up a tract,patch for a specific visit,CCD, the
 ``hscOverlaps.py`` command can do this::
 
-    $ hscOverlaps.py /data/Subaru/HSC --rerun=cosmos -id visit=1226 ccd=49 --coadd deep
+    $ hscOverlaps.py /data/Subaru/HSC --rerun=cosmos --id visit=1226 ccd=49 --coadd deep
 
 There is also a Task example which can be used, see :ref:`findTract.py
 <findTract>`.
