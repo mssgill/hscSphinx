@@ -202,14 +202,14 @@ outputs will be written to the same rerun from which the inputs were
 loaded.  However, it's not unusual to want to write the coadd outputs
 to a different location.  There are a few ways to do that.
 
-#. Use a colon to separate in_rerun from out_rerun ``--rerun=in_rerun:out_rerun``, e.g. ::
+* Use a colon to separate in_rerun from out_rerun ``--rerun=in_rerun:out_rerun``, e.g. ::
 
     $ stack.py /data/Subaru/HSC --rerun=cosmos:cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
 
 This will produce a new rerun directory called ``cosmos_coadd`` in the
 main ``/data/Subaru/HSC/rerun`` directory.
     
-#. Use ``/data/Subaru/HSC/rerun/in_rerun --rerun=out_rerun``, e.g.::
+* Use ``/data/Subaru/HSC/rerun/in_rerun --rerun=out_rerun``, e.g.::
 
     $ stack.py /data/Subaru/HSC/rerun/cosmos --rerun=cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
 
@@ -218,7 +218,7 @@ This will produce a new rerun directory tree ``rerun/cosmos_coadd``
 ``/data/Subaru/HSC/rerun/cosmos/rerun/cosmos_coass`` directory.
 
     
-#. Use ``--output=/totally/different/path/out_rerun``, e.g.::
+* Use ``--output=/totally/different/path/out_rerun``, e.g.::
 
     $ stack.py /data/Subaru/HSC/rerun/cosmos --output=/data/work/cosmos_coadd --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
 
