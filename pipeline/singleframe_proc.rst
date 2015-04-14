@@ -9,7 +9,7 @@ single-frame inputs, depending on what you're trying to do:
 ``reduceFrames.py``, and ``hscProcessCcd.py``.  ``hscProcessCcd.py``
 will bias subtract, flat field, and then perform object detection and
 measurement on specified visits and CCDs.  ``reduceFrames.py`` will
-perform these steps only full visits.  ``reduceFrames.py`` will also
+perform these steps only on full visits.  ``reduceFrames.py`` will also
 perform a full astrometric solution for the exposure.  All scripts
 will require a :ref:`dataId <back_dataId>` of the form ``--id
 <identifiers>``, where the identifiers are such things as ``visit``,
