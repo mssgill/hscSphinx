@@ -4,6 +4,20 @@
 EUPS: New Packages and Releases
 ===============================
 
+.. contents::
+   :local:
+   :depth: 2
+
+   
+Create a new package
+--------------------
+
+If you wish to add a package to a distribution, these are the steps to
+follow.  The necessary steps are shown first with no explanation as a
+quick reference, and this is followed by complete instructions.  There
+are two examples shown, and both are for external packages.
+
+
 Your installed ``products/`` directory tree probably looks something like this::
 
     $ tree /path/to/products/
@@ -20,7 +34,7 @@ Your installed ``products/`` directory tree probably looks something like this::
         `-- <many product dbs>
 
 startup.py
-----------
+^^^^^^^^^^
 
 :download:`startup.py`
 
@@ -40,16 +54,10 @@ above code to your file if it already exists**::
     /home/username/.eups/startup.py
     
     
-Create a new package
---------------------
-
-If you wish to add a package to a distribution, these are the steps to
-follow.  The necessary steps are shown first with no explanation as a
-quick reference, and this is followed by complete instructions.  There
-are two examples shown, and both are for external packages.
-
 Quick start
 ^^^^^^^^^^^
+
+The following is example for an external software package 'php' being installed with version 5.6.7.
 
 ::
 
@@ -89,7 +97,7 @@ New Package steps in Detail
    your own.  In the buildFiles/ package, there are many existing
    packages which you can use to help get your build file working.
 
-    * Be sure to edit the location for the download (the http:// info) and anywhere you see 'php' written::
+    * Be sure to edit the location for the download (the http info) and anywhere you see 'php' written::
 
         $ cat php.build
         @LSST UPS@ &&
@@ -217,7 +225,7 @@ New Package steps in Detail
 #. The build files for HSC are currently served from
    hsca.ipmu.jp/sumire/packages/, and you can make your distribution
    generally available to the group by copying (rsync'ish, etc) your
-   build and table files to the main packages/ server.
+   build and table files to the main packages/ server::
 
        $ ssh <build_machine>
        $ cd $HOME/public_html/packages/
