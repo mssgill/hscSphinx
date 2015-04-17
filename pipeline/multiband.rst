@@ -56,7 +56,7 @@ distributing the job to 3 cores.
     $ multiBand.py /data/Subaru/HSC/ --rerun myrerun --id tract=0 patch=1,1 filter=HSC-R^HSC-I^HSC-Z --nodes 1 --procs 1 --mpiexec='-bind-to socket' --time 1000 --job multiband
 
 
-Here, ``--job`` is simple the name of the job used by the PBS cluster,
+Here, ``--job`` is simply the name of the job used by the PBS cluster,
 and the ``--mpiexec='bind-to socket'`` option helps performance on the
 PBS system.
 

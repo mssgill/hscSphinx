@@ -70,7 +70,7 @@ information.
         tool called the 'butler' does this.  If you go to an expensive
         restaurant, the 'valet' will park your car for you.  You don't
         need to know where the garage is when you arrive, and you don't
-        need to remeber where you parked when you leave.  This is what the
+        need to remember where you parked when you leave.  This is what the
         butler does for the input/output operations of the pipeline.
         Rather than hard-coding the paths, filenames, and loading/writing
         syntax for various data inputs and outputs throughout the pipeline
@@ -79,9 +79,6 @@ information.
         loading a bias image looks like this:
     
         ``biasImg = butler.get('bias', dataId)``
-    
-        See this example: :ref:`script <print_mags_from_butler>`.
-        
     
         
     CAS
