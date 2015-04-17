@@ -266,6 +266,56 @@ butler target would be used for coadd data.
 .. literalinclude:: scripts/ccdplot.py
    :language: python
 
+Masks
+^^^^^
+
+The 'image' and 'variance' planes stored in a ``MaskedImage``, are
+reasonable self explanatory, but the Mask contains information which
+is stored in a very specific way, and requires special attentions.
+HSC Masks (currently) use a 16-bit pixel mask to store pixel-specific
+flags. Most of these are used to indicate problems such as cosmic rays
+hits, and saturated or interpolated pixels.  However, some are used to
+note the locations of source footprints.  Not all 16 bits are used.
+
+================= ======================================================================================
+Label             Meaning  (Note that there is **no** order to these)
+================= ======================================================================================
+BAD               Pixel is physically bad (a known camera defect)
+CR                Cosmic Ray hit
+CROSSTALK         Pixel location affected by crosstalk (and corrected)
+EDGE              Near the CCD edge
+INTERPOLATED      Pixel contains a value based on interpolation from neighbours.
+INTRP             (same as INTERPOLATED)
+SATURATED         Pixel flux exceeded full-well
+SAT               (same as SATURATED)
+SUSPECT           Pixel is **nearly** saturated. It may not be well corrected for non-linearity.
+UNMASKEDNAN       A NaN occurred in this pixel in ISR (instrument signature removal - bias,flat,etc)
+
+DETECTED          Pixel is part of a source footprint (a detected source)
+DETECTED_NEGATIVE Pixel is part of a **negative** source footprint (in difference image)
+
+CLIPPED           (Coadd only) Coaddition clipped 1 or more input pixels
+NO_DATA           (Coadd only) Pixel has no input data (between CCDs, beyond edge of frame)
+================= ======================================================================================
+
+Unlike many astronomy data sets, the meaning of the specific bits is
+**not** hard-coded.  Instead, when the pipeline needs to record cosmic
+ray hits in the 'CR' mask, it requests the next available bit.  So, if
+for example, the CR hits are recorded in bit #2 in one rerun, there's
+no guarantee that that will be true in a different rerun!  The safest
+way to access the bit-mask information is to use the pipeline tools.
+
+To get the bit mask for a specific mask plane (e.g. CR) and make an image showing the masked regions::
+
+    # Assuming you've loaded the maskedImage ...
+    mask       = maskedImage.getMask()
+    crBitMask  = mask.getPlaneBitMask("CR")
+
+    # make a copy and keep only the CR bit
+    # (unmasked pixels will be 0, and masked ones will have value crBitMask)
+    crImage = mask.clone()
+    crImage &= crBitMask
+
     
 SourceCatalogs
 --------------
