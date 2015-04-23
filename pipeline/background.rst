@@ -428,7 +428,8 @@ numbers for some standard patterns are available :ref:`here
 
     --id visit=1000..1010:2
 
-    
+
+.. _back_config:
 
 Configuration Parameters
 ------------------------

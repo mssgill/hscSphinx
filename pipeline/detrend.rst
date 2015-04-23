@@ -20,7 +20,7 @@ for machine-specific details such as file paths.  You should always be
 able to get a full help listing with the command line option '--help',
 or simply '-h', e.g.::
 
-   $ reduceFlats.py -h
+   $ reduceFlat.py -h
 
    
 Generating the Calibration Registry

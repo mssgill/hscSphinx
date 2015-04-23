@@ -1,4 +1,42 @@
 
+
+- in the docs, a small explanation on the different calibration
+processes (or a link) would be useful
+
+
+- there's a little confusion between HSC deep field and "deepCoadd".
+Might be worth mentioning it in the doc. Also the pipeline output
+describes different ways to build the coadds. Worth mentioning it in
+the doc?
+
+
+Notes for software people
+
+- I had to set  isr.doFringe=False when running reduceBias.py,
+reduceDark.py and reduceFlat.py, but shouldn't it be a default
+configuration? All these three detrend tasks are not supposed to be
+run with fringe pattern (even for Y-band), aren't they?
+
+- bias images have expTime = 0 which makes isr.py crash on my mac
+(because it feeds math.log10 with 0). I had to hack isr.py to overcome
+this.
+
+- I set --do-exec on my mac but lots of "job.my_machine.number" file
+are written in working directory. Can we redirect those somewhere?
+
+- when running in a script like reduceBias.py doesn't seem to return 1
+if an error occurs so
+ sreduceBias.py [options] || { exit 1;} in a bash script won't stop if
+an error occurs
+
+- I get a strange error that apparently occur after writing the python
+path " echo: write error: Resource temporarily unavailable". It only
+happens very rarely but I have no idea of the cause.
+
+- why do we need a fringing calibration. Fringes don't appear in flats?
+
+
+
 questions:
   - differences between postISRCCD and calexp
   - do users need a 'wcs', ... 'fcr' ?
@@ -15,8 +53,6 @@ questions:
 -- minor
    - Fringe in reduceDark.py
    - hscIngestImages.py could create _mapper
-   - how to check the sqlite registry?
-     - is there a tool for this?
 
    -- validate
       - check all permissions

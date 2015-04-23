@@ -10,6 +10,39 @@ the components of processing.  If you're unfamiliar with Tasks, you
 may want to skim through the section explaining the :ref:`core
 components <coreComponents>`.
 
+There are many steps involved in running the pipeline, but the scripts
+are all built with ``Tasks`` as common building blocks.  If you'd like
+to understand what happens in a specific part of the pipeline, you can
+specify ``--show tasks`` and the script will print a list of all Tasks
+and sub-Tasks it loads.  E.g. for ``hscProcessCcd.py``::
+
+    $ hscProcessCcd.py /data/Subaru/HSC --show tasks
+    
+    <log lines not shown>
+    Subtasks:
+    calibrate: lsst.pipe.tasks.calibrate.CalibrateTask
+    calibrate.astrometry: lsst.obs.subaru.astrometry.SubaruAstrometryTask
+    calibrate.detection: lsst.meas.algorithms.detection.SourceDetectionTask
+    calibrate.initialMeasurement: lsst.meas.algorithms.measurement.SourceMeasurementTask
+    calibrate.initialMeasurement.replaceWithNoise: lsst.meas.algorithms.replaceWithNoise.ReplaceWithNoiseTask
+    calibrate.measureApCorr: lsst.meas.algorithms.measureApCorr.MeasureApCorrTask
+    calibrate.measurePsf: lsst.pipe.tasks.measurePsf.MeasurePsfTask
+    calibrate.measurement: lsst.meas.algorithms.measurement.SourceMeasurementTask
+    calibrate.measurement.replaceWithNoise: lsst.meas.algorithms.replaceWithNoise.ReplaceWithNoiseTask
+    calibrate.photocal: lsst.meas.photocal.PhotoCal.PhotoCalTask
+    calibrate.repair: lsst.pipe.tasks.repair.RepairTask
+    deblend: lsst.meas.deblender.deblend.SourceDeblendTask
+    detection: lsst.meas.algorithms.detection.SourceDetectionTask
+    fakes: lsst.pipe.tasks.fakes.DummyFakeSourcesTask
+    isr: lsst.obs.subaru.isr.SubaruIsrTask
+    isr.assembleCcd: lsst.ip.isr.assembleCcdTask.AssembleCcdTask
+    isr.crosstalk: lsst.obs.subaru.crosstalk.CrosstalkTask
+    isr.fringe: lsst.ip.isr.fringe.FringeTask
+    measurement: lsst.meas.algorithms.measurement.SourceMeasurementTask
+    measurement.replaceWithNoise: lsst.meas.algorithms.replaceWithNoise.ReplaceWithNoiseTask
+    qa: hsc.pipe.tasks.qa.QaTask
+    qa.seeing: hsc.pipe.tasks.measSeeingQa.MeasureSeeingMitakaTask
+    <log lines not shown>
 
 For processing on PBS/Torque, or Slurm cluster, the
 ``reduceFrames.py`` script uses the ProcessExposureTask.  There are

@@ -143,7 +143,7 @@ Target      Data type   Comment
 **bias**    ExposureF   Bias image
 **dark**    ExposureF   Dark current image (per second)
 **flat**    ExposureF   Flat field image
-**fringe**  ExposureF   Fringe image (prob. I-band only)
+**fringe**  ExposureF   Fringe image (prob. Y-band only)
 =========== =========== ================================
 
 
@@ -294,7 +294,7 @@ UNMASKEDNAN       A NaN occurred in this pixel in ISR (instrument signature remo
 DETECTED          Pixel is part of a source footprint (a detected source)
 DETECTED_NEGATIVE Pixel is part of a **negative** source footprint (in difference image)
 
-CLIPPED           (Coadd only) Coaddition clipped 1 or more input pixels
+CLIPPED           (Coadd only) Co-addition process clipped 1 or 2 (but not more) input pixels
 NO_DATA           (Coadd only) Pixel has no input data (between CCDs, beyond edge of frame)
 ================= ======================================================================================
 

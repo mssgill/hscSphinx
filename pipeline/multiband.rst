@@ -21,14 +21,47 @@ Why you Can't Just Use outputs from stack.py
 
 The pipeline stacking script ``stack.py`` also produces source
 catalogs for stacked coadds, and if you're only interested in one band
-these catalogs are fine.  However, a blended object which is observed
-in different bands, will not in general be deblended by the pipeline
-in the same way in both e.g. HSC-I and HSC-R.  This means that R-I
-colors based on ``stack.py`` catalogs are not consistent.  In order to
-solve this, a final processing step has been added to compile a
-catalog of sources detected in all bands, and ensure that the same
-pixel footprints and deblending parameters are used for measurements
-in all bands.
+these catalogs are fine.  However, there are some obvious (and some
+not-so-obvious) problems which occur when using these catalogs for
+multiple filters.  Clearly, some objects will not have been detected
+in all bands, and colors will not be available for those objects.
+However, a more subtle problem occurs when measuring model magnitudes
+on galaxies.
+
+Forced Photometry
+^^^^^^^^^^^^^^^^^
+
+The problem of dealing with sources detected in only some bands is
+handled with 'forced photometry'.  Forced photometry is a process in
+which the coordinates from detections made in one image are used to
+perform measurements in another image.  Typically, the detection image
+is a specific filter, e.g. HSC-I, and the forced image was taken with
+a different filter.  The purpose for this is to obtain fluxes for
+objects which are too faint to be detected in a given filter.  For
+example, if a source is detected in HSC-I but not in HSC-R, we can use
+the coordinates measured in the HSC-I band image to 'force' measure a
+flux in the HSC-R image.  By doing this, we can detect in e.g. HSC-I, and
+still obtain G,R,I,Z,Y photometry for all sources, regardless of
+whether or not they provided enough flux for detection (e.g. 5-sigma)
+in any of the other bands.
+
+Model magnitude issues
+^^^^^^^^^^^^^^^^^^^^^^
+
+To measure a galaxy flux in a consistent way, the same galaxy profile
+parameters (exponential, de Vaucouleur) must be used in each filter
+**[need ref]**.  The outputs of ``stack.py`` contain model magnitudes
+based on different profile parameters, and colors based on these
+measurements are not consistent.
+
+
+The multiband solution
+^^^^^^^^^^^^^^^^^^^^^^
+
+In order to solve these issues, a final processing step has been added
+to compile a catalog of sources detected in any of the observed bands,
+and to ensure that the same pixel footprints, deblending parameters,
+and model profiles are then used for measurements in all bands.
 
 As with :ref:`coadd processing <coadd_proc>`, multiband processing can
 be done with a single process ``multiBand.py``, or as a sequence of a
