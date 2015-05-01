@@ -17,6 +17,23 @@ If you're having trouble finding the ``stdout``, please see
 :ref:`Debugging <debugging>`.
 
 
+Missing a ``_mapper``
+---------------------
+
+In the data repo, there's a file ``_mapper``, which contains the name
+of the mapper.  The mapper knows where the data files are located
+within the data repo (see :ref:`Data Repo <data_repo>`).  If it's
+missing, you'll get an error message like::
+
+    RuntimeError: No mapper provided and no _mapper available
+
+The solution is to create the file yourself.  Here's an example from
+the ``master`` system at IPMU::
+
+    $ cat /lustre/Subaru/SSP/_mapper
+    lsst.obs.hsc.HscMapper
+
+
 Missing astrometry_net_data.
 ----------------------------
 
@@ -117,3 +134,6 @@ trouble.  They're all in ``CALIB/`` in your data repo.
         'ccd': 50, 'expTime': 240.0}: No unique lookup for ['calibDate', 'calibVersion'] from \
         {'taiObs': '2014-04-01', 'pointing': 815, 'visit': 999, 'dateObs': '2014-04-01', \
         'filter': 'HSC-Y', 'field': 'ALIENHOMEWORLD', 'ccd': 50, 'expTime': 200.0}: 2 matches
+
+
+RuntimeError: No mapper provided and no _mapper available.
