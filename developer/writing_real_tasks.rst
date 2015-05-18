@@ -12,7 +12,7 @@ want to do.
 Reasons you might want to consider writing a Task include things like:
 
 * You want to take advantage of the built-in handling of DataIds and parallel processing
-* You want to running the pipeline in a way that's significantly different from the default
+* You want to run the pipeline in a way that's significantly different from the default
 
 The general form of a Task inheriting from CmdLineTask should be as
 shown below.  Note that there are three ``_get<>Name()`` methods that
