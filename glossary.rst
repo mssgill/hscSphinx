@@ -204,9 +204,14 @@ information.
     
     frame
         A full exposure including all CCDs.  It's assigned a number by the
-        observatory (called a frameID).  The software group tends to use
-        the word 'visit' to mean the same thing.
-    
+        observatory (called an EXP-ID).  The software group tends to use
+        the LSST term 'visit' to mean the same thing.
+
+    FRAMEID
+        The Subaru name used for a single CCD exposure.  It uses
+        the form ``<4-char><8-digit>``.  See :ref:`Data Format <data_format>` for
+        details.
+
     healpix
         There are various ways you can break up the celestial sphere into
         discrete regions (called tesselation).  HealPix is a popular one
