@@ -21,6 +21,86 @@ outputs from a rerun, your best option is to use the pipeline's
 the repo.
 
 
+.. _data_format:
+
+The Data Format
+---------------
+
+A single HSC exposure includes 112 2048x4176 (trimmed) pixel CCDs, 8 for focus
+and 104 for data.
+
+Raw file names
+^^^^^^^^^^^^^^
+
+Subaru uses a strict file naming convention for raw data called a
+**FRAMEID**: 4 characters + 8 digits.  Each HSC CCD produces 1 FITS
+file with name ``HSC<1 char series><8-digit code>.fits``
+(i.e. <FRAMEID>.fits). The 1-character 'series' is currently 'A', but
+will be incremented to 'B', 'C', etc in the future.  The 8-digit code
+is:
+
+* The final 2 digits encode the CCD number, but the codings ``00 - 99`` aren't sufficient for 112 devices.  The camera is divided into 'even' and 'odd' halves, with 56 devices in each (see the :ref:`HSC Layout <hsc_layout>`, or NOAJ's official `CCD positions figure <http://www.naoj.org/Observing/Instruments/HSC/CCDPosition_20140811.png>`_).
+
+* Device numbers 49 and 50 are unused, so CCD numbers for 56 devices run from ``00`` to ``57``.  (The positions for 49 and 50 are actually occupied by auto-guider CCDs which use a different read-out and different naming convention.)
+
+* The parity (even/odd) of the 3rd-last digit encodes which half of the camera the device occupies.
+
+* The HSC exposure number ('visit' in LSST terminology) uses only the even numbers.
+
+As an example, two sequential exposures
+for visits 100 and 102 would have the following raw files::
+
+     Visit 100 even:  HSCA00010000.fits - HSCA00010057.fits
+     Visit 100 odd :  HSCA00010100.fits - HSCA00010157.fits
+     
+     Visit 102 even:  HSCA00010200.fits - HSCA00010257.fits
+     Visit 102 odd :  HSCA00010300.fits - HSCA00010357.fits
+
+When these raw files are ingested into a data repository (see below),
+the new files (often symlinks) are named using the convention
+``HSC-<7-digit visit>-<3-digit CCD>.fits``, which easier for users to
+understand.  The raw files from the above example would then be
+renamed to::
+
+     Visit 100 even and odd:  HSC-0000100-000.fits - HSC-0000100-111.fits
+     
+     Visit 102 even and odd:  HSC-0000102-000.fits - HSC-0000102-111.fits
+     
+This convention has practical implications!  One user recently tried
+to ``rm`` the raw FITS files for unwanted frames taken in cloudy conditions,
+but was unaware of the odd/even naming and deleted exactly half of the
+intended files.
+
+Data Volume
+^^^^^^^^^^^
+
+Each raw pixel is stored as a 16 bit integer, and the raw data for 1
+CCD (including FITS header) is about 18 MB.  One full raw exposure is
+about 2 GB.  The processed exposures' pixels are stored as 32-bit
+float, but also include a 32-bit variance image, and a 16-bit flags
+image, for a total of 80-bits/pixel.  Here are a few rules-of-thumb
+for determining how much hard disk space you need to process your
+data.
+
+========================   ==================
+Data                       Size
+========================   ==================
+1 raw CCD                  18 MB
+1 raw exposure             2 GB  (112 CCDs)
+1 processed CCD            82 MB
+1 processed Exposure       11 GB (104 CCDs)
+1 CCD's catalog            ~10MB - 30MB
+1 exposure's catalogs      1-2 GB
+**1 CCD (raw+proc+cat)**   **100 MB**
+**1 exp (raw+proc+cat)**   **13 GB**
+========================   ==================
+
+Put another way, you can store **500 exposures/TB (raw), ~80 exposures
+/ TB (processed)**.  Note that these estimates do not consider space
+for coadds as such estimates depend entirely on the number of
+exposures being stacked per pointing.
+
+
 .. _ingest:
 
 Creating a Data Repo and Ingesting Data
