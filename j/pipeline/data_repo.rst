@@ -1,3 +1,4 @@
+.. _j_data_repo:
 
 ====================================================
 データリポジトリ -- 解析するデータの置き場所
@@ -14,6 +15,77 @@ HSCパイプラインでデータを解析するためには、最初にすべ�
 データレポジトリは、あくまでも既存のHSCパイプラインからデータを読み書きする
 ために必要な配置方法であって、ファイルパスを直接指定してデータを読み書きするような
 スクリプトをご自身で書かれる場合には必要ありません。
+
+
+.. _jp_data_format:
+
+データフォーマット
+----------------
+
+1 ショットの HSC データには 2048 × 4176 (trimmed) ピクセルの 112 枚の CCD が含まれており、
+うち 8 枚はフォーカス合わせ用、残り 104 枚がサイエンスユース用となっています。
+
+生データの名前
+^^^^^^^^^^^^^
+
+すばる望遠鏡では生データに 4 文字 + 8 数字 で構成される **FRAMEID** と呼ばれるデータ名を
+付ける慣習があります。HSC の各 CCD データは ``HSC<1-文字><8-数字コード>.fits`` 
+という名前の fits データとして出力されます。1-文字系列は現在 'A' が割り当てられていますが、
+将来的には 'B', 'C' と変化していきます。8-数字コードは、
+
+* 下 2 桁は CCD 番号を意味している。 ``00 - 99`` では 112 枚の CCD 分を対応できないため、
+　HSC カメラは 56 個の '偶数' と '奇数' 番号のデバイスに分けられている
+　（:ref:`HSC レイアウト <jp_hsc_layout>`　か、
+　国立天文台の `CCD 配置図 <http://www.naoj.org/Observing/Instruments/HSC/CCDPosition_20140811.png>`_ を参照）。
+
+* デバイス ID 49, 50 は使用されない。ゆえに、CCD ID は ``00`` から ``57`` の 56 枚割り当てられている
+　（デバイス ID 49, 50 の位置にはフォーカスやサイエンスユース用 CCD とか異なる読み出し系で、
+　命名法が異なるオートガイダー用 CCD が設置されている）。
+
+* 下 3 桁目の数（偶数/奇数）は、カメラ面内でどこのデバイス上にいるかを表している。
+
+* HSC のショット数（LSST の解析システム内では 'visit' ）は偶数番目で表す。
+
+例えば、100, 102 という visit 番号の生データのファイル名は次のようになります。::
+
+     Visit 100 偶数:  HSCA00010000.fits - HSCA00010057.fits
+     Visit 100 奇数:  HSCA00010100.fits - HSCA00010157.fits
+     
+     Visit 102 偶数:  HSCA00010200.fits - HSCA00010257.fits
+     Visit 102 奇数:  HSCA00010300.fits - HSCA00010357.fits
+
+これら生データがリポジトリの中に配置されると、``HSC-<7-数字 visit>-<3-数字 CCD>.fits`` 
+という新しいファイル名が付与されます。例えば、上記の生データは以下のような名前に置き換えられます。::
+
+	Visit 100 偶数と奇数:  HSC-0000100-000.fits - HSC-0000100-111.fits
+     
+    Visit 102 偶数と奇数:  HSC-0000102-000.fits - HSC-0000102-111.fits
+ 
+データ名が生データとリポジトリ内で変更することや、
+生データが visit + 偶数/奇数の組み合わせになっていることを覚えておくと、今後データを整理する際に役立つでしょう。
+
+
+データ量
+^^^^^^^^^
+
+生データでは、1 ピクセルに 16 bit の整数が格納され、1 CCD の生データは約 18 MB のデータ量になります。
+CCD は 112 枚あるので、1 ショットで約 2 GB のデータ量となります。処理済み画像データの 1 ピクセルには
+32-bit 格納されていますが、32-bit の画像と 16-bit の flag 画像も含まれ、最終的に 1 ピクセルの容量は
+80-bit にもなります。大雑把に、どの程度のディスク容量がHSCパイプラインの処理で必要になるか以下に記述します。
+
+=============================   ==================
+データ                       	 サイズ
+=============================   ==================
+生データ 1 CCD              	  18 MB
+生データ 1 ショット           	   2 GB  (112 CCDs)
+解析処理後 1  CCD            	  82 MB
+解析処理後 1 ショット         	   11 GB (104 CCDs)
+1 CCD のカタログファイル      	   ~10MB - 30MB
+1 ショットのカタログファイル   		 1-2 GB
+**1 CCD (生＋処理済＋カタログ)**   	**100 MB**
+**1 exp (生＋処理済＋カタログ)**   	**13 GB**
+=============================   ==================
+
 
 .. _jp_ingest:
 
@@ -302,5 +374,115 @@ Rerunディレクトリの構造
 ..
 .. The Coadd outputs
 .. ^^^^^^^^^^^^^^^^^
+
+
+mosaic 処理の出力
+^^^^^^^^^^^^^^^^^
+
+reduceFrames.py による各 CCD の一次処理の後で、``mosaic.py`` によって
+全ショットに対するより精密な座標決めや原点等級決め（'uber-calibration'）が
+行われます（詳細は :ref:`Mosaic <jp_mosaic>` 参照）。この過程では各 tract 内の
+各 CCD に新たに 2 つのファイルが追加されます。これらのファイルは ``corr/<TRACT>`` 
+ディレクトリ下に生成されます。例えば、'0000' の　tract で、1236, 1238 の visit 番号の
+データに mosaic 処理を実行したとします。
+その場合のコマンド実行後のディレクトリ構造は以下の通りです。::
+
+    /data/Subaru/HSC/rerun/test/
+    `-- 00100                                         ポインティング
+        `-- HSC-I                                     フィルター名
+            `-- corr
+                `-- 0000
+                    |-- fcr-0001236-050.fits          # 全 visit から見積もられた測光情報の補正ファイル
+                    |-- fcr-0001238-050.fits
+                    |-- wcs-0001236-050.fits          # 全 visit から見積もられた座標決めファイル
+                    `-- wcs-0001238-050.fits
+
+
+Coadd による出力
+^^^^^^^^^^^^^^^^
+
+coadd 出力は ``stack.py`` によって生成されます（:ref:`Coadd Processing <jp_coadd_proc>` 参照）。
+出力データはリポジトリ内の ``deepCoadd/`` と ``deepCoadd-results/`` ディレクトリ下に生成されます。
+以下に、この 2 つのディレクトリ構造をお見せします。coadd による解析は ``stack.py`` の中で
+処理されていますが、その中のサブプロセスの解析過程は独立に実行させるため、
+
+以下の例では HSC-I の 1228, 1238 の visit 番号の HSC SSP データに対する ``stack.py`` の実行結果
+を示しています。ここでは、1,1 というある patch データの出力を示していますが、他全ての patch に対し
+同様形式でデータが生成されます（基本的には patch ID は 10,10 までですが、
+skymap で定義した tract のサイズによって patch の数は変わります）。
+
+coadd における最初の処理は skymap を生成することです。skymap は入力した画像の座標系を
+最終 coadd 処理のために使用する座標系に変換する（warp）ために用いられます。この処理での出力は
+ ``deepCoadd/`` ディレクトリに格納されます。
+ 
+::
+
+    $ tree /data/Subaru/HSC/rerun/myrerun/deepCoadd/
+    /data/Subaru/HSC/rerun/myrerun/deepCoadd/
+    |-- HSC-I
+    |   `-- 0
+    |       |-- 1,1
+    |       |   |-- warp-HSC-I-0-1,1-1228.fits        # visit ID 1228 のデータを tract/patch = 0/1,1 用に座標変換したデータ
+    |       |   `-- warp-HSC-I-0-1,1-1238.fits        # visit ID 1238 のデータを tract/patch = 0/1,1 用に座標変換したデータ
+    |       `-- 1,1.fits                              # 全 tract/patch = 0/1,1 の warp 画像を coadd 処理したデータ
+    `-- skyMap.pickle                                 # skymap
+ 
+coadd 処理によって生成された画像（上記ディレクトリ構造例の ``1,1.fits`` 画像）のカタログファイルは
+``deepCoadd-results/`` ディレクトリに格納されています。メインの天体カタログは ``src-HSC-I-0-1,1.fits`` です。
+
+::
+
+    $ tree /data/Subaru/HSC/rerun/myrerun/deepCoadd-results/
+    /data/Subaru/HSC/rerun/myrerun/deepCoadd-results/
+    `-- HSC-I
+        `-- 0
+            `-- 1,1
+                |-- src-HSC-I-0-1,1.fits              # tract/patch 0/1,1 内のカタログファイル
+                |-- srcMatch-HSC-I-0-1,1.fits
+                `-- srcMatchFull-HSC-I-0-1,1.fits
+
+
+マルチバンド解析の出力
+^^^^^^^^^^^^^^^^^^^^^
+
+異なる filter での coadd の結果から、全 filter で一致したカタログを生成するタスクが
+``multiBand.py`` です。以下では HSC-I と HSC-R のディレクトリを示しています。
+
+``stack.py`` と同様に、 ``multiBand.py`` の中でも各処理段階毎に異なるプロセスが走っています
+（:ref:`Multiband Processing <jp_multiband_proc>` 参照）。各処理は独立に実行され、
+その段階毎に中間生成ファイルが出力されます。以下ではその全てのファイルを表示しています。もし
+``multiBand.py`` をデフォルトのパラメーターで実行すると、
+以下の例にある ``detectMD-*`` と ``measMD-`` ファイルは生成されませんのでご注意ください。
+
+::
+
+    $ tree /data/Subaru/HSC/rerun/myrerun/deepCoadd-results/
+    /data/Subaru/HSC/rerun/myrerun/deepCoadd-results/
+    |-- HSC-I
+    |   `-- 0
+    |       `-- 1,1
+    |           |-- bkgd-HSC-I-0-1,1.fits             # detectCoaddSources.py
+    |           |-- det-HSC-I-0-1,1.fits              # detectCoaddSources.py
+    |           |-- detectMD-HSC-I-0-1,1.boost        # detectCoaddSources.py      (multiBand.py ではない)
+    |           |-- forced_src-HSC-I-0-1,1.fits       # forcedPhotCoadd.py
+    |           |-- meas-HSC-I-0-1,1.fits             # measureCoaddSources.py
+    |           |-- measMD-HSC-I-0-1,1.boost          # measureCoaddSources.py     (multiBand.py ではない)
+    |           `-- srcMatch-HSC-I-0-1,1.fits         # measureCoaddSources.py
+    |-- HSC-R
+    |   `-- 0
+    |       `-- 1,1
+    |           |-- bkgd-HSC-R-0-1,1.fits             # detectCoaddSources.py
+    |           |-- det-HSC-R-0-1,1.fits              # detectCoaddSources.py
+    |           |-- detectMD-HSC-R-0-1,1.boost        # detectCoaddSources.py      (multiBand.py ではない)
+    |           |-- forced_src-HSC-R-0-1,1.fits       # forcedPhotCoadd.py
+    |           |-- meas-HSC-R-0-1,1.fits             # measureCoaddSources.py
+    |           |-- measMD-HSC-R-0-1,1.boost          # measureCoaddSources.py     (multiBand.py ではない)
+    |           `-- srcMatch-HSC-R-0-1,1.fits         # measureCoaddSources.py
+    `-- merged
+        `-- 0
+            `-- 1,1
+                |-- mergeDet-0-1,1.fits               # mergeCoaddDetections.py
+                `-- ref-0-1,1.fits                    # mergeCoaddMeasurements.py
+
 
 

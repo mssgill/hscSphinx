@@ -7,82 +7,61 @@
 .. _jp_detrend:
       
 ===================================================
-Making Detrends (biases, flats, darks, and fringes)
+一次処理用データの生成
 ===================================================
 
-Concepts Common to all Detrends
+全一次処理解析における共通概念
 -------------------------------
 
-The commands below show examples for construction of biases, flats,
-darks, and fringes.  They were tested on the machine ``master`` at
-IPMU.  They should work on any machine, of course, but look carefully
-for machine-specific details such as file paths.  You should always be
-able to get a full help listing with the command line option '--help',
-or simply '-h', e.g.::
+以下では Bias, Flat, Dark, Fringe データの生成コマンドを紹介します。ここで紹介して
+いるコマンドは、IPMU の解析コンピューター ``master`` で試験しています。そのため IPMU 
+の ``master`` では Pipeline コマンドの実行は可能なはずですが、解析を実行する際は、
+各自データへのパスなどのパラメーター情報に注意してください。また、コマンドのオプションなど
+調べたい場合はヘルプオプションを使用してください（ '--help' または '-h'）::
 
    $ reduceFlats.py -h
 
    
-Generating the Calibration Registry
+一次処理用データレジストリの生成
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-By default, the calibration outputs from each command will be written
-to the ``CALIB/`` directory (``CALIB/BIAS/``, ``CALIB/DARK``, etc.).  But,
-after each command you *must* run ``genCalibRegistry.py`` in order to
-make the newly created calibration products available to the system.
-On the first run, use ``--create`` option as the registry (a sqlite
-database file called ``calibRegistry.sqlite``) will not yet exist.  This
-is written explicitly after each command example below::
+デフォルトでは全ての一次処理用データは ``CALIB/`` ディレクトリに生成されます
+（``CALIB/BIAS/``, ``CALIB/DARK``, など）。しかし、各一次処理用コマンドの実行後には
+*必ず* ``genCalibRegistry.py`` コマンドを実行し、新しく生成された一次処理データを
+登録してください。なお、``genCalibRegistry.py`` を初めて実行する際には ``--create`` 
+オプションを追加して一次処理用の新しいレジストリを登録してください（``calibRegistry.sqlite``
+という sqlite データベースファイルが生成されます）。例えば、各一次処理コマンドの後に
+以下のように実行します。::
 
-   $ reduce<Calib>.py [various arguments]
+   $ reduce<Calib>.py [必要なオプション]
    
-   # NOTE: --create is needed only on the first run to create the calibRegistry.sqlite file
+   # NOTE: 一番最初に calibRegistry.sqlite を生成する時のみ --create オプションが必要
    $ genCalibRegistry.py --create --root /data/Subaru/HSC/CALIB --camera HSC --validity 12
 
+``--root`` オプションはデータリポジトリ内の ``CALIB/`` を直接指定します。また、
+``--validity`` オプションによって生成された一次処理用データが使用可能な日数を指定します。
+ここでは例として 12 日としていますが、データによってはもっと長い日数を指定する必要があります。
+自身のデータに適切な日数を指定してください。
 
-The ``--root`` directory should point to ``CALIB/`` in your data
-repository, and the ``--validity`` period is the length of time a
-given calibration product should be considered stable and useable.
+一次処理データのバージョン
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Bias, Flat, Fringe といった一次処理データには ``calibVersion`` というラベルを
+つけることができます。以下の例では、全てのケースで 'all' というラベルをつけています。
+例えば flat データにおいては  'dome' や 'twilight' というラベルをつけることも可能です。
 
-Debugging hints
-^^^^^^^^^^^^^^^
-
-If for some reason you have trouble with any of the following
-commands, here are a few details which may help diagnose the problem.
-
-#. A TORQUE job will write its ``stdout`` to files with the form:
-   jobname.nodename.NNNNN.  Jobname is what you call the submitted job
-   by setting the ``--job foo`` command line argument.  Nodename is the
-   node which sent its output to the file (probably called
-   ``analysisNN``, NN is a number from 01 to 40), and NNNNN a number
-   assigned by the scheduler.  If you suspect something went wrong
-   with your job, have a look through a few of these files and see
-   what the log messages say.
-
-#. If the info in the TORQUE output files isn't helpful, you can try
-   running the job in the current shell with the ``--do-exec`` option.
-   HOWEVER, these jobs can be really big, so you should first try to
-   reproduce the problem with a smaller subset of your data.  You can
-   specify a few specific visits using ``..``, ``:`` and ``^`` to denote
-   number ranges, e.g. ``--id visit=1234..1244:2 ccd=50`` (visits 1234
-   to 1244 incrementing by 2, CCD 50 only) or ``--id visit=1234^1244
-   ccd=40..60`` (visits 1234 and 1244, CCDs 40 to 60).
    
-   
-Biases
-------
+Bias データ
+-------------
 
-Biases are constructed using ``reduceBias.py`` located in the hscPipe
-package.  There are a number of command line arguments which are
-needed.  The filter setting for a bias frame is irrelevant, but you
-may see references to a filter in the output from reduceBias.py.  This
-simply refers to the filter which was loaded in the exchanger when the
-biases were taken, and it does not in any way mean that you can't use
-your newly created biases with other filters.
+Bias データは ``reduceBias.py`` を使って生成されます。コマンド実行時には複数の
+オプションが必要となります。Bias データは filter に依存しないものですが、
+reduceBias.py の出力には filter 情報が参照されています。この filter の情報は、
+Bias データと取得時に filter 交換機構内で参照していた filter に起因するもので、
+Bias データの生成に filter 情報は不要です。
 
-Bias Example 1
-^^^^^^^^^^^^^^
+Bias データ生成例 その1
+^^^^^^^^^^^^^^^^^^^^^^
 
 ::
   
@@ -92,35 +71,36 @@ Bias Example 1
         
     $ genCalibRegistry.py --create --root /data/Subaru/HSC/CALIB --camera HSC --validity 12
     
-The details:
+オプション詳細:
 
-* ``/data/Subaru/HSC`` is the location of the data repository
-* ``--rerun my_biases``  is the rerun for the reduced input frames (trimmed, bias subtracted)
-* ``--detrendId calibVersion=all``  The final output flats will be stored with ``calibVersion`` label ``all``.
-* ``--id``  allows you to specify which frames to use as inputs.
-* PBS Torque options
-  * ``--queue small``  The name of the PBS queue
-  * ``--job domeI``    The name the job will have when you view it with ``qstat``.
-  * ``--nodes 2``      Use 2 compute nodes
-  * ``--procs 12``     Run 12 processes on each node.
+* ``/data/Subaru/HSC`` データリポジトリの場所
+* ``--rerun my_biases``  入出力データを配置する rerun 名 (トリム平均, バイアス引き済データが配置される)
+* ``--detrendId calibVersion=all``  最終出力データには ``calibVersion`` が ``all`` と名付けられる
+* ``--id``  入力データを指定する
+* PBS Torque オプション
+  * ``--queue small``  PBS キューの名前
+  * ``--job domeI``    ``qstat`` コマンドで参照した際に見られる job 名
+  * ``--nodes 2``      2 ノードを使用
+  * ``--procs 12``     各ノードで 12 プロセス実行
 
-  
-If you try to restart a job which fails, or you try to add data to an
-existing rerun, the pipeline will complain as doing this could cause
-the rerun to have outputs processed with different processing
-parameters.  This is intended to keep you from shooting yourself in
-the foot, but it's often necessary during development.  If your foot
-has it coming, add ``--clobber-config``.
+
+もし job が途中で失敗しリスタートする場合、または、既存の rerun に新しくデータを
+追加しようとする場合、処理パラメーターが異なる出力が生成されるとして Pipeline は
+警告を発します。これはパラメーターが不均一なデータが生成されないようにするためです。
+もしパラメーターが不均一なデータの生成を気にしないのであれば、コマンドに ``--clobber-config``
+オプションを追加することでこの警告を回避することができます。
 
 
    
-Darks
------
+Dark データ
+-----------
   
-Darks are constructed using ``reduceDark.py`` located in the hscPipe package. The command line arguments needed are essentially the same as those required for making biases, so refer back to that section for details.
+Dark データは ``reduceDark.py`` を用いて生成されます。コマンドの実行に必要な
+オプションは基本的には Bias データ生成時と同じです。そのため、オプションの詳細は
+上記 Bias データ生成例をご覧ください。
 
-Darks Example 1
-^^^^^^^^^^^^^^^
+Dark データ生成例 その1
+^^^^^^^^^^^^^^^^^^^^^
 
 ::
   
@@ -131,22 +111,18 @@ Darks Example 1
     $ genCalibRegistry.py --root /data/Subaru/HSC/CALIB --camera HSC --validity 12
 
     
-Flats
------
+Flat データ
+-----------
 
-Flats are constructed using ``reduceFlat.py`` located in the hscPipe
-package.  The command line arguments which are needed are essentially
-the same as those required for making biases so refer back to that
-section for details.  The obvious exception here is that you'll need
-to run reduceFlat.py for each filter you observed.  The example shows
-only the HSC-I filter.
-
-.. todo::
-   :red:`Can reduceFlat.py handle multiple filters at once?`
+Flat データは ``reduceFlat.py`` コマンドで生成されます。コマンドの実行に必要な
+オプションは基本的には Bias データ生成時と同じですので、オプションの詳細は上記
+Bias データ生成例をご覧ください。Flat データ生成に関して特記する点は、reduceFlat.py
+は各 filter 毎に実行するという点です。以下の例では HSC-I filter の Flat データ生成
+に関してのみ紹介します。
 
           
-Flat Example 1
-^^^^^^^^^^^^^^
+Flat データ生成例 その1
+^^^^^^^^^^^^^^^^^^^^^^
 
 ::
   
@@ -154,38 +130,32 @@ Flat Example 1
         --detrendId calibVersion=all --job domeI --nodes 2 --procs 12 \
         --id field=DOMEFLAT filter=HSC-I dateObs=2013-11-04 expTime=6.0
 
-    $ reduceFlat.py ... [another filter]
-    $ reduceFlat.py ... [yet another filter]
+    $ reduceFlat.py ... [他 filter]
+    $ reduceFlat.py ... [また他の filter]
         
     $ genCalibRegistry.py --root /data/Subaru/HSC/CALIB --camera HSC --validity 12
 
     
-Fringes
--------
+Fringe データ
+-------------
   
-Fringes are constructed using ``reduceFringe.py`` located in the
-hscPipe package. The command line arguments needed are essentially the
-same as those required for making biases, so refer back to that
-section for details.  A few notable distinctions need to be mentioned
-here though.
+Fringe データは ``reduceFringe.py`` コマンドによって生成されます。コマンドの実行に
+必要なオプションは基本的には Bias データ生成時と同じですので、オプションの詳細は上記
+Bias データ生成例をご覧ください。Fringe データに関して特記すべき点を以下にあげます。
 
-#. The fringes are likely only needed for Y-band.  We haven't found
-   any serious fringing in any of the other HSC filters at this time.
+#. Fringe データは Y-band データにのみ必要です。現時点では、他の filter では深刻な Fringe の影響は見受けられません。
 
-#. In all likelihood, you don't need to take special FRINGE
-   calibration data.  On-target observations themselves are likely
-   sufficient to construct fringe frames.  If you weren't present when
-   the data were obtained, it's probably safe to assume the observers
-   didn't collect anything special, and you should probably use data
-   from targeted observations of some dark field here.  For this
-   example, I've used a fictional MYTARGET as a placeholder.  Eligible
-   values are those from the OBJECT keywords in your FITS headers, and
-   there should be directories in your data repository corresponding
-   to each such target from your observing run.
+#. Fringe データ用に別途データを取得する必要はありません。Fringe データは天体データ
+   を用いて生成されます。天体データに Fringe の影響が見られなければ、Fringe データの
+   影響は少ないと考え、別途解析処理を実行しなくてもよいでしょう。以下の例では MYTARGET 
+   という仮想のデータを用いて Fringe データの生成を行っています。
+   処理済みの Fringe データは rerun 以下に指定したディレクトリに生成され、
+   生成された Fringe データの FITS ヘッダーの OBJECT には MYTARGET という情報が
+   登録されます。
 
    
-Fringe Example 1
-^^^^^^^^^^^^^^^^
+Fringe データ生成例 その1
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
   

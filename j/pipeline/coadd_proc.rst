@@ -1,30 +1,27 @@
 
 
-================
-Coadd Processing
-================
+====================
+天体データの重ね合わせ
+====================
 
-At this point, it is assumed that you've run reduceFrames.py to
-complete the single-frame photometry.  If you haven't, go and do that
-first.  Coadd construction is the process of warping exposures to put
-them on a common WCS, and then combining them to produce a final
-exposure with improved signal-to-noise ratio.  The process is
-performed in a sequence of steps:
+このページで紹介する解析は reduceFrames.py による各 CCD の一次処理と天体検出、測光が完了
+していることを前提としています。もしまだ完了していない場合は、まず reduceFrames.py を実行してください。
+天体データの重ね合わせの処理過程では、全ての天体データを共通の WCS 座標系に変換し、取得された
+全ての天体データを重ね合わせて、S/N が改善された最終画像（coadd 画像）を生成します。以下のステップで天体データの
+重ね合わせ処理は行われます。:
 
-#. Make a **SkyMap** (the coordinate system used for coadd images)
+#. **SkyMap** （coadd 画像に用いられる座標系）を生成する。
 
-#. **mosaic**: Performs an Uber-calibration
+#. **mosaic**: 等級原点や座標を決定する。
 
-#. **Warp**: Resample the images from the observed WCS to the SkyMap coordinates.
+#. **Warp**: 観測された WCS 座標系から SkyMap の座標系に画像をリサンプルする（warp 画像の生成）。
 
-#. **Assemble the coadd**: Statistically combine the warped images.
+#. **coadd 画像の生成**: warp 画像の足しあわせ。
 
-#. **Process** the coadd images (detect, measure, etc) to produce a catalog.
+#. **Process**: coadd 画像から天体を検出し、カタログを生成する。
 
-
-Each step is described below.  However, ``warp``, ``assemble``, and
-``process`` can be run in a single script called ``stack.py`` (also
-described below).
+以下では各解析ステップについて紹介します。なお、``warp``, ``assemble``, ``process``
+は全て ``stack.py`` と呼ばれる 1 つの解析コマンド内で実行されています。
 
 
 .. _jp_skymap:
@@ -32,16 +29,18 @@ described below).
 Making a SkyMap
 ---------------
 
-Before stacking, you need to make a SkyMap.  A SkyMap is a tiling
-or 'tesselation' of the celestial sphere, and is used as coordinate
-system for the final coadded image.  The largest region in the system
-is called a 'Tract', and it contains smaller 'Patch' regions. In a
-later step, your input images will be warped from their observed WCSs
-to the common WCS of the SkyMap.
+まず最初に SkyMap を生成します。SkyMap は天球面上をタイル、またはモザイク状にしたもので、
+最終 coadd 画像で用いられる座標系です。SkyMap で設定される最大の領域は 'Tract' と呼ばれ、
+その中には複数の 'Patch' 領域が含まれています。Tract も Patch も隣の
+Tract/Patch と重なり合うように設定されます。デフォルトでは、Tract は 1 arcmin、
+Patch は 100 pix 重なるよう設定されています（1 Patch は 4000 x 4000 pix）。
+各 Tract には異なる WCS が設定されていますが、その中にある Patch には Tract が持つ
+WCS に対する offset の値が与えられます。以降の解析で紹介する warp において、
+天体データが持つ観測時の WCS の情報は SkyMap による共通の WCS の情報に変換されます。
 
-There are two ways to create SkyMaps: (1) for the whole sky [probably
-**not** what you want for individual PI-type observations], or (2) for
-a selected region containing a set of exposures.
+SkyMap を生成するには 2 つの方法があります: (1) 全天の情報を使って生成する
+（個々の PI-type の観測データの解析では **使用しない** かもしれません）、または
+(2) 観測データのみを使って生成する。
 
 
 Full SkyMap
