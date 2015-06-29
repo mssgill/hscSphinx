@@ -20,12 +20,13 @@ Pipeline
 .. toctree::
    :hidden:
    
+   pipeline/installation
    pipeline/coadd_proc
-   pipeline/multiband
-   pipeline/forced
    pipeline/error 
-   pipeline/pipeQa
-
+   pipeline/hoge
 
    pipeline/quick
+..   pipeline/multiband
+..   pipeline/forced
+..   pipeline/pipeQa
 

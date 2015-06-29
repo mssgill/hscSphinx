@@ -6,7 +6,7 @@
 
 もしHSCパイプラインの実行に関して何らかのトラブルがあった時、例えば以下の方法で
 問題に対処することができます。何か特定の問題かエラーメッセージが出た場合は、
-:ref:`エラーメッセージ <jp_errormessages>` を参照してください。
+:ref:`エラーメッセージ <errormessages>` を参照してください。
 
 #. TORQUE job では jobname.nodename.NNNNN という形式で ``stdout`` 
    ファイルが出力されます。Jobname はコマンドを実行する際に ``--job foo`` 

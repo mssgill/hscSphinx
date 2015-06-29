@@ -71,14 +71,14 @@ coadd を構築し実行するなど、ある関数の実行に特化したコ�
     
     --calib RAWCALIB    
 		一次処理データリポジトリへの入力パス。特別指定しなくても Pipeline での
-		解析は実行されます。Pipeline による :ref:`一次処理 <j_detrend>`
+		解析は実行されます。Pipeline による :ref:`一次処理 <jp_detrend>`
 		に従う限りでは、一次処理用データは適切なレポジトリに生成されます。
                             
     --output RAWOUTPUT
 		出力データ用リポジトリへのパス（リポジトリがない場合は必須）。
 		ある rerun における出力データを他のディレクトリやリポジトリ配下に
 		置きたい場合に、このオプションが有効となります。例えば、
-		:ref:`異なる rerun リポジトリに coadd データを出力する場合 <j_coadd_rerun_change>`.
+		:ref:`異なる rerun リポジトリに coadd データを出力する場合 <coadd_rerun_change>`.
 		をご覧ください。
 		        
     --rerun [INPUT:]OUTPUT
@@ -101,7 +101,7 @@ coadd を構築し実行するなど、ある関数の実行に特化したコ�
 		ある config ファイルないのパラメータにデフォルトの config パラメータを
 		置き換えてコマンドを使う時のオプション。config ファイルには
 		一行一パラメータを書き込むようにする。
-		詳細は :ref:`こちら <j_back_config>` をご覧ください。
+		詳細は :ref:`こちら <back_config>` をご覧ください。
         
     -L LOGLEVEL, --loglevel LOGLEVEL    
 		ログメッセージのレベルを特定する。ログ内のおかしなメッセージを調べたければ
