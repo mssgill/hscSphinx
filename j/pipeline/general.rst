@@ -92,15 +92,15 @@ coadd を構築し実行するなど、ある関数の実行に特化したコ�
 		をご覧ください。
 
     -c [NAME=VALUE [NAME=VALUE ...]], --config [NAME=VALUE [NAME=VALUE ...]]    
-		ある config パラメーターを無効にするオプションで、例えば
+		ある config パラメータを無効にするオプションで、例えば
 		``-c foo=newfoo bar.baz=3`` のように使います。
-		もし変更したい config パラメーターが大量にある場合は、
+		もし変更したい config パラメータが大量にある場合は、
 		自身で config ファイルを準備し、 ``-C`` で読み込ませるという方法もあります。
 
     -C [CONFIGFILE [CONFIGFILE ...]], --configfile [CONFIGFILE [CONFIGFILE ...]]
-		ある config ファイルないのパラメーターにデフォルトの config パラメーターを
+		ある config ファイルないのパラメータにデフォルトの config パラメータを
 		置き換えてコマンドを使う時のオプション。config ファイルには
-		一行一パラメーターを書き込むようにする。
+		一行一パラメータを書き込むようにする。
 		詳細は :ref:`こちら <j_back_config>` をご覧ください。
         
     -L LOGLEVEL, --loglevel LOGLEVEL    
@@ -131,9 +131,9 @@ coadd を構築し実行するなど、ある関数の実行に特化したコ�
     --show [{config,data,tasks,run} [{config,data,tasks,run} ...]]
 		自身で指定した情報のみを表示するオプション。最も使うであろうオプションは
 		``--show config`` です。このオプションを使用すると、全ての config 
-		パラメーターの情報をターミナルに表示することができます。さらに有用なのは、
-		config パラメーター中のある特定のキーワードだけ抜き出して検索することも
-		可能な点です。例えば、'*background*' という文字が含まれるパラメーター
+		パラメータの情報をターミナルに表示することができます。さらに有用なのは、
+		config パラメータ中のある特定のキーワードだけ抜き出して検索することも
+		可能な点です。例えば、'*background*' という文字が含まれるパラメータ
 		だけ抜き出して表示するには ``--show config=*background*`` と
 		設定することで実行されます。この他に有用なオプションは ``--show tasks`` です。
 		このオプションでは現在自身が使用している Pipeline コマンドで用いられる  
@@ -149,22 +149,21 @@ coadd を構築し実行するなど、ある関数の実行に特化したコ�
     --clobber-output    
 		既存の出力ディレクトリを消去したり再生成するオプション
 		（-j をつけて実行したほうが安全です）。
-/*		(safe with -j, but not all other forms of parallel execution). */
                             
     --clobber-config
-		Pipeline が実行される度に全ての config パラメーターと ``setup`` パッケージ
-		の EUPS バージョンは保存されます。これら解析のパラメーターと EUPS の
+		Pipeline が実行される度に全ての config パラメータと ``setup`` パッケージ
+		の EUPS バージョンは保存されます。これら解析のパラメータと EUPS の
 		バージョンは、ある rerun における解析の度に Pipeline 内で調べられます。
-		もし何かパラメーターを変更した場合、データが不均一となるため Pipeline では
+		もし何かパラメータを変更した場合、データが不均一となるため Pipeline では
 		そのコマンドの実行を拒否します。最終データを生成する上時にデータの均一性を
 		保つために Pipeline のこの処理は有効ですが、単にデータのテストを行い
 		たい場合には不要です。そこで、``--clobber-config`` を特定すると、
-		Pipeline コマンドでは現在使用している config パラメーターと
+		Pipeline コマンドでは現在使用している config パラメータと
 		EUPS バージョン情報のバックアップを行い
 		（<data_repo>/config/ のファイルが <foo> --> <foo>~1 に変更される）、
-		古い cifing　ファイルを上書きします。
+		古い confing ファイルを上書きします。
 	
     --id [KEY=VALUE1[^VALUE2[^VALUE3...] [KEY=VALUE1[^VALUE2[^VALUE3...] ...]]
-		解析を実行したいデータ ID を指定します。例えば ``--id visit=12345
-         ccd=1,2`` のように使用できます。詳しくは 
-		 :ref:`data ID <j_back_dataId>` をご覧ください。
+		
+		解析を実行したいデータ ID を指定します。例えば ``--id visit=12345 ccd=1,2`` のように使用できます。詳しくは 
+		:ref:`data ID <jp_back_dataId>` をご覧ください。

@@ -13,11 +13,6 @@ Pipeline
    pipeline/general
    pipeline/detrend
    pipeline/singleframe_proc
-   pipeline/coadd_proc
-   pipeline/multiband
-   pipeline/forced
-   pipeline/error 
-   pipeline/pipeQa
    
    
 .. these sections are still in English
@@ -25,11 +20,12 @@ Pipeline
 .. toctree::
    :hidden:
    
-   pipeline/installation
-   pipeline/detrend
-   pipeline/singleframe_proc
    pipeline/coadd_proc
+   pipeline/multiband
+   pipeline/forced
    pipeline/error 
+   pipeline/pipeQa
+
 
    pipeline/quick
 

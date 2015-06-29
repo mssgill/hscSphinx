@@ -680,9 +680,9 @@ HSCパイプラインのコマンドは、コマンドライン引数に設定�
 設定パラメータをファイルとして与えることで、その様々な箇所の動作を制御する
 ことが出来ます。その設定パラメータ（'Config'）の全てを並べると、
 一見とてつもない数のパラメータがあるのですが、ユーザにとってはそのごく
-一握りだけが重要でしょう。参考までに、２つのコマンドについて、デフォルトのconfigパラメータを
+一握りだけが重要でしょう。参考までに、２つのコマンドについて、デフォルトの config パラメータを
 以下にリンクします。
-:ref:`reduceFrames.py <reduceframes_config_defaults>`  :ref:`stack.py <stack_config_defaults>`.
+:ref:`reduceFrames.py <reduceframes_config_defaults>` 、 :ref:`stack.py <stack_config_defaults>`.
 
 .. Configuration parameters have a hierarchical form, with each parameter
 .. belonging to a specific pipeline module called a 'Task', and each
