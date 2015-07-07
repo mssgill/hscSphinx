@@ -1,38 +1,56 @@
 
+.. _jp_errormessages:
 
 ======================
-Common Pipeline Errors
+共通の Pipeline エラー
 ======================
 
-When a pipeline process fails, it will dump a full stack trace,
-showing you what it was doing when the failure occurred.  If you know
-what you're looking for, there's a lot of useful information there.
-If you don't, it's just a confusing mess.  Below are a few of the most
-common blow-ups that you'll run into.  If you've run into an error
-that isn't shown here, please let us know so that we can post info
-about it here.
+もし Pipeline における処理が失敗した場合、ターミナルに表示されているログから、
+Pipeline における処理が失敗した時に何が起こったか調べることができます。このログには、
+エラーメッセージ以外に有用な情報がたくさん表示されています。以下に、よく遭遇しうる
+エラーを紹介します。ここで紹介されていないようなエラーを見つけた場合は、ぜひご連絡ください。
+
+もし ``stdout`` に関係するトラブルがある場合は、:ref:`Debugging <jp_debugging>`
+のページをご覧ください。
 
 
-Missing astrometry_net_data.
-----------------------------
 
-By default the pipeline doesn't setup the astrometry_net_data catalog;
-or rather, it sets up a dummy version labeled 'none'.  There are two
-common ways to hit a problem with this:
+``_mapper`` ファイルがない
+-----------------------------------------
 
-#. You forget to run 'setup astrometry_net_data <catalog>'
+データリポジトリには、mapper という情報を含んだ ``_mapper`` ファイルがあります。
+mapper はデータリポジトリの中でデータの位置情報を記録しています（詳しくは
+:ref:`j_data_repo` をご覧ください）。もしデータリポジトリに _mapper 
+ファイルがないと、以下のようなエラーメッセージが表示されます。 ::
+
+    RuntimeError: No mapper provided and no _mapper available
+
+この場合、_mapper ファイルを作成し、配置してください。IPMU の``master`` 
+システムでの解決策は以下の通りです。 ::
+
+    $ cat /lustre/Subaru/SSP/_mapper
+    lsst.obs.hsc.HscMapper
+
+
+astrometry_net_data がない
+--------------------------------------------
+
+デフォルトでは Pipeline は astrometry_net_data カタログの登録を行いません。
+登録されていない場合は 'none' というダミーデータが設定されてしまいます。解決するためには、
+次のような 2 つの方法があります。 ::
+
+#. 'setup astrometry_net_data <catalog>' を実行する
+
+#. hscPipe をリセットし、astrometry_net_data もリセットする
    
-#. You re-setup hscPipe, which then re-setups astrometry_net_data to
-   the version 'none'.
-
-The following errors suggest this is might be what happened::
+以下のエラーでは何か問題か教えてくれています。 ::
 
     assert(matches is not None)
     AssertionError
 
     WARNING: hsc.meas.astrom failed ([Errno 2] No such file or directory: 'none/andConfig.py')
 
-Here's a full stack trace showing this kind of error for an hscProcessCcd.py run::
+例えば、astrometry_net_data の登録を忘れて hscProcessCcd.py を実行した際に生じるエラーを以下にお見せします。
   
     2014-04-01T01:16:53: processCcd.calibrate: Fit and subtracted background
     2014-04-01T01:16:53: processCcd.calibrate.measurement: Measuring 101 sources
@@ -113,3 +131,6 @@ trouble.  They're all in ``CALIB/`` in your data repo.
         'ccd': 50, 'expTime': 240.0}: No unique lookup for ['calibDate', 'calibVersion'] from \
         {'taiObs': '2014-04-01', 'pointing': 815, 'visit': 999, 'dateObs': '2014-04-01', \
         'filter': 'HSC-Y', 'field': 'ALIENHOMEWORLD', 'ccd': 50, 'expTime': 200.0}: 2 matches
+
+
+RuntimeError: No mapper provided and no _mapper available.
