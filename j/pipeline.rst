@@ -15,6 +15,10 @@ Pipeline
    pipeline/singleframe_proc
    pipeline/coadd_proc
    pipeline/multiband
+   pipeline/forced
+   pipeline/error 
+   pipeline/pipeQa
+   pipeline/quick
    
    
 .. these sections are still in English
@@ -23,10 +27,6 @@ Pipeline
    :hidden:
    
    pipeline/installation
-   pipeline/forced
    pipeline/hoge
 
-   pipeline/quick
-..   pipeline/error 
-..   pipeline/pipeQa
 
