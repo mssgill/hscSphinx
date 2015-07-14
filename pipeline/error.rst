@@ -136,4 +136,3 @@ trouble.  They're all in ``CALIB/`` in your data repo.
         'filter': 'HSC-Y', 'field': 'ALIENHOMEWORLD', 'ccd': 50, 'expTime': 200.0}: 2 matches
 
 
-RuntimeError: No mapper provided and no _mapper available.
