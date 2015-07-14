@@ -58,19 +58,6 @@ and ``--procs`` will use a batch processing system.
      $ reduceFrames.py /data/Subaru/HSC/ --rerun cosmos --id visit=100..200:2 \
          --queue small --nodes 4 --procs 6 --job redframes
 
-
-..     
-   #. (optional) Run single-frame QA on some select visits (e.g. visit number 100)::
-
-   $ cat .pqa/dbauth.py
-   $ cat .hsc/dbauth.py
-   $ mkdir -p /home/you/public_html/qa
-   $ export WWW_ROOT=/home/you/public_html/qa
-   $ export WWW_RERUN=cosmos
-   $ export TESTBED_PATH=/data/Subaru/HSC/rerun
-   $ newQa.py -p hsc cosmos
-   $ pipeQa.py -d butler -C hsc -v 100 cosmos
-
    
 #. Make a SkyMap (assuming you want a partial SkyMap) (:ref:`full details <skymap>`)::
 
@@ -89,4 +76,16 @@ and ``--procs`` will use a batch processing system.
 
     $ multiBand.py /data/Subaru/HSC/ --rerun cosmos --id tract=0 filter=HSC-R^HSC-I^HSC-Z \
           --queue small --nodes 4 --procs 6 --job multiband
+
+..
+..    (optional) Run single-frame QA on some select visits (e.g. visit number 100)::
+..
+..   $ cat .pqa/dbauth.py
+..   $ cat .hsc/dbauth.py
+..   $ mkdir -p /home/you/public_html/qa
+..   $ export WWW_ROOT=/home/you/public_html/qa
+..   $ export WWW_RERUN=cosmos
+..   $ export TESTBED_PATH=/data/Subaru/HSC/rerun
+..   $ newQa.py -p hsc cosmos
+..   $ pipeQa.py -d butler -C hsc -v 100 cosmos
 
