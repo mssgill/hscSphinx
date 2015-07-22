@@ -1,13 +1,12 @@
 
-
 ============================
 天体データへの一次処理
 ============================
 
-Pipeline では、自身の解析ニーズに応じて、天体データへの一次処理には
+パイプラインでは、自身の解析ニーズに応じて、天体データへの一次処理には
 ``reduceFrames.py`` と ``hscProcessCcd.py`` の 2 つのコマンドが用意されています。
 ``hscProcessCcd.py`` は、ある特定の visit, CCD データに対して、一次処理（Bias 引き、
-Flat 補正等）と天体検出、測光を行います。``reduceFrames.py`` では、ある visit の全ての
+Flat 補正等）と天体検出, 測光を行います。``reduceFrames.py`` では、ある visit の全ての
 CCD に対して一次処理を実行します。いずれにコマンドでも :ref:`データ ID <jp_back_dataId>`
 を指定する必要があります: ``--id <identifiers>`` という形式で、データの指定方法（identifiers）は、
 ``visit``, ``ccd``, ``field``, ``dateObs``, ``filter`` などがあります。
@@ -20,10 +19,12 @@ reduceFrames.py
 ---------------
 
 ``reduceFrames.py`` で用いられる様々なコマンドタスクはバッチ処理に対応しています。
-そのうちいくつかをここで紹介します。さらなる詳細は
-:ref:`TORQUE <jp_back_torque>` をご覧ください。
+そのうちいくつかをここで紹介します。さらなる詳細は :ref:`jp_back_torque` をご覧ください。
 
 **例 1**
+
+.. highlight::
+	bash
 
 ::
    
@@ -46,10 +47,10 @@ hscProcessCcd.py
 
 
 ここでは、デフォルトの設定ではなく、ある config ファイル（``tmp.config``）を用いて
-hscProcessCcd.py を実行した場合について記述します。以下の例では、単に config ファイルを
-読み込むだけではなく、コマンドラインベースで Frige データの補正を行わないことも指定しています。
-もし config ファイルを自身で用意してコマンドを実行する際は自分の解析に適した
-パラメータを準備してください。
+hscProcessCcd.py を実行した場合について記述します。以下の例では、
+単に config ファイルを読み込むだけではなく、コマンドラインベースで Frige 
+データの補正を行わないことも指定しています。もし config 
+ファイルを自身で用意してコマンドを実行する際は、自分の解析に適したパラメータを準備してください。
 
 ::
 
@@ -61,7 +62,7 @@ hscProcessCcd.py を実行した場合について記述します。以下の例
    'flux.kron', 'correctfluxes', 'classification.extendedness', 'skycoord']
    root.measurement.slots.modelFlux='flux.gaussian'
 
-   # -C オプションで使用する config ファイルを指定し、コマンドラインで追加する config パラメータは --config 以下で指定する
+   # -C パラメータで使用する config ファイルを指定し、コマンドラインで追加する config パラメータは --config 以下で指定する
    $ hscProcessCcd.py /data/Subaru/HSC --rerun cosmos --id visit=1000 ccd=50 --clobber-config -C tmp.config --config isr.doFringe=False
 
    
@@ -70,11 +71,13 @@ hscProcessCcd.py を実行した場合について記述します。以下の例
 * ``--id``                        データ ID。例では visit 1000, ccd 50 の天体データを指定。
 * ``-C tmp.config``               config パラメータが記入された config ファイルを指定（中身は上記 tmp.config のもの）。
 * ``--config isr.doFringe=False`` コマンドラインで追加する config パラメータ。ここでは Fring データの補正は行わないことを指定している。なお。Fringe データの補正は基本的に HSC-Y バンドのみで実行される。
-* ``--clobber-config``            もし同じ rerun 名で一度解析を実行したことがあり、config パラメータを変更して新たに解析を実行する場合に必要になるオプション。
+* ``--clobber-config``            もし同じ rerun 名で一度解析を実行したことがあり、config パラメータを変更して新たに解析を実行する場合に必要になるパラメータ。
 
 .. warning::
 
-	--clobber-config は、ある既存の rerun に対して異なる config パラメータで解析を実行するか
-	異なる Pipeline のバージョンを用いて解析を実行する場合に必要になるオプションです。一度この
-	オプションを設定すると、解析データのパラメータは不均一であるとみなされます。
+	--clobber-config は、ある既存の rerun に対して異なる config
+	パラメータで解析を実行するか、
+	異なるパイプラインのバージョンを用いて解析を実行する場合に必要になるパラメータです。
+	一度このオプションを設定すると、解析されたデータのパラメータは同一の rerun 
+	で不均一であるとみなされます。
 
