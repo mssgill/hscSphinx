@@ -30,7 +30,7 @@ Contents:
    :maxdepth: 2
 
    pipeline
-.. pipeline_tools
+   pipeline_tools
 .. database
 .. scripts
 .. glossary

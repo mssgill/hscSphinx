@@ -1,24 +1,24 @@
 
-
 ===========================
 天体データの重ね合わせ
 ===========================
 
-このページで紹介する解析は reduceFrames.py による各 CCD の一次処理と天体検出、測光が完了
-していることを前提としています。もしまだ完了していない場合は、まず reduceFrames.py を実行してください。
-天体データの重ね合わせの処理過程では、全ての天体データを共通の WCS 座標系に変換し、取得された
-全ての天体データを重ね合わせて、S/N が改善された最終画像（coadd 画像）を生成します。以下のステップで天体データの
-重ね合わせ処理は行われます。:
+このページで紹介する解析は reduceFrames.py による各 CCD 
+の一次処理と天体検出, 測光が完了していることを前提としています。
+もしまだ完了していない場合は、まず reduceFrames.py を実行してください。
+天体データの重ね合わせの処理過程では、全ての天体データを共通の WCS 座標系に変換し、
+取得された全ての天体データを重ね合わせて、S/N が改善された最終画像（coadd 画像）を生成します。
+以下のステップで天体データの重ね合わせ処理は行われます。:
 
 #. **SkyMap** （coadd 画像に用いられる座標系）を生成する。
 
 #. **mosaic**: 等級原点や座標を決定する。
 
-#. **Warp**: 観測された WCS 座標系から SkyMap の座標系に画像をリサンプルする（warp 画像の生成）。
+#. **warp**: 観測された WCS 座標系から SkyMap の座標系に画像をリサンプルする（warp 画像の生成）。
 
 #. **coadd 画像の生成**: warp 画像の足しあわせ。
 
-#. **Process**: coadd 画像から天体を検出し、カタログを生成する。
+#. **process**: coadd 画像から天体を検出し、カタログを生成する。
 
 以下では各解析ステップについて紹介します。なお、``warp``, ``assemble``, ``process``
 は全て ``stack.py`` と呼ばれる 1 つの解析コマンド内で実行されています。
@@ -44,17 +44,23 @@ SkyMap を生成するには 2 つの方法があります: (1) 全天の情報�
 
 
 全天情報から SkyMap を生成する
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-全天情報から SkyMap を作成するためには、以下のコマンドを実行してください。 ::
+全天情報から SkyMap を作成するためには、以下のコマンドを実行してください。
+
+.. highlight::
+	bash
+	
+::
    
     $ makeSkyMap.py /data/Subaru/HSC/ --rerun=cosmos
 
 
-全天情報から生成された SkyMap を使用している場合、tract は固定座標をもとに決定されているので、
-自分が使うデータがどの tract にあるか調べる必要があります。もし、ある visit, CCD
-が入っている tract, patch を調べたい時には、``hscOverlaps.py`` コマンドを使って
-次のように検索をかけることができます。 ::
+全天情報から生成された SkyMap を使用している場合、
+tract は固定座標をもとに決定されており、tract ID は必ずしも 0 というわけではありません。
+そこで、以降の解析のために自分が使うデータがどの tract にあるか調べる必要があります。
+ある visit, CCD が属する tract, patch を調べたい時には、``hscOverlaps.py``
+コマンドを使って次のように検索をかけることができます。 ::
 
     $ hscOverlaps.py /data/Subaru/HSC --rerun=cosmos --id visit=1226 ccd=49 --coadd deep
 
@@ -66,8 +72,8 @@ SkyMap を生成するには 2 つの方法があります: (1) 全天の情報�
 
 自分の観測データをもとに SkyMap を生成するには ``makeDiscreteSkyMap.py`` を使います。
 このコマンドを使って tract を定義する場合、SkyMap に含めるべき visit を指定することができます。
-以下の例では visit 1000 から　1020 まで 2 個飛ばしの visit 番号を指定しています。
-もし``makeDiscreteSkyMap.py`` を使って SkyMap を生成すると、全ての観測領域が
+以下の例では visit 1000 から 1020 まで 2 個飛ばしの visit 番号を指定しています。
+もし ``makeDiscreteSkyMap.py`` を使って SkyMap を生成すると、全ての観測領域が
 tract ID 0 で定義される単一の tract 内に収まります。
 
 ::
@@ -109,8 +115,9 @@ SkyMap のパラメータ情報が記入された config ファイルを用意�
 
 観測領域が非常に広く SkyMap が大きくなってしまうと、以降の解析で様々な問題が起こりえます。
 例えば、WCS 座標へ投影する際には単一の TAN 投影が使われるだけなので、
-tract が非常に大きい場合はその端を歪めてしまい、正しい WCS 座標を貼ることができない
-という可能性があります。また他には、**patch の数は最大 32 までしか設定できない**
+tract が非常に大きい場合はその端を歪めてしまい、
+正しい WCS 座標を貼ることができないという可能性があります。また他には、
+**patch の数は最大 32 までしか設定できない**
 （つまり、最も大きな SkyMaps でも patch は 32 x 32 までしかできない）
 という問題もあります。しかし、観測領域が 32 x 32 の patch サイズよりも大きすぎるにも関わらず
 ``makeDiscreteSkyMap.py`` コマンドを使って SkyMap を生成したい場合は、
@@ -162,7 +169,7 @@ mosaic.py では並列計算は実装されていませんので、処理が終�
 天体データの重ね合わせ
 ---------------------------------
 
-Pipeline を用いて天体データの重ね合わせ画像（coadd 画像）を生成するには ``stack.py``
+パイプラインを用いて天体データの重ね合わせ画像（coadd 画像）を生成するには ``stack.py``
 を使います。 ::
 
     $ stack.py /data/Subaru/HSC/ --rerun=cosmos --id tract=0 filter=HSC-I --selectId visit=1000..1020:2 --queue small --nodes 4 --procs 6 --job stack
@@ -184,7 +191,7 @@ stack.py 内の coadd 処理過程では mosaic.py や reduceFrames.py
 において出力されたデータを入力として呼び込みます。例えば上記の例では、coadd 
 画像は入力データと同じ rerun ディレクトリに出力されます。しかし、もし他のディレクトリや
 他の rerun ディレクトリに coadd 画像を出力したい時、
-以下に示すようないくつかの方法があります。 ::
+以下に示すようないくつかの方法があります。
 
 * 入力データ用_rerun と 出力データ用_rerun をコロン（:）を使って分ける（``--rerun=in_rerun:out_rerun``） ::
 
@@ -199,7 +206,7 @@ rerun ディレクトリが作られ、その中に出力データが生成さ�
 
 この方法では、``cosmos`` という rerun ディレクトリ下に新たな rerun ディレクトリ
 ``rerun/cosmos_coadd`` が作られ、その中に出力データが生成されます。
-（つまり、出力データは ``/data/Subaru/HSC/rerun/cosmos/rerun/cosmos_coass``
+（つまり出力データは ``/data/Subaru/HSC/rerun/cosmos/rerun/cosmos_coass``
 下に生成されるということです）。
 
 * ``--output=/totally/different/path/out_rerun`` を使う ::
@@ -269,7 +276,7 @@ WCS 座標情報を貼り付けたい天体データの tract, patch を指定�
 
 SkyMap で定義された WCS 座標系が貼り付けられた天体データに ``assembleCoadd.py``
 を実行すると coadd 画像を生成することができます。このコマンドでも 2 種類の ``id``
-を指定しないといけません: ``--id``（tract, patch を指定）と ``--selectId``
+を指定しないといけません: ``--id`` （tract, patch を指定）と ``--selectId``
 （入力データの visit, CCD 番号を指定）です。他コマンドのパラメータは
 ``makeCoaddTempExp.py`` とほぼ同じ設定で、以下のように使えます。 ::
 
@@ -277,7 +284,7 @@ SkyMap で定義された WCS 座標系が貼り付けられた天体データ�
 
 ``stack.py`` では天体を検出するためのタスク detectCoaddSources において
 background subtraction が実行されますが、assembleCoadd.py では実行されません。また、
-``stack.py`` で実行される "safe clipping" も assembleCoadd.py では実行されません。
+``stack.py`` で実行される 'safe clipping' も assembleCoadd.py では実行されません。
 
 
 .. _jp_processcoadd:
@@ -285,7 +292,7 @@ background subtraction が実行されますが、assembleCoadd.py では実行�
 天体の検出と測定（カタログファイルの作成）
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-coadd 画像から Pipeline 処理で天体を検出するために ``hscProcessCcd.py`` や
+coadd 画像からパイプライン処理で天体を検出するために ``hscProcessCcd.py`` や
 ``reduceFrames.py`` コマンドを実行することはできません。その代わり、
 ``hscProcessCoadd.py`` というコマンドを使って coadd 画像から天体を検出し、
 カタログファイルを作成することができます。パラメータを上記 ``assembleCoadd.py``

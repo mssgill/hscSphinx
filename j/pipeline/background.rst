@@ -1,11 +1,12 @@
-
+.. highlight::
+	bash
 
 ======================
 予備知識
 ======================
 
-HSCパイプラインでは、データ処理のいろいろな局面に共通して知っておいた方が
-よい種々の事項があります。そのいくつかは開発者と意思疎通するための基本用語であり、
+HSC パイプラインでは、データ処理のいろいろな局面に共通して知っておいた方がよい種々の事項があります。
+そのいくつかは開発者と意思疎通するための基本用語であり、
 また、パイプラインのコードを有効に使うための情報も含まれます。
 
 .. There are a variety of things which are common to all tasks associated
@@ -18,22 +19,21 @@ HSCパイプラインでは、データ処理のいろいろな局面に共通�
 
 EUPS
 ----
-EUPSは、LSSTとHSCプロジェクトで利用されている、プロジェクト内製による
-パッケージ管理ソフトウェアです。SDSSサーベイの運用中に
-Nikhil Padmanabhanが最初に開発したものをベースに、
-LSSTとHSCプロジェクトのパッケージ管理のためにプロジェクトにより再度書き直しを
-行いました。
-ここでいう「パッケージ管理」とは、RedHat Linuxでの`yum`、Debian Linusでの`apt-get`、
-OSXでの`Macports`や`Homebrew`に相当するものです。例えば、あなたが何らかの
-ソフトウェアパッケージをインストールしたいと思った時に、他のソフトウェア
-との複雑な依存関係がよく問題となりますが、「パッケージ管理」ソフトウェアが
-これを解決をしてくれます。
-HSCでEUPSを使う理由は、先のyumなどと比べて便利な機能を持つためです。
-たとえば、あるソフトウェアの別バージョンを同一システム内で
-使い分けることが出来ます。一般的には、システムにとあるバージョンの
-FFTWをインストールすると、一貫してそのバージョンを使わなければなりませんが、
-EUPSを使えば、FFTWの複数のバージョンをインストールして、状況に応じて必要な
-バージョンを選択することが出来ます。また、異なるユーザ（あるいは同一ユーザでも）が、
+EUPS は、LSST と HSC プロジェクトで利用されている、
+プロジェクト内製によるパッケージ管理ソフトウェアです。SDSS サーベイの運用中に
+Nikhil Padmanabhan が最初に開発したものをベースに、
+LSST と HSC プロジェクトのパッケージ管理のためにプロジェクトにより再度書き直しを行いました。
+ここでいう「パッケージ管理」とは、RedHat Linux での `yum`、Debian Linus での `apt-get`、
+OSX での `Macports` や `Homebrew` に相当するものです。例えば、
+あなたが何らかのソフトウェアパッケージをインストールしたいと思った時に、
+他のソフトウェアとの複雑な依存関係がよく問題となりますが、
+「パッケージ管理」ソフトウェアがこれを解決をしてくれます。
+HSC で EUPS を使う理由は、先の yum などと比べて便利な機能を持つためです。
+たとえば、あるソフトウェアの別バージョンを同一システム内で使い分けることが出来ます。
+一般的には、システムにとあるバージョンの FFTW をインストールすると、
+一貫してそのバージョンを使わなければなりませんが、EUPS を使えば、FFTW 
+の複数のバージョンをインストールして、状況に応じて必要なバージョンを選択することが出来ます。
+また、異なるユーザ（あるいは同一ユーザでも）が、
 異なるバージョンのソフトウェアを同時に使うことも出来ます。
 
 .. EUPS is the in-house package manager used by LSST and HSC.  It was
@@ -58,11 +58,10 @@ EUPSを使えば、FFTWの複数のバージョンをインストールして、
 .. ``/bin/bash`` or ``/bin/tcsh``.  Note that you must source the file,
 .. not execute it::
 
-EUPSを使うには、作業中のシェル用の初期化スクリプトを"source"します。
-もしも使っているシェルの種類が分からなければ、 ``echo $SHELL`` と
-タイプすれば、 ``/bin/bash`` や ``/bin/tcsh`` として利用中のシェルへのパスが
-表示されます。初期化スクリプトは"source"するのであって、実行してはいけない
-ことに注意して下さい::
+EUPS を使うには、作業中のシェル用の初期化スクリプトを "source" します。
+もしも使っているシェルの種類が分からなければ、 ``echo $SHELL`` とタイプすれば、
+``/bin/bash`` や ``/bin/tcsh`` として利用中のシェルへのパスが表示されます。
+初期化スクリプトは "source" するのであって、実行してはいけないことに注意して下さい。 ::
 
     # bashを使う場合
     $ source ${PRODUCT_DIR}/eups/default/bin/setups.sh
@@ -72,15 +71,15 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
 
 
 初期化スクリプトはパイプラインを利用するための多種のシェル関数や環境変数を設定します。
-新なシェル（端末エミュレータ）を開いて作業する場合には、毎回この初期化を行う必要が
-あるので、上記のコマンドのエイリアスを `~/.bashrc`や`~/.cshrc` で設定したり、
-他の作業と環境変数などが干渉しなければ、その中で初期化スクリプトを source してしまうのも
-よいかもしれません::
+新なシェル（端末エミュレータ）を開いて作業する場合には、毎回この初期化を行う必要があるので、
+上記のコマンドのエイリアスを `~/.bashrc` や `~/.cshrc` で設定したり、
+他の作業と環境変数などが干渉しなければ、その中で初期化スクリプトを source 
+してしまうのもよいかもしれません。 ::
 
     # .bashrc でのエイリアス設定の一例
     alias setupHsc='source /data1a/ana/products2014/eups/default/bin/setups.sh'
 
-上記エイリアスを設定しておけば、次回ログインからは以下のコマンドをタイプすれば初期化が出来る::
+上記エイリアスを設定しておけば、次回ログインからは以下のコマンドをタイプすれば初期化が出来ます。 ::
 
      $ setupHsc
 
@@ -98,7 +97,7 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
 ..     $ setupHsc
 ..
      
-非常によく使われる eups コマンドを紹介します。
+以下に非常によく使われる eups コマンドを紹介します。
 .. Here are the most common eups commands.
 
 #. `help`::
@@ -106,7 +105,7 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
      $ eups -h
 
 
-#. `list` ... システムにインストールされたパッケージをリストアップします::
+#. `list` ... システムにインストールされたパッケージをリストアップする::
 
      # インストールされているすべてのパッケージを表示
      $ eups list
@@ -117,7 +116,7 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
      # インストールされている obs_* にマッチするすべてのパッケージを表示
      $ eups list obs_*
      
-     # 現在どのパッケージ＋バージョンを利用するように設定('setup')されているかを表示 
+     # 現在どのパッケージ＋バージョンを利用するように設定（'setup'）されているかを表示 
      $ eups list -s
 
      
@@ -126,7 +125,7 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
      # HSCパイプラインのバージョン 2.12.0f_hsc を利用設定 (-v は 'verbose' 「詳細表示」の意味)
      $ setup -v hscPipe 2.12.0f_hsc
      
-     # 'HSC'タグ（開発者推薦）の付いているパッケージ＋バージョンの組合せでHSCパイプラインを利用設定::
+     # 'HSC'タグ（開発者推薦）の付いているパッケージ ＋ バージョンの組合せでHSCパイプラインを利用設定::
      $ setup -v hscPipe -t HSC
 
      
@@ -135,10 +134,11 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
 .. Setting up development code in a directory
 
 
-もしもEUPSによりシステムインストールされていないコード（たとえば、自分自身が
-開発しているコードやHSC開発者向けgitリポジトリからチェックアウトしてきた
-コード）を利用設定したい場合には、 ``setup -r dir/`` を実行します。 ``dir/`` の部分は
-カレントディレクトリであることも多いですが、その場合には、以下のように ``.`` となります::
+もしも EUPS によりシステムインストールされていないコード
+（たとえば、自分自身が開発しているコードや HSC 開発者向け git 
+リポジトリからチェックアウトしてきたコード）を利用設定したい場合には、
+``setup -r dir/`` を実行します。 ``dir/`` の部分はカレントディレクトリであることも多いですが、
+その場合には、以下のように ``.`` となります。 ::
 
      $ setup -v -r .
 
@@ -148,25 +148,23 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
 .. directory ``.``, e.g.::
 
 
-ローカルディレクトリのコード利用設定をする時には、しばしばパッケージの
-依存関係も正しく ``setup`` されているか確認する必要があります。
-``setup`` コマンドで何も明示的に指定しなければ、'current'のタグが付けられた
-パッケージ＋バージョンが利用設定されます。どのようなバージョンに'current'
-タグが付けられているかは ``eups list`` を見て下さい。
-それらが必要とするバージョンの組み合わせではないかもしれません。
-もしも、あなたが実行しようとしているコードがどのパッケージ＋バージョンの
-組み合わせに対してビルドされるべきか分かっている時には、まずそのパッケージ＋バージョン群を
-``setup`` し、次に、あなたのローカルディレクトリのコードを ``-k`` オプション
-（keepの意味）付きで ``setup`` します。このコマンドにより、すでに ``setup`` された
-パッケージ＋バージョンの利用設定は有効のままで、ローカルディレクトリのコードが
-追加で利用可能となります。
-（このオプションを付けなければ、ローカルディレクトリのコードと依存関係にあるパッケージは、
-すでにsetupされているパッケージについても再度'current'タグの付いたバージョンが
-設定されてしまいます。）
+ローカルディレクトリのコード利用設定をする時には、しばしばパッケージの依存関係も正しく
+``setup`` されているか確認する必要があります。
+``setup`` コマンドで何も明示的に指定しなければ、'current' のタグが付けられたパッケージ
+＋ バージョンが利用設定されます。どのようなバージョンに 'current' タグが付けられているかは
+``eups list`` を見て下さい。それらが必要とするバージョンの組み合わせではないかもしれません。
+もしも、あなたが実行しようとしているコードがどのパッケージ ＋
+バージョンの組み合わせに対してビルドされるべきか分かっている時には、
+まずそのパッケージ ＋ バージョン群を ``setup`` し、次に、
+あなたのローカルディレクトリのコードを ``-k`` オプション（keepの意味）付きで ``setup`` します。
+このコマンドにより、すでに ``setup`` されたパッケージ ＋ バージョンの利用設定は有効のままで、
+ローカルディレクトリのコードが追加で利用可能となります（このオプションを付けなければ、
+ローカルディレクトリのコードと依存関係にあるパッケージは、すでに setup 
+されているパッケージについても再度 'current' タグの付いたバージョンが設定されてしまいます）。
 または、ローカルディレクトリのコードに対して ``-j`` オプション（justの意味）
-を付けた ``setup`` を行うことでも同様のことが実現できます。ただし、 ``-j`` の
-場合には ``-k`` とは異なり、 ``setup`` されていないパッケージについては、たとえ
-依存関係があっても追加の ``setup`` はされません。
+を付けた ``setup`` を行うことでも同様のことが実現できます。ただし、 ``-j`` の場合には
+``-k`` とは異なり、``setup`` されていないパッケージについては、
+たとえ依存関係があっても追加の ``setup`` はされません。
 
 .. When you do this, you'll often need to ensure that any dependencies
 .. are also setup correctly.  If you specify nothing, you'll get the
@@ -182,7 +180,7 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
 
      # 以下は、すでに行ったバージョンの ``setup`` を維持した状態で、指定した
      # ローカルディレクトリパッケージの利用設定をします。まだ ``setup`` されて
-     # いない依存関係のあるパッケージについては'current'タグの付いたバージョン
+     # いない依存関係のあるパッケージについては 'current' タグの付いたバージョン
      # が設定されます。
      $ setup -v -k -r .
 
@@ -201,10 +199,9 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. Setting up for a run
 
-一般に、HSCパイプラインを使って作業をする場合には、以下のステップを
-踏むことになります。
+一般に、HSC パイプラインを使って作業をする場合には、以下のステップを踏むことになります。
 
-(1) EUPSを初期化して使える状態にする
+(1) EUPS を初期化して使える状態にする
 (2) パイプラインを ``setup`` で設定する
 (3) 位置・等級較正用のカタログを ``setup`` で設定する（詳細はパイプラインの項を参照）
 
@@ -220,10 +217,10 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
      
 * 較正用のカタログを一つ選びます。 ``setup`` コマンドによる設定では、最後に設定したカタログが有効になります::
 
-    # SDSS-DR8カタログを使う場合（一般）
+    # SDSS-DR8 カタログを使う場合（一般）
     $ setup -v astrometry_net_data sdss-dr8
 
-    # PS1カタログを使う場合（SSPの場合）
+    # PS1 カタログを使う場合（SSPの場合）
     $ setup -v astrometry_net_data ps1_pv1.2a
     
 
@@ -233,13 +230,12 @@ EUPSを使うには、作業中のシェル用の初期化スクリプトを"sou
     
 .. How EUPS works
 
-EUPSの動作の仕組み
+EUPS の動作の仕組み
 ^^^^^^^^^^^^^^^^^^^^^
 
-ユーザの皆さんはEUPSの実装の詳細にはおそらく興味がないでしょう。しかし、
-EUPSを使う際には、お使いのシェルの環境変数が何がしか変更されることに
-気付くと思います。いくつかの重要な環境変数の値が変更されたり、新しい
-環境変数が設定されたりします。
+ユーザの皆さんは EUPS の実装の詳細にはおそらく興味がないでしょう。しかし、EUPS を使う際には、
+お使いのシェルの環境変数が何がしか変更されることに気付くと思います。
+いくつかの重要な環境変数の値が変更されたり、新しい環境変数が設定されたりします。
 
 .. The details of EUPS's implementation probably won't be of interest to
 .. you as a user.  However, you may notice certain things about your
@@ -248,15 +244,15 @@ EUPSを使う際には、お使いのシェルの環境変数が何がしか変�
 .. new ones will appear.
 
 なんらかのコマンドを実行する際には、お使いのシェル（おそらく ``/bin/bash`` ）
-が実行可能なコマンドを ``$PATH``  変数から調べます。EUPSを使うと、
-複数のバージョンのインストール済プログラムの中から、希望するバージョンの
-実行コマンドを ``PATH`` 変数に設定することができます。
-たとえば、EUPSに対して ``setup foo 2.1.0`` と指示すれば、EUPSは `` foo`` 
-パッケージのバージョン2.1.0がどこにインストールされているかを検索し、
-``foo/2.1.0/bin`` に対する適切な実行パスを ``PATH`` 環境変数に追加
-してくれます。同時に、``foo`` パッケージのほかのバージョンのコマンド
-パスが ``PATH`` 変数の中に混在していないかを確認してくれます。
-これにより、異なるシェルで異なるバージョンのコードを使い分けることが出来ます。
+が実行可能なコマンドを ``$PATH``  変数から調べます。EUPS を使うと、
+複数のバージョンのインストール済プログラムの中から、
+希望するバージョンの実行コマンドを ``PATH`` 変数に設定することができます。
+たとえば、EUPS に対して ``setup foo 2.1.0`` と指示すれば、EUPS は `` foo`` 
+パッケージのバージョン 2.1.0 がどこにインストールされているかを検索し、
+``foo/2.1.0/bin`` に対する適切な実行パスを ``PATH`` 環境変数に追加してくれます。
+同時に、``foo`` パッケージのほかのバージョンのコマンドパスが ``PATH`` 
+変数の中に混在していないかを確認してくれます。これにより、
+異なるシェルで異なるバージョンのコードを使い分けることが出来ます。
 
 .. When you run a command, your shell (probably ``/bin/bash``), will
 .. check your ``$PATH`` variable to look for executable commands.  EUPS
@@ -269,11 +265,10 @@ EUPSを使う際には、お使いのシェルの環境変数が何がしか変�
 .. your ``PATH``.  So, you should be able to work on two different code
 .. versions in two different shells, and everything will be fine.
 
-ただし、HSCパイプラインには90ほどのモジュール（主としてPythonコードで
-呼び出されて実行されるソフトウェア）が含まれるため、EUPSはあなたの
-``PATH`` 変数に大量のパスを追加することになります。
-同様に、 ``LD_LIBRARY_PATH`` や ``PYTHONPATH`` にも見慣れないほど多数のパスが
-追加されますので驚かないで下さい。
+ただし、HSC パイプラインには 90 ほどのモジュール（主として Python コードで
+呼び出されて実行されるソフトウェア）が含まれるため、EUPS はあなたの``PATH``
+変数に大量のパスを追加することになります。同様に、``LD_LIBRARY_PATH`` や
+``PYTHONPATH`` にも見慣れないほど多数のパスが追加されますので驚かないで下さい。
 
 .. However, because there are several different modules in the pipeline
 .. (about 90), EUPS will be adding a lot to your ``PATH`` variable.
@@ -282,10 +277,10 @@ EUPSを使う際には、お使いのシェルの環境変数が何がしか変�
 
 .. warning::
 
-   万が一、PATH環境変数の中身がおかしいと感じる場合には、手動で修正するのは
-   やめた方が無難かもしれません -- 効を奏すことが少ないです。
+   万が一、PATH 環境変数の中身がおかしいと感じる場合には、
+   手動で修正するのはやめた方が無難かもしれません -- 効を奏すことが少ないです。
    それよりは、単純に新しいシェル（端末エミュレータ）を開きなおし、
-   必要なEUPS管理下のパッケージについて ``setup`` をやり直す方がおそらく有効です。
+   必要な EUPS 管理下のパッケージについて ``setup`` をやり直す方がおそらく有効です。
 
 .. If you suspect that one of your PATH variables has been corrupted,
 .. don't attempt to fix it by editing manually and re-exporting the
@@ -293,18 +288,19 @@ EUPSを使う際には、お使いのシェルの環境変数が何がしか変�
 .. almost certainly better off to open a new shell and re-``setup``
 .. the EUPS package your interested in.
 
-EUPSは、既存の環境変数を操作するほかに、EUPSがHSCパイプラインの
+EUPS は、既存の環境変数を操作するほかに、EUPS が HSC パイプラインの
 各パッケージを管理するための専用の環境変数を新たに追加します。
 ユーザの皆さんがよく目にすると思われるのは、 ``$PACKAGE_DIR`` 
-のような形式の変数です。ここで、 ``PACKAGE`` の部分には、EUPS管理下の
-各種パッケージ名が入ります。これらの ``*_DIR`` 変数は、それぞれの
-パッケージコードがインストールされているディレクトリを指し示しています。
+のような形式の変数です。ここで、 ``PACKAGE`` の部分には、EUPS 
+管理下の各種パッケージ名が入ります。これらの ``*_DIR`` 変数は、
+それぞれのパッケージコードがインストールされているディレクトリを指し示しています。
 この変数をユーザが意識する必要はほとんどありませんが、
 時々、特定のパッケージがどこに置かれているのか、あるいは、
-今自分が実行しているのはどこに置かれたパッケージか、などを知りたい時に
-参照するとよいでしょう。例えば、 ``AFW_DIR`` (現在使っている
-アプリケーションフレームワークのコードの在処) や ``OBS_SUBARU_DIR`` (
-現在使っている、すばるのデータ解析に固有の操作を行うソフトウェアの在処)　など。
+今自分が実行しているのはどこに置かれたパッケージか、
+などを知りたい時に参照するとよいでしょう。例えば、 ``AFW_DIR``
+（現在使っているアプリケーションフレームワークのコードの在処）や
+``OBS_SUBARU_DIR``
+（現在使っている、すばるのデータ解析に固有の操作を行うソフトウェアの在処）など。
 
 .. In addition to manipulating your existing environment variables, EUPS
 .. will also create new variables for each module it manages.  The only
@@ -319,8 +315,8 @@ EUPSは、既存の環境変数を操作するほかに、EUPSがHSCパイプラ
 
 .. warning::
 
-   ``*_DIR`` 以下に置かれたファイルを絶対に直接編集してはいけません。これらは
-   インストールされた（共有の）コードです。
+   ``*_DIR`` 以下に置かれたファイルを絶対に直接編集してはいけません。
+   これらはインストールされた（共有の）コードです。
 
 ..    You must never (never never) try to edit any of the files you find
 ..    in a ``*_DIR`` directory.  These files are installed code.
@@ -328,16 +324,15 @@ EUPSは、既存の環境変数を操作するほかに、EUPSがHSCパイプラ
 .. _jp_back_torque:
 
 PBS/TORQUE
-----------
+-------------
 
-HSCパイプラインのいくつかのコマンドは、TORQUEと呼ばれるバッチ処理
-システムと組み合せて使うことが出来るように実装されています。
-TORQUEは、PBS (Portable Batch System)という商用バッチシステムから
-派生して開発されている無償で利用できるバッチシステムです。TORQUEは、
-複数のPCノード上で分散並列処理を行うジョブのスケジュールとキュー
-管理を行います。ジョブの状態確認やキャンセルといった、少しのTORQUE
-コマンドを知っておけば、TORQUEを使ってHSCパイプラインを実行するの
-には困らないでしょう。
+HSC パイプラインのいくつかのコマンドは、TORQUE 
+と呼ばれるバッチ処理システムと組み合せて使うことが出来るように実装されています。
+TORQUE は、PBS（Portable Batch System）
+という商用バッチシステムから派生して開発されている無償で利用できるバッチシステムです。
+TORQUE は、複数の PC ノード上で分散並列処理を行うジョブのスケジュールとキュー管理を行います。
+ジョブの状態確認やキャンセルといった、少しの TORQUE コマンドを知っておけば、
+TORQUE を使って HSC パイプラインを実行するのには困らないでしょう。
 
 .. Our batch processing is handled with a system called TORQUE, which is
 .. a popular variant of PBS (Portable Batch System).  The system handles
@@ -347,16 +342,15 @@ TORQUEは、PBS (Portable Batch System)という商用バッチシステムか�
 .. yourself with, mainly checking the status of your job, and possibly
 .. cancelling it.  An example of each is shown below.
 
-あなたの使うTORQUEシステム上には、複数の'キュー'が作られているかも
-しれません。各々のキューは、それぞれ別個のリソース利用の制限（ジョブで指定
-できる最大ノード数など）が設定されています。 `qstat -Q` コマンドや `qstat -Q -f` 
-コマンド（全ての情報を表示） でシステム上のキューの設定を確認することが出来ます。
-一般的に、使えるノード数の多いキューでは少数のジョブしか同時に実行できず、
-ノード数が少ないキューではより多数のジョブを実行することが出来るように
-設定されています。
-TORQUEにジョブをサブミットする時には、あなたが必要とする最小のキューに対して
-サブミットするように注意して下さい。
-（この段落はシステム設定の一般論です。三鷹やonsite系には現在defaultキューしかありません）
+あなたの使う TORQUE システム上には、複数の 'キュー' が作られているかもしれません。
+各々のキューは、それぞれ別個のリソース利用の制限（ジョブで指定できる最大ノード数など）
+が設定されています。`qstat -Q` コマンドや `qstat -Q -f` コマンド（全ての情報を表示）
+でシステム上のキューの設定を確認することが出来ます。一般的に、
+使えるノード数の多いキューでは少数のジョブしか同時に実行できず、
+ノード数が少ないキューではより多数のジョブを実行することが出来るように設定されています。
+TORQUE にジョブをサブミットする時には、
+あなたが必要とする最小のキューに対してサブミットするように注意して下さい。
+（この段落はシステム設定の一般論です。三鷹や onsite 系には現在 default キューしかありません）
 
 .. There may be various 'queues' defined on a Torque system, with each
 .. having different levels of access to resources (i.e. the max number of
@@ -377,12 +371,11 @@ qstat
 .. job in the queue.  It's run by the user 'you' and is running in the
 .. quene named 'small'.  It uses 3 nodes, and is currently running 'R'::
 
-ジョブの状態を確認するには、'qstat'コマンドを使います。'-a' オプションは
-少しだけ詳細な情報を返します。詳しくは 'man qstat' を参照して下さい。
-以下に、基本的な使い方の一例として、キューに入っている単一ジョブの状態の
-確認方法を記します。
-このジョブは、ユーザ 'you'によって、'small' というキューで実行されています。
-３ノードを使って実際に処理が行われています（状態 'R'）::
+ジョブの状態を確認するには、'qstat'コマンドを使います。
+'-a' オプションは少しだけ詳細な情報を返します。詳しくは 'man qstat' を参照して下さい。
+以下に、基本的な使い方の一例として、キューに入っている単一ジョブの状態の確認方法を記します。
+このジョブは、ユーザ 'you' によって、'small' というキューで実行されています。
+3 ノードを使って実際に処理が行われています（状態 'R'）。 ::
 
     $ qstat -a
     master: 
@@ -394,7 +387,7 @@ qstat
 
 .. For reference, here are the job status codes::
 
-Sの欄には、下記のジョブの状態コードのいずれかが表示されます::
+S の欄には、下記のジョブの状態コードのいずれかが表示されます。 ::
   
     C -  ジョブは実行のあと完了(complete)した
     E -  ジョブは実行のあと終了(exit)した
@@ -409,7 +402,7 @@ Sの欄には、下記のジョブの状態コードのいずれかが表示さ�
 
 .. Here are the most popular options used with `qstat`::
 
-以下に `qstat` コマンドのうち、よく使われるオプションを記します::
+以下に `qstat` コマンドのうち、よく使われるオプションを記します。 ::
 
     $ qstat -q          すべてのキューを表示
     $ qstat -Q          すべてのキューについてより詳細を表示
@@ -431,11 +424,12 @@ qdel
 .. job.  Use qstat to determine the job ID, and then kill it as follows
 .. (assuming the job ID from the above example)::
 
-時々ジョブには問題が起きることがあります。たいていは、TORQUEサブミット
-したコマンドに与えた引数が間違っていたり、予想に反して延々と処理が
-終わらなかったりといったことです。こうした場合、 ``qdel`` コマンドを
-使ってジョブを殺すことが出来ます。`qstat` コマンドを使ってジョブIDを調べ、
-次のようにしてそのIDのジョブを殺して下さい（以下では上の例のジョブID = 374を仮定します）::
+時々ジョブには問題が起きることがあります。たいていは、TORQUE 
+サブミットしたコマンドに与えた引数が間違っていたり、
+予想に反して延々と処理が終わらなかったりといったことです。こうした場合、
+``qdel`` コマンドを使ってジョブを殺すことが出来ます。
+`qstat` コマンドを使ってジョブ ID を調べ、
+次のようにしてその ID のジョブを殺して下さい（以下では上の例のジョブID = 374を仮定します）。 ::
 
     $ qdel 374
 
@@ -446,7 +440,7 @@ qdel
 
 .. Pipeline TORQUE-related arguments
 
-TORQUE制御のHSCパイプラインコマンドのオプション
+TORQUE 制御の HSC パイプラインコマンドのオプション
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. The pipeline tasks which use TORQUE (e.g. ``reduceFrames.py``, and
@@ -457,17 +451,17 @@ TORQUE制御のHSCパイプラインコマンドのオプション
 .. ``reduceFrames.py``, etc., you'll be able to use the following
 .. arguments to control TORQUE's behaviour:
 
-TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py`` 、 ``stack.py`` など） 
-は、どのように計算機リソースを使って実行するか（キューの種類、ノード数、コア数など）
-をTORQUEに対して指定するためのコマンドオプションを提供します。
-``reduce*.py`` と名付けられたコマンド（ ``reduceBias.py`` 、 ``reduceFlat.py`` , ``reduceFrames.py`` など）は
-一般にこのTORQUEインターフェースを持ちます。これらのコマンドではTORQUEの
-ジョブ管理方法を指定する以下のオプションを使うことが出来ます:
+TORQUE を利用する HSC パイプラインのコマンド（``reduceFrames.py``、``stack.py`` など） は、
+どのように計算機リソースを使って実行するか（キューの種類、ノード数、コア数など）を
+TORQUE に対して指定するためのコマンドオプションを提供します。``reduce*.py`` 
+と名付けられたコマンド（``reduceBias.py``, ``reduceFlat.py``, ``reduceFrames.py`` など）
+は一般にこの TORQUE インターフェースを持ちます。これらのコマンドでは TORQUE 
+のジョブ管理方法を指定する以下のオプションを使うことが出来ます。 :
 
 ``--job``
 
     ジョブに付ける名前で、 ``qstat`` コマンドの結果に現れます。
-    TORQUEがジョブプロセスの標準出力＋標準エラー出力を書き出すログファイルの名前にも使われます。
+    TORQUE がジョブプロセスの標準出力＋標準エラー出力を書き出すログファイルの名前にも使われます。
 
 ..    This is the name of the job, as you want it to appear in ``qstat``
 ..    commands.  It will also be used in the name of the log files that
@@ -475,9 +469,8 @@ TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py``
 
 ``--queue``
 
-    ジョブをサブミットすべきキュー名です。お使いのシステム上に複数のキューが
-    存在する場合には考慮します。どのようなキューが存在するのかは以下のコマンド
-    で確認できます::
+    ジョブをサブミットすべきキュー名です。お使いのシステム上に複数のキューが存在する場合には考慮します。
+    どのようなキューが存在するのかは以下のコマンドで確認できます。 ::
 
     $ qmgr -c 'print server'
 
@@ -488,9 +481,9 @@ TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py``
 
 ``--nodes``
 
-    ジョブのプロセスに割り当てるノード数です。キューが許すより多数のノード数を
-    指定するとエラーになりますので注意して下さい。
-    最大の許容ノード数は、 ``qmgr -c 'print server'`` コマンドで表示される
+    ジョブのプロセスに割り当てるノード数です。
+    キューが許すより多数のノード数を指定するとエラーになりますので注意して下さい。
+    最大の許容ノード数は、``qmgr -c 'print server'`` コマンドで表示される
     ``resources_max.nodes`` の値で知ることが出来ます。
 
 ..    Specify the number of nodes you want your process to use.  Note
@@ -501,10 +494,10 @@ TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py``
 
 ``--procs``
 
-    各ノードで起動するプロセス数です。 ノード数の場合と同様に、キューが指定する
-    最大プロセス数を超えてはいけません。 最大プロセス数を確認するには、
+    各ノードで起動するプロセス数です。ノード数の場合と同様に、
+    キューが指定する最大プロセス数を超えてはいけません。 最大プロセス数を確認するには、
     ``qmgr -c 'print server'`` コマンドにより表示される ``resources_max.ncpus`` 
-    の値を確認します。 ``procs`` x ``nodes`` (つまりジョブが要求するCPUコアの総数）
+    の値を確認します。``procs`` x ``nodes`` (つまりジョブが要求するCPUコアの総数）
     が ``resources_max.ncpus`` を超えないように指定して下さい。
 
 ..    Specify the number of processes on each node you want your process
@@ -516,7 +509,7 @@ TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py``
 
 ``--time``
 
-    ジョブの処理にかかる見込みの処理時間を調整します。TORQUEは、
+    ジョブの処理にかかる見込みの処理時間を調整します。TORQUE は、
     この時間を超えたジョブを時間切れとして強制終了させます。
     長時間の処理が必要な場合は、このオプションで適宜調整してください。
 
@@ -526,10 +519,10 @@ TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py``
     
 ``--do-exec``
 
-    このオプションを指定すると、ジョブをTORQUEのキューにサブミットするのではなく、
+    このオプションを指定すると、ジョブを TORQUE のキューにサブミットするのではなく、
     現在のシェル上でジョブが実行されます。
-    個別の問題の調査には役立ちますが（１ノードの計算リソースしか使えませんので
-    時間がかかります）、大きなジョブはTORQUEにサブミットするのがよいでしょう。
+    個別の問題の調査には役立ちますが（1 ノードの計算リソースしか使えませんので
+    時間がかかります）、大きなジョブは TORQUE にサブミットするのがよいでしょう。
 
 ..    This will cause the system to run the code in the current shell,
 ..    rather than submitting to TORQUE system.  It can be very useful
@@ -538,9 +531,9 @@ TORQUEを利用するHSCパイプラインのコマンド（ ``reduceFrames.py``
     
 ``--pbs-output``
 
-    ジョブプロセスの標準出力＋標準エラー出力の書き出し先ディレクトリを
-    指定します。無指定の場合は、ジョブをサブミットした作業ディレクトリか、
-    TORQUEサーバ側で設定されたディレクトリに書き出されます。
+    ジョブプロセスの標準出力＋標準エラー出力の書き出し先ディレクトリを指定します。
+    無指定の場合は、ジョブをサブミットした作業ディレクトリか、
+    TORQUE サーバ側で設定されたディレクトリに書き出されます。
 
 ..    .. todo::    I haven't played with this.  Paul? What does it do?
 
@@ -553,12 +546,11 @@ Reruns（リラン）
 .. assumption is that within a given 'rerun', the data have been handled
 .. in a homogeneous way.
 
-``rerun`` はもともとSDSSのデータ解析運用で使われた概念で、HSCパイプライン
-でも使われます。 ``rerun`` は、単一のデータ処理作業（data processing run）を表します。
-単一とは、その処理作業の中では、ある決まったバージョンの組み合わせのコードを
-ある決まった設定パラメータ (configuration) で走らせて解析する、
-という意味です。この定義のもと、ある 'rerun' の中では、データ処理は
-均質に扱われることを意図します。
+``rerun`` はもともと SDSS のデータ解析運用で使われた概念で、HSC パイプラインでも使われます。
+``rerun`` は、単一のデータ処理作業（data processing run）を表します。単一とは、
+その処理作業の中では、ある決まったバージョンの組み合わせのコードをある決まった設定パラメータ
+（configuration） で走らせて解析する、という意味です。この定義のもと、ある 'rerun' の中では、
+データ処理は均質に扱われることを意図します。
 
 .. todo::
 
@@ -582,23 +574,23 @@ DataId (データID)
 .. * dateObs (the date of observation from the FITS header 'DATE-OBS' entry)
 .. * filter  (again from the FITS header ... 'FILTER' entry)
 
-'dataId'（データID）は、入力データを特定するためのユニークIDです。特に
-覚えておかなければならないのは、'visit' と 'ccd' です。この２つのキーワードは、
-特定の積分（ショット；HSCパイプラインでは'visit'と呼ばれます）の特定のCCDデータ
+'dataId'（データID）は、入力データを特定するためのユニーク ID です。
+特に覚えておかなければならないのは、'visit' と 'ccd' です。この 2 つのキーワードは、
+特定の積分（ショット；HSC パイプラインでは 'visit' と呼ばれます）の特定の CCD データ
 を指定するために使われます。
-'tract'と'patch' は、coadd画像を指定するために使われます。他に重要なキーワードとして、
-以下のものが上げられます::
+'tract' と 'patch' は、coadd 画像を指定するために使われます。他に重要なキーワードとして、
+以下のものが上げられます。 ::
 
- * field (観測ターゲット名。FITSヘッダのOBJECTに相当。)
- * dateObs (観測日UT。FITSヘッダのDATE-OBSに相当。)
- * filter  (フィルター名。FITSヘッダのFILTER01に相当。)
- ただし、HSCパイプラインでは上記はすべて大文字に変換され、特殊文字はアンダースコアで置換して扱われます。
+ * field (観測ターゲット名。FITS ヘッダの OBJECT に相当。)
+ * dateObs (観測日 UT。FITS ヘッダの DATE-OBS に相当。)
+ * filter  (フィルター名。FITS ヘッダの FILTER01 に相当。)
+ ただし、HSC パイプラインでは上記はすべて大文字に変換され、特殊文字はアンダースコアで置換して扱われます。
 
 .. In almost any pipeline command you can specify which data you wish to
 .. process with ``--id <dataID>``, e.g.::
 
 ほとんどすべてのHSCパイプラインコマンドでは、どのデータを処理するのかを
-``--id <dataId>`` のオプション記法で指定することが出来ます。例えば::
+``--id <dataId>`` のオプション記法で指定することが出来ます。例えば ::
 
     # visit 1000, CCD 50 を処理
     $ hscProcessCcd.py /data/ --id visit=1000 ccd=50
@@ -606,7 +598,7 @@ DataId (データID)
     # 2015-01-15 に HSC-I バンドで取得した OBJECT = M87 のすべてのデータを処理
     $ hscProcessCcd.py /data/ --id field=M87 filter=HSC-I dateObs=2015-01-15
 
-    # HSC-Iバンドのcoadd画像のうち、tract 0 patch 1,1 に位置するデータを処理
+    # HSC-I バンドの coadd 画像のうち、tract 0 patch 1,1 に位置するデータを処理
     $ hscProcessCoadd.py /data/ --id tract=0 patch=1,1 filter=HSC-I
 
 .. Only a few of the dataId components are ever needed to uniquely
@@ -617,13 +609,14 @@ DataId (データID)
 .. true for tracts and patches, though!  A tract,patch refers to a
 .. location on the sky and can have multiple filters or dateObs values.
 
-CCD画像を指定する場合には、ほんの２、３のdataId キーワードで入出力データを
-ユニークに特定できることが多いかもしれません。例えば、HSC（すばる）では、
-複数の積分に対して同じ 'visit' が割り当てられることはありませんので、
-'visit' だけを指定すれば、他のfilterやdateObsなどのキーワードは冗長であることが
-ほとんどです。ただし、coadd画像の指定時の tract と patch についてはこの限りではありません!
-tract と patch は、coadd画像の天域を指定しますので、一つの (tract, patch) の組に
-対して複数の filter や dateObs の組み合わせを取り得ます。
+CCD 画像を指定する場合には、ほんの 2, 3 のdataId 
+キーワードで入出力データをユニークに特定できることが多いかもしれません。例えば、
+HSC（すばる）では、複数の積分に対して同じ 'visit' が割り当てられることはありませんので、
+'visit' だけを指定すれば、他の filter や dateObs 
+などのキーワードは冗長であることがほとんどです。ただし、coadd 画像の指定時の tract と
+patch についてはこの限りではありません! tract と patch は、
+coadd 画像の天域を指定しますので、一つの（tract, patch）の組に対して複数の filter や
+dateObs の組み合わせを取り得ます。
 
 .. Ranges and Multiple ``--id`` values
 
@@ -635,101 +628,80 @@ tract と patch は、coadd画像の天域を指定しますので、一つの (
 .. size) notation as HSC visit numbers are incremented by 2 (always
 .. even).
 
-'dataId' を使って、入出力データを範囲で指定したり、個々のデータを複数同時に
-指定することが出来ます。HSCデータでは、積分ごとに visit は 2 ずつ増えます
-ので、 ``:`` （刻み幅）の記法を用いることに注意して下さい。
+'dataId' を使って、入出力データを範囲で指定したり、
+個々のデータを複数同時に指定することが出来ます。HSC データでは、積分ごとに
+visit は 2 ずつ増えますので、``:`` （刻み幅）の記法を用いることに注意して下さい。
 
 
 .. * ``..`` denotes are range of values.  E.g. visit 1000 with all CCDs
 ..   between 40 and 60, inclusive::
 
- * ``..`` は値の範囲を指定します。例えば、visit = 1000 のデータのうち、ccd = 40 と 60 を含む
- その間の範囲の全CCDを指定するには次のように指定します::
+ * ``..`` は値の範囲を指定します。例えば、visit = 1000 のデータのうち、ccd = 40 と 60 を含むその間の範囲の全 CCD を指定するには次のように指定します::
 
     --id visit=1000 ccd=40..60
 
 .. * ``^`` separates discrete values.  E.g. visit 1000 and 1004::
 
- * ``^`` は個々の値を繋いで同時に指定します。例えば、visit = 1000 と 1004 の２つのvisitのデータを同時に指定するには::
+ * ``^`` は個々の値を繋いで同時に指定します。例えば、visit = 1000 と 1004 の 2 つの visit のデータを同時に指定するには::
 
     --id visit=1000^1004
 
 .. * ``:`` specifies a step to use for a range, and thus is only ever
 ..  used with ``..``.  E.g. even-numbered visits 1000 to 1010::
 
-* ``:`` 値の範囲指定をする際の刻み幅です。常に ``..`` と一緒に使います。
-  例えば、visit = 1000 と 1010 を含むその間のvisitのうち、偶数のデータだけを指定するには::
+* ``:`` 値の範囲指定をする際の刻み幅です。常に ``..`` と一緒に使います。例えば、visit = 1000 と 1010 を含むその間の visit のうち、偶数のデータだけを指定するには::
 
     --id visit=1000..1010:2   # 範囲の中で、2 visitずつ増加します
 
 
 .. Configuration Parameters
 
+.. _jp_back_config:
+
 設定パラメータ (config)
---------------------------
+----------------------------------------
 
-.. A variety of things about the pipeline are configurable through either
-.. command-line arguements, or as settings in configuration parameter
-.. files.  At last count, there were approximately 1 bazillion
-.. configuration parameters.  The overwhelming majority of them are
-.. things that you'll never even need to be aware of, much less
-.. modify.  E.g. default config parameters for
+HSC パイプラインのコマンドは、コマンドライン引数に設定パラメータを与えたり、
+設定パラメータをファイルとして与えることで、その様々な箇所の動作を制御することが出来ます。
+その設定パラメータ（'Config'）の全てを並べると、一見とてつもない数のパラメータがあるのですが、
+ユーザにとってはそのごく一握りだけが重要でしょう。参考までに、2 つのコマンドについて、
+デフォルトの config パラメータを表示します（
+:ref:`reduceFrames.py <reduceframes_config_defaults>`,
+:ref:`stack.py <stack_config_defaults>` ）。こうした無数の config パラメータのうち、
+コマンド実行時に使用できるパラメータやキーワードを知りたい時は以下のように調べることができます。
 
+.. highlight::
+	bash
+	
+::
 
-HSCパイプラインのコマンドは、コマンドライン引数に設定パラメータを与えたり、
-設定パラメータをファイルとして与えることで、その様々な箇所の動作を制御する
-ことが出来ます。その設定パラメータ（'Config'）の全てを並べると、
-一見とてつもない数のパラメータがあるのですが、ユーザにとってはそのごく
-一握りだけが重要でしょう。参考までに、２つのコマンドについて、デフォルトの config パラメータを
-以下にリンクします。
-:ref:`reduceFrames.py <reduceframes_config_defaults>` 、 :ref:`stack.py <stack_config_defaults>`.
+	# hscProcessCcd.py というコマンドのパラメータのうち
+	# '*background*' という文字列が含まれるパラメータを config パラメータから検索する
+	$ hscProcessCcd.py /path/to/data/ --show config="*background*"
 
-.. Configuration parameters have a hierarchical form, with each parameter
-.. belonging to a specific pipeline module called a 'Task', and each
-.. nested sub-task separated by a decimal point.  For example, the
-.. 'instrument signature removal' task (ISR, responsible for bias
-.. subtraction, flat fielding, etc.) has a configurable parameter
-
-.. ``doFringe``::
-
-Configパラメータ は階層構造を持っています。それぞれのパラメータは
-'Task' と呼ばれるパイプラインの一部を成す特定の解析を行うコード（モジュール）
-の中で定義されています。さらにそのTaskに属する'subtask' （Taskから派生した解析コード）
-でも固有のconfigパラメータが定義されており、それらにはピリオドで
-繋げた形式でアクセスできます。
-たとえば、'instrument signature removal'（ISR; バイアス引きやフラットフィールディングなどを行う） 
-という 'Task' は、configパラメータ ``doFringe`` を持ち、それには以下のような
-記法でアクセス出来ます::
+Config パラメータ は階層構造を持っています。それぞれのパラメータは
+'タスク' と呼ばれるパイプラインの一部を成す特定の解析を行うコード（モジュール）
+の中で定義されています。さらにそのタスクに属する 'サブタスク'（タスクから派生した解析コード）
+でも固有の config パラメータが定義されており、それらにはピリオドで繋げた形式でアクセスできます。
+たとえば、'instrument signature removal'（ISR; Bias 引きや Flat 補正などを行う） 
+という 'タスク' は、config パラメータ ``doFringe`` を持ち、
+それには以下のような記法でアクセス出来ます。 ::
 
     isr.doFringe=True
 
-.. All of configuration parameters have a default value which should be
-.. what most users want, but if you need to override some you have two
-.. options: command line arguments, or a configuration file (or a bit of
-.. both).
+すべての config パラメータはデフォルト値を持ち、たいていのユーザが必要とする値に設定されています。
+しかし、それらを変更して実行したい場合には 2 つの指定方法があります:
+一つは、コマンドライン引数で config パラメータの値を指定する方法、もう一つは、
+ファイルとして config パラメータの値を与える方法です。2 つを組合せることも出来ます。
 
-すべてのconfigパラメータはデフォルト値を持ち、たいていのユーザが必要とする
-値に設定されています。しかし、それらを変更して実行したい場合には２つの
-指定方法があります: 一つは、コマンドライン引数でconfigパラメータの値を
-指定する方法、もう一つは、ファイルとしてconfigパラメータの値を与える方法
-です。２つを組合せることも出来ます。
-
-.. * To override a parameter on the command line, use ``--config
-..   name=value`` (or just ``-c name=value``)::
-
-* コマンドラインでconfigパラメータをオーバーライドする場合には、 ``--config name=value`` 
-  （ `` -c name=value`` も同じ意味） のように指定します::
+* コマンドラインで config パラメータをオーバーライドする場合には、
+  ``--config name=value`` （ ``-c name=value`` も同じ意味）のように指定します。 ::
 
     --config isr.doFringe=False
 
-.. * To override a parameter in a configuration file, put the parameters
-..   in a text file, one per line, and use ``--configfile filename`` (or
-..   just ``-C filename``) to load the parameters.
-
-* ファイルを読み込ませてconfigパラメータをオーバーライドする場合には、
-  プレインテキスト形式のファイルに１行あたり１パラメータの値の設定を書き、 
-  ``--configfile filename`` （ ``-C filename`` も同じ意味） のように
-  指定します.
+* ファイルを読み込ませて config パラメータをオーバーライドする場合には、
+  プレインテキスト形式のファイルに 1 行あたり 1 パラメータの値の設定を書き、 
+  ``--configfile filename`` （ ``-C filename`` も同じ意味）のように指定します。
   
 .. _jp_back_policy:  
   
@@ -744,13 +716,13 @@ Policy (.paf) ファイル
 .. example, an excerpt from the camera characterization shows information
 .. about the first amplifier in CCD 0 (the other amps aren't shown)::
 
-'Policy' はすでに古い設定パラメータ形式であり、ユーザの皆さんが目にする
-機会はほとんどないかもしれません。しかし、もしも御目にかかった場合の予備
-知識として記載しておきます。'Policy' は、以前は上で説明した 'Config' の
-代わりに設定パラメータを保持する目的で使われていましたが、現在はほとんどの
-解析タスクがconfig形式に移行しています。'Policy'の設定ファイルは ``.paf`` 
-という拡張子の名前を持つプレインテキスト形式のファイルです。階層構造を持ち、
-可読性に優れます。一例として、以下はカメラのCCD特性の設定の一部抜粋です::
+'Policy' はすでに古い設定パラメータ形式であり、
+ユーザの皆さんが目にする機会はほとんどないかもしれません。しかし、
+もしも御目にかかった場合の予備知識として記載しておきます。'Policy' は、
+以前は上で説明した 'Config' の代わりに設定パラメータを保持する目的で使われていましたが、
+現在はほとんどの解析タスクが config 形式に移行しています。'Policy' の設定ファイルは
+``.paf`` という拡張子の名前を持つプレインテキスト形式のファイルです。階層構造を持ち、
+可読性に優れます。一例として、以下はカメラの CCD 特性の設定の一部抜粋です。 ::
 
     Ccd: {
         name: "1_53"
@@ -769,6 +741,7 @@ Policy (.paf) ファイル
 .. eventually they'll disappear completely.  But, for now, they still
 .. exist in a few places.
 
-Policyファイルはパイプラインコードのほとんどの箇所で使われなくなっており、
-規定路線ではいずれは完全になくなります。しかし、今のところは、いくつかの限られた
+Policy ファイルはパイプラインコードのほとんどの箇所で使われなくなっており、
+規定路線ではいずれは完全になくなります。しかし、今のところは、
+いくつかの限られた
 場所でまだ使われています。
