@@ -89,6 +89,13 @@ Here are the most common eups commands.
      # setup the HSC pipeline using the versions tagged 'HSC' (the developer recommended version)
      $ setup -v hscPipe -t HSC
 
+.. note:: If you get an error message saying something like the
+    following ``You are attempting to run "setup" which requires
+    administrative privileges, but more information is needed in order
+    to do so.  Authenticating as "root" Password: ``, that means you
+    forgot to ``source`` the ``setups.sh`` file.  See
+    :ref:`EUPS setup error <error_setup>` for details.
+
      
 Setting up development code in a directory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

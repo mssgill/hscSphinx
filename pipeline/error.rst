@@ -17,6 +17,38 @@ If you're having trouble finding the ``stdout``, please see
 :ref:`Debugging <debugging>`.
 
 
+.. _error_setup:
+
+EUPS ``setup`` asks for root password
+-------------------------------------
+
+Occassionally, you open a new shell and try to setup the pipeline or
+some package, and you see e.g.::
+
+    $ setup -v hscPipe 3.3.3
+    You are attempting to run "setup" which requires administrative
+    privileges, but more information is needed in order to do so.
+    Authenticating as "root"
+    Password:
+
+The short answer is that you forgot to ``source`` the EUPS
+``setup.sh`` file.  See :ref:`EUPS <back_eups>` for the full details,
+but this is what you forgot::
+
+    # If you use a bash shell
+    $ source /data1a/ana/products2014/eups/default/bin/setups.sh
+
+    # in a csh shell (or tcsh)
+    $ source /data1a/ana/products2014/eups/default/bin/setups.csh
+
+The longer answer is that some Linux systems also have a ``setup``
+command which is an administration tool used for system configuration.
+When you ``source`` the ``setups.sh`` file (or ``setups.csh``), EUPS
+prepends a new directory to your ``PATH`` variable, which hides the
+system's ``setup`` command.
+
+.. _error_mapper:
+
 Missing a ``_mapper``
 ---------------------
 
@@ -33,6 +65,7 @@ the ``master`` system at IPMU::
     $ cat /lustre/Subaru/SSP/_mapper
     lsst.obs.hsc.HscMapper
 
+.. _error_astronetdata:
 
 Missing astrometry_net_data.
 ----------------------------
@@ -86,7 +119,7 @@ Here's a full stack trace showing this kind of error for an hscProcessCcd.py run
        assert(matches is not None)
     AssertionError
 
-
+.. _error_calib_inputs:
     
 Ambiguous calibration inputs
 ----------------------------
