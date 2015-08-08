@@ -17,6 +17,10 @@ will require a :ref:`dataId <back_dataId>` of the form ``--id
 
 As always, full usage statements can be found with ``--help`` or ``-h``
 
+In order to run any of these commands, you'll now need one more setup:
+``astrometry_net_data``.  If you haven't read that section, please
+read about :ref:`Astrometry Net Data <astrometry_net_data>` before continuing.
+
 .. _reduceframes:
 
 reduceFrames.py

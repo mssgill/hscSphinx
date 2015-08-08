@@ -96,7 +96,7 @@ Here are the most common eups commands.
     forgot to ``source`` the ``setups.sh`` file.  See
     :ref:`EUPS setup error <error_setup>` for details.
 
-     
+         
 Setting up development code in a directory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -130,8 +130,7 @@ Setting up for a run
 
 In general, in order to do most things with the HSC pipeline, you'll
 want to do the following: (1) enable EUPS, (2) setup the pipeline,
-and (3) setup a calibration catalog (described more in the pipeline
-section)::
+and (3) setup a calibration catalog (see :ref:`Astrometry Net Data<astrometry_net_data>`)::
 
     $ setupHsc
     $ setup -v hscPipe -t HSC
@@ -144,7 +143,7 @@ section)::
     # *OR* perhaps use SDSS DR8
     $ setup -v astrometry_net_data sdss-dr8
 
-    
+        
 .. _back_eupsworks:    
     
 How EUPS works

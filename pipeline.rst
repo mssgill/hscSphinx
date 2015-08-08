@@ -13,6 +13,7 @@ Pipeline
    pipeline/data_repo
    pipeline/general
    pipeline/detrend
+   pipeline/astrometry_net_data
    pipeline/singleframe_proc
    pipeline/coadd_proc
    pipeline/multiband
