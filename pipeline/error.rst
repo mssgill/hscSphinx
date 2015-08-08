@@ -169,3 +169,106 @@ trouble.  They're all in ``CALIB/`` in your data repo.
         'filter': 'HSC-Y', 'field': 'ALIENHOMEWORLD', 'ccd': 50, 'expTime': 200.0}: 2 matches
 
 
+.. _no_raw_skytile:
+
+no such table: raw_skytile
+---------------------------
+
+Chances are you were trying to load some coadd data, but you didn't
+provide enough information in your ``dataId`` for the pipeline butler
+to do the lookup and get the data.  Here's a short script that will
+cause the problem.
+
+.. code-block:: python
+
+    butler = dafPersist.Butler("/path/to/Subaru/HSC/rerun/myrerun/")
+    dataId = {'tract': 0, 'patch': '5,5'}
+    calexp = butler.get("deepCoadd", dataId)
+
+When run, this will fail as follows::
+    
+    
+    Traceback (most recent call last):
+      File "./foo.py", line 13, in <module>
+        main()
+      File "./foo.py", line 10, in main
+        calexp = butler.get("deepCoadd", dataId)
+      File "/data1/hsc/products/Linux64/daf_persistence/HSC-3.1.0b_hsc/python/lsst/daf/persistence/butler.py", line 224, in get
+        location = self.mapper.map(datasetType, dataId)
+      File "/data1/hsc/products/Linux64/obs_subaru/HSC-3.10.1/python/lsst/obs/hsc/hscMapper.py", line 142, in map
+        return super(HscMapper, self).map(datasetType, copyId, write=write)
+      File "/data1/hsc/products/Linux64/daf_persistence/HSC-3.1.0b_hsc/python/lsst/daf/persistence/mapper.py", line 120, in map
+        return func(self.validate(dataId), write)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/cameraMapper.py", line 285, in mapClosure
+        return mapping.map(mapper, dataId, write)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/mapping.py", line 118, in map
+        actualId = self.need(self.keyDict.iterkeys(), dataId)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/mapping.py", line 201, in need
+        lookups = self.lookup(newProps, newId)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/mapping.py", line 170, in lookup
+        where, self.range, values)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/registries.py", line 170, in executeQuery
+        c = self.conn.execute(cmd, values)
+    sqlite3.OperationalError: no such table: raw_skytile
+
+    
+Here, 'filter' is needed to uniquely identify a coadd dataset, but it
+wasn't specified in the ``dataId``.  This fix in this case is (note
+the highlighted line):
+
+.. code-block:: python
+   :emphasize-lines: 2
+
+    butler = dafPersist.Butler("/path/to/Subaru/HSC/rerun/myrerun/")
+    dataId = {'tract': 0, 'patch': '5,5', 'filter': 'HSC-I'}
+    calexp = butler.get("deepCoadd", dataId)
+
+
+
+.. _column_view:
+
+Cannot get column view to Coord field
+-------------------------------------
+
+This type of error occurs when you ask the butler for a
+non-native-type as a column view for an array.  The SourceCatalogs can
+return column views for ``int`` and ``float``, but non-native types
+like 'coord' can't be sliced this way.  This code will fail:
+
+.. code-block:: python
+
+    butler = dafPersist.Butler("/path/to/Subaru/HSC/rerun/myrerun/")
+    dataId = {'visit': 1236, 'ccd': 50}
+    sources = butler.get("src", dataId)
+    coords = sources.get('coord')
+
+    
+The failure will be::
+
+    Traceback (most recent call last):
+      File "./foo.py", line 15, in <module>
+        main()
+      File "./foo.py", line 11, in main
+        coords = sources.get('coord')
+      File "/data1/hsc/products/Linux64/afw/HSC-3.11.0a_hsc/python/lsst/afw/table/tableLib.py", line 8717, in get
+        return self[k]
+      File "/data1/hsc/products/Linux64/afw/HSC-3.11.0a_hsc/python/lsst/afw/table/tableLib.py", line 8649, in __getitem__
+        return self.columns[k]
+      File "/data1/hsc/products/Linux64/afw/HSC-3.11.0a_hsc/python/lsst/afw/table/tableLib.py", line 2955, in __getitem__
+        return self[self.schema.find(args[0]).key]
+      File "/data1/hsc/products/Linux64/afw/HSC-3.11.0a_hsc/python/lsst/afw/table/tableLib.py", line 2958, in __getitem__
+        return _tableLib.BaseColumnView___getitem__(self, *args)
+    lsst.pex.exceptions.exceptionsLib.LsstCppException: 0: lsst::pex::exceptions::LogicErrorException thrown at python/lsst/afw/table/specializations.i:405 in void lsst_afw_table_BaseColumnView___getitem____SWIG_1(const lsst::afw::table::BaseColumnView*, const lsst::afw::table::Key<lsst::afw::coord::Coord>&)
+    0: Message: Cannot get column view to Coord field.
+
+
+The fix is to loop over sources and call ``get()`` for each coord (note emphasized line):
+
+.. code-block:: python
+    :emphasize-lines: 4
+
+    butler = dafPersist.Butler("/path/to/Subaru/HSC/rerun/myrerun/")
+    dataId = {'visit': 1236, 'ccd': 50}
+    sources = butler.get("src", dataId)
+    coords = [src.get("coord") for src in sources]
+    
