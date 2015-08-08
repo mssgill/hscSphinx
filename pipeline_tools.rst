@@ -184,15 +184,16 @@ Single-Frame data (requires dataId with visit and ccd)
 Coadd data (requires dataId with tract and patch)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The values for the coadd data are the same as those for the single
-frame data, but include the prefix ``deepCoadd_``.  There are no coadd
-equivalents for the 'postISRCCD', 'wcs' and 'fcr' targets as these
-apply only to single frame measurements.
+The values for the coadd data are usually the same as those for the
+single frame data, but include the prefix ``deepCoadd_``.  The
+exception is that ``calexp`` is simply called ``deepCaodd``.  There
+are no coadd equivalents for the 'postISRCCD', 'wcs' and 'fcr' targets
+as these apply only to single frame measurements.
 
 ==================== ===========================
 Single Frame target  Coadd Target
 ==================== ===========================
-calexp               **deepCoadd_calexp**
+calexp               **deepCoadd**
 psf                  **deepCoadd_psf**
 src                  **deepCoadd_src**
 ==================== ===========================
