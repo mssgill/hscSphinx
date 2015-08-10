@@ -204,6 +204,8 @@ Alternatively, you may, after noting the appropriate version of meas_mosaic::
 If you get an error message "This Intel <math.h> is for use with only the Intel compilers" (or similar), try hacking the CPPFLAGS setting in mkl.cfg (e.g., remove the entry).
 
 
+.. _astrometry_net_data:
+
 AstronometryNetData catalog
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
