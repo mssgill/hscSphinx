@@ -12,12 +12,12 @@ PostgreSQL について簡単に紹介していきます。もしあなたが既
 
    database/postgres
    database/tables
-..   database/stored_function
-..   database/queries
-..   database/schema_browsing
-..   database/cloning
+   database/stored_function
+   database/queries
+   database/schema_browsing
+   database/cloning
 
-このページ以外にも、NAOJ の `Schema Browser
+このページ以外にも、NAOJ の `スキーマブラウザー
 <https://hscdata.mtk.nao.ac.jp:4443/schema_browser2/schema_browser.html>`_
 に PostgreSQL について掲載されていますので、そちらもご覧ください。
 

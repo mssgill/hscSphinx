@@ -32,7 +32,7 @@ Contents:
    pipeline
    pipeline_tools
    database
-.. scripts
+   scripts
 .. glossary
 .. camera
 .. machine-specific

@@ -127,6 +127,14 @@ EUPS を使うには、作業中のシェル用の初期化スクリプトを "s
      
      # 'HSC'タグ（開発者推薦）の付いているパッケージ ＋ バージョンの組合せでHSCパイプラインを利用設定::
      $ setup -v hscPipe -t HSC
+	 
+.. note::
+	もし ``You are attempting to run "setup" which requires
+	administrative privileges, but more information is needed in 
+	order to do so.  Authenticating as "root" Password: ``
+	というエラーを見かけたなら、それは、``setups.sh`` ファイルを ``source`` 
+	し忘れたせいかもしれません。この場合のエラーの回避については
+	:ref:`jp_error_setup` をご覧ください。
 
      
 ローカルディレクトリにある開発中コードの利用設定

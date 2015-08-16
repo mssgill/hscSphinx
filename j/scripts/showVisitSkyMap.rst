@@ -3,7 +3,7 @@
 showVisitSkyMap.py
 ------------------
 
-スクリプトをダウンロードする :download:`showVisitSkyMap.py <../../scripts/showVisitSkyMap.py>`.
+スクリプトをダウンロードする :download:`showVisitSkyMap.py`.
 
 ここではあるデータセットにおける SkyMap と CCDs の表示方法を紹介します。
 スクリプトは非常に単純です。
@@ -24,7 +24,7 @@ showVisitSkyMap.py
 
 .. _jp_showvisitskymap:
 
-.. literalinclude:: ../../scripts/showVisitSkyMap.py
+.. literalinclude:: showVisitSkyMap.py
    :language: python
 
 

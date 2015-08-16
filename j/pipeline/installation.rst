@@ -191,8 +191,9 @@ meas_mosaic の適切なバージョンは以下のように置換されます�
 AstronometryNetData カタログ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-HSCパイプラインで使用される astrometry_net_data はプレースホルダーで、真の座標較正用カタログ
-ではありません。パイプライン内で適切な解析が行われるように、適切な astrometry_net_data を入手・登録し、
+HSCパイプラインで使用される astrometry_net_data はプレースホルダーで、
+真の座標較正用カタログではありません。パイプライン内で適切な解析が行われるように、
+適切な astrometry_net_data を入手・登録し、
 パイプラインで使用できるように設定する必要があります。
 
 **入手**:
@@ -203,8 +204,9 @@ HSCパイプラインで使用される astrometry_net_data はプレースホ�
 	eups list -d astrometry_net_data
 
 もしコピーできない場合は、2mass カタログを
-`astrometry.net <http://broiler.astrometry.net/~dstn/4200/HSC/>`_ から入手しましょう。
-その際、andConfig.py と呼ばれる以下のような追加ファイルが必要になります。::
+`astrometry.net <http://broiler.astrometry.net/~dstn/4200/HSC/>`_ 
+から入手しましょう。その際、andConfig.py 
+と呼ばれる以下のような追加ファイルが必要になります。::
 
     root.defaultMagColumn = "j_mag"      # Default column name to use for magnitudes
     root.magColumnMap = { 'J': 'j_mag' } # Mapping from filter to magnitude column name
@@ -214,12 +216,14 @@ HSCパイプラインで使用される astrometry_net_data はプレースホ�
                        # Etc, listing all the index files
                       ]
 				
-または、SDSS DR8 カタログを `ここ <http://hsca.ipmu.jp/sumire/astrometry_net_data/sdss-dr8/>`_.
+または、SDSS DR8 カタログを `ここ 
+<http://hsca.ipmu.jp/sumire/astrometry_net_data/sdss-dr8/>`_.
 からダウンロードして使用することもできます。
 
 **登録**:
 
-自身がダウンロードした astrometry_net_data ディレクトリに対し、以下のコマンドを実行してください。::
+自身がダウンロードした astrometry_net_data ディレクトリに対し、
+以下のコマンドを実行してください。::
 
     eups declare astrometry_net_data <version> -r /path/to/astrometry_net_data/<version> -m none
     
@@ -240,5 +244,6 @@ EUPSに使用したいカタログが登録できたら、パイプラインで�
 ``-j`` フラグは ``setup`` の時にだけ使用します。このフラグなしでは例えば
 ``gcc`` や ``python`` との依存性を設定してくれません。
 
-この ``astrometry_net_data`` の ``setup`` は新しい計算機環境を設定する度に必ず毎回行ってください。
+この ``astrometry_net_data`` の ``setup`` 
+は新しい計算機環境を設定する度に必ず毎回行ってください。
 
