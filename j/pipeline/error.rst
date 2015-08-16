@@ -15,6 +15,41 @@
 のページをご覧ください。
 
 
+.. _jp_error_setup:
+
+EUPS ``setup`` の際に root パスワードを要求される
+--------------------------------------------------------------
+
+新しく計算機にパイプラインやパッケージをインストールしようとした際に、
+まれに次のようなメッセージを見かける時があるかもしれません。
+
+.. highlight::
+	bash
+	
+::
+
+    $ setup -v hscPipe 3.3.3
+    You are attempting to run "setup" which requires administrative
+    privileges, but more information is needed in order to do so.
+    Authenticating as "root"
+    Password:
+
+このようなメッセージが表示された場合、EUPS の ``setup.sh`` ファイルを
+``source`` し忘れたのかもしれません。詳細は :ref:`EUPS <jp_back_eups>` 
+をご覧いただくとして、以下に回避方法を紹介します。 ::
+
+    # bash シェルユーザーの場合
+    $ source /data1a/ana/products2014/eups/default/bin/setups.sh
+
+    # csh (or tcsh) シェルユーザーの場合
+    $ source /data1a/ana/products2014/eups/default/bin/setups.csh
+
+Linux にもシステムの設定を管理する ``setup`` コマンドがあります。上記のように
+``setups.sh``　（または ``setups.csh`` ）ファイルを ``source`` すると、
+EUPS は ``PATH`` 変数に新しいディレクトリを追加し、システムの ``setup`` 
+コマンドを隠してくれます。
+
+
 ``_mapper`` ファイルがない
 -----------------------------------------
 
@@ -140,3 +175,104 @@ astrometry_net_data がない
         {'taiObs': '2014-04-01', 'pointing': 815, 'visit': 999, 'dateObs': '2014-04-01', \
         'filter': 'HSC-Y', 'field': 'ALIENHOMEWORLD', 'ccd': 50, 'expTime': 200.0}: 2 matches
 
+
+.. _jp_no_raw_skytile:
+
+raw_skytile というテーブルがない
+-------------------------------------------------
+
+表記にあるエラーは、例えば、butler で coadd データを読み込もうとしているのに、
+butler に十分な ``dataId`` 情報を与えないような時に見られます。以下に、
+このエラーを生じるようなスクリプト例を載せます。
+
+.. code-block:: python
+
+    butler = dafPersist.Butler("/path/to/Subaru/HSC/rerun/myrerun/")
+    dataId = {'tract': 0, 'patch': '5,5'}
+    calexp = butler.get("deepCoadd", dataId)
+
+これを実行すると、次のようにしてスクリプトは失敗します。 ::    
+    
+    Traceback (most recent call last):
+      File "./foo.py", line 13, in <module>
+        main()
+      File "./foo.py", line 10, in main
+        calexp = butler.get("deepCoadd", dataId)
+      File "/data1/hsc/products/Linux64/daf_persistence/HSC-3.1.0b_hsc/python/lsst/daf/persistence/butler.py", line 224, in get
+        location = self.mapper.map(datasetType, dataId)
+      File "/data1/hsc/products/Linux64/obs_subaru/HSC-3.10.1/python/lsst/obs/hsc/hscMapper.py", line 142, in map
+        return super(HscMapper, self).map(datasetType, copyId, write=write)
+      File "/data1/hsc/products/Linux64/daf_persistence/HSC-3.1.0b_hsc/python/lsst/daf/persistence/mapper.py", line 120, in map
+        return func(self.validate(dataId), write)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/cameraMapper.py", line 285, in mapClosure
+        return mapping.map(mapper, dataId, write)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/mapping.py", line 118, in map
+        actualId = self.need(self.keyDict.iterkeys(), dataId)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/mapping.py", line 201, in need
+        lookups = self.lookup(newProps, newId)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/mapping.py", line 170, in lookup
+        where, self.range, values)
+      File "/data1/hsc/products/Linux64/daf_butlerUtils/HSC-3.3.0g_hsc/python/lsst/daf/butlerUtils/registries.py", line 170, in executeQuery
+        c = self.conn.execute(cmd, values)
+    sqlite3.OperationalError: no such table: raw_skytile
+
+この例の場合では、coadd データを指定するのに 'filter' の情報が必要であるにも関わらず、
+``dataId`` で指定していないために失敗しています。この場合、
+スクリプトを次のように書き換えればエラーは回避されます（黄色でハイライトしている箇所参照）。
+
+.. code-block:: python
+   :emphasize-lines: 2
+   
+    butler = dafPersist.Butler("/path/to/Subaru/HSC/rerun/myrerun/")
+    dataId = {'tract': 0, 'patch': '5,5', 'filter': 'HSC-I'}
+    calexp = butler.get("deepCoadd", dataId)
+
+
+
+.. _jp_column_view:
+
+カタログファイル内の coord がカラム型に変換できない
+-----------------------------------------------------------
+
+この種のエラーは butler を使って non-native-type 
+の変数をカラムの表記で表示させようとする時に生じるエラーです。SourceCatalogs
+は ``int`` と ``float`` 型のカラムを返します。しかし、non-native-type
+（例えば 'coord'）ではカラム型に変換されません。例えば、以下のような butler 
+コードを用意したとします。
+
+.. code-block:: python
+
+    butler = dafPersist.Butler("/path/to/Subaru/HSC/rerun/myrerun/")
+    dataId = {'visit': 1236, 'ccd': 50}
+    sources = butler.get("src", dataId)
+    coords = sources.get('coord')
+
+すると、このコードを実行すると以下のようなエラーが吐き出されます。 ::
+
+    Traceback (most recent call last):
+      File "./foo.py", line 15, in <module>
+        main()
+      File "./foo.py", line 11, in main
+        coords = sources.get('coord')
+      File "/data1/hsc/products/Linux64/afw/HSC-3.11.0a_hsc/python/lsst/afw/table/tableLib.py", line 8717, in get
+        return self[k]
+      File "/data1/hsc/products/Linux64/afw/HSC-3.11.0a_hsc/python/lsst/afw/table/tableLib.py", line 8649, in __getitem__
+        return self.columns[k]
+      File "/data1/hsc/products/Linux64/afw/HSC-3.11.0a_hsc/python/lsst/afw/table/tableLib.py", line 2955, in __getitem__
+        return self[self.schema.find(args[0]).key]
+      File "/data1/hsc/products/Linux64/afw/HSC-3.11.0a_hsc/python/lsst/afw/table/tableLib.py", line 2958, in __getitem__
+        return _tableLib.BaseColumnView___getitem__(self, *args)
+    lsst.pex.exceptions.exceptionsLib.LsstCppException: 0: lsst::pex::exceptions::LogicErrorException thrown at python/lsst/afw/table/specializations.i:405 in void lsst_afw_table_BaseColumnView___getitem____SWIG_1(const lsst::afw::table::BaseColumnView*, const lsst::afw::table::Key<lsst::afw::coord::Coord>&)
+    0: Message: Cannot get column view to Coord field.
+
+このエラーを回避するには、コード内の source 変数をループし、各 coord 変数を
+``get()`` で読み込むという方法があります（ハイライト箇所）。
+
+.. code-block:: python
+    :emphasize-lines: 4
+
+    butler = dafPersist.Butler("/path/to/Subaru/HSC/rerun/myrerun/")
+    dataId = {'visit': 1236, 'ccd': 50}
+    sources = butler.get("src", dataId)
+    coords = [src.get("coord") for src in sources]
+    
