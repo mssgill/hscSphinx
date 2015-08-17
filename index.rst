@@ -29,11 +29,9 @@ Contents:
 
    pipeline
    pipeline_tools
-   database
    scripts
    glossary
    camera
-   machine-specific
    developer   
 
 Quick Links:

@@ -31,7 +31,6 @@ Contents:
 
    pipeline
    pipeline_tools
-   database
    scripts
 .. glossary
 .. camera
