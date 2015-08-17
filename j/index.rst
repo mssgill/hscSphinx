@@ -33,9 +33,9 @@ Contents:
    pipeline_tools
    database
    scripts
-.. glossary
-.. camera
-.. machine-specific
+   glossary
+   camera
+   machine-specific
    
 
 Quick Links:
