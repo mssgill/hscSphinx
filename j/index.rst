@@ -36,6 +36,7 @@ Contents:
    glossary
    camera
    machine-specific
+   developer   
    
 
 Quick Links:
@@ -44,13 +45,24 @@ Quick Links:
 
 .. toctree::
 
-.. prettySchema-sf
-.. prettySchema-coadd
-.. pipeline/reduceFrames.config
-.. pipeline/stack.config
+   prettySchema-sf
+   prettySchema-coadd
+   pipeline/reduceFrames.config
+   pipeline/stack.config
    
 .. These ones aren't currently shown at all
    
+.. toctree::
+   :hidden:
+
+   developer   
+   known_artifacts
+   afw
+   faq
+   links
+   maillists
+   
+   j/index
 
 Indices and tables
 ==================
