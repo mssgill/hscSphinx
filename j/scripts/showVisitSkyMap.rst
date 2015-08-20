@@ -1,4 +1,4 @@
-.. _jp_showVisitSkyMap:
+
 
 showVisitSkyMap.py
 ------------------

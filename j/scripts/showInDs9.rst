@@ -1,4 +1,4 @@
-.. _jp_showInDs9:
+
 
 showInDs9.py
 ------------

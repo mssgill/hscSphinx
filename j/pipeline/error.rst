@@ -11,7 +11,7 @@
 ここでは、よく遭遇しうるエラーを紹介します。
 もしここで紹介されていないようなエラーを見つけた場合は、ぜひご連絡ください。
 
-また ``stdout`` に関係するトラブルは、:ref:`jp_debugging`
+また ``stdout`` に関係するトラブルは、 :ref:`jp_debugging`
 のページをご覧ください。
 
 
@@ -55,7 +55,7 @@ EUPS は ``PATH`` 変数に新しいディレクトリを追加し、システ�
 
 データリポジトリには、mapper という情報を含んだ ``_mapper`` ファイルがあります。
 mapper はデータリポジトリの中でデータの位置情報を記録しています（詳しくは
-:ref:`j_data_repo` をご覧ください）。もしデータリポジトリに _mapper 
+:ref:`Data Repo <j_data_repo>` をご覧ください）。もしデータリポジトリに _mapper 
 ファイルがないと、以下のようなエラーメッセージが表示されます。 ::
 
     RuntimeError: No mapper provided and no _mapper available
